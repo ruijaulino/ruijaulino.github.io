@@ -1,3 +1,3 @@
-## Notes on quant finance
+## RJ Notes 
 
 
