@@ -40,7 +40,7 @@ plt.show()
 ```
 
 
-![png](output_2_0.png)
+![png](/images/seq_models/output_2_0.png)
 
 
 
@@ -257,7 +257,7 @@ hmm.view_convergence()
 
 
 
-![png](output_14_1.png)
+![png](/images/seq_models/output_14_1.png)
 
 
 
@@ -335,7 +335,7 @@ arhmm.view_convergence()
 
 
 
-![png](output_18_1.png)
+![png](/images/seq_models/output_18_1.png)
 
 
 
