@@ -2,9 +2,7 @@
 
 some eq
 
-$
-\sum_i x_i
-$
+$\sum_i x_i$
 
 
 
