@@ -24,7 +24,7 @@ plt.show()
 
 
     
-![png](output_3_0.png)
+![png](/images/output_3_0.png)
     
 
 
