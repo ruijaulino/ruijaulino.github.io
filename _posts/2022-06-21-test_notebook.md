@@ -1,8 +1,6 @@
 # Test
 
-some eq
-
-$ \sum\_i x\_i $
+some eq $\sum\_i x\_i$
 
 
 
