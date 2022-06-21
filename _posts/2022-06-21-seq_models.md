@@ -359,7 +359,7 @@ Similar to the autoregressive with Gaussian mixture, there is a state with low\[
 
 In this post we several models for financial fluctuations were tried. Each one of them can model certain effects and which one is closer to the truth is a problem that was not address here.
 
-As a clue for this, let us look at the $p(D|M)$ quantities: The HMM with autoregressive terms has the highest probability - but is also the model with more parameters. In a next post we will address the issues of model selection and how to estimate the expected performance (money of course) of a model when applied to financial time series.  
+As a clue for this, let us look at the $p(D\|M)$ quantities: The HMM with autoregressive terms has the highest probability - but is also the model with more parameters. In a next post we will address the issues of model selection and how to estimate the expected performance (money of course) of a model when applied to financial time series.  
 
 Thank you!
 
