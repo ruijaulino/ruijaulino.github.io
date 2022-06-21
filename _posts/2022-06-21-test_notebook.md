@@ -1,7 +1,8 @@
 # Test
 
 some eq
-$ \sum_i x_i $
+
+$ \sum\_i x\_i $
 
 
 
