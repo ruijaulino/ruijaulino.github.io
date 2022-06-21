@@ -203,9 +203,9 @@ In theory we could add more _lags_ to the previous model to try to capture more 
 
 $z_k \rightarrow z_{k+1} \rightarrow \cdots$
 
-$\downarrow  \; \; \; \; \; \; \;  \downarrow$
+$\downarrow  \\ \\ \\ \\ \\ \\ \\  \downarrow$
 
-$x_k \; \; \; \; x_{k+1} \; \; \; \; \; \cdots$
+$x_k \\ \\ \\ \\ x_{k+1} \\ \\ \\ \\ \\ \cdots$
 
 
 This means that the probability of observation $x_k$ depends on the current state $z_k$ which is unobserved; the state encodes long term relations that may be present in data. As with Gaussian Mixtures we need to resort to Expectation-Maximization to fit the model. Note that, here is being understood the states $z_k$ to be discrete.
@@ -281,7 +281,7 @@ There is nothing preventing us to add more _arrows_ in our graphical model. Let 
 
 $z_k \rightarrow z_{k+1} \rightarrow \cdots$
 
-$\downarrow  \; \; \; \; \; \; \;  \downarrow$
+$\downarrow  \\ \\ \\ \\ \\ \\ \\  \downarrow$
 
 $x_k \rightarrow x_{k+1} \rightarrow \cdots$
 
