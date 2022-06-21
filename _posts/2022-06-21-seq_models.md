@@ -12,7 +12,7 @@ The idea is that we observe some data $X=x_0,x_1,x_2,\cdots x_n$ ($x_i \in \math
 
 The base object of study is the probability of $X$, $p(X)$, which can be decomposed as
 
-$p(X)=p(x_0)p(x_1|x_0)p(x_2|x_1,x_0) \cdots p(x_n|x_{0:n-1})$
+$p(X)=p(x_0)p(x_1\|x_0)p(x_2\|x_1,x_0) \cdots p(x_n\|x_{0:n-1})$
 
 
 
@@ -61,11 +61,11 @@ plt.show()
 
 A simple autoregressive process (order 1) is the case where it is assumed that $x_i$ depends on $x_{i-1}$. In this case, the probability of $X$ reduces to:
 
-$p(X)=p(x_0) \Pi_k p(x_k|x_{k-1})$
+$p(X)=p(x_0) \Pi_k p(x_k\|x_{k-1})$
 
-Trivially, the predictive distribution given that we observed $x_n$ is $p(x_{n+1}|x_n)$.
+Trivially, the predictive distribution given that we observed $x_n$ is $p(x_{n+1}\|x_n)$.
 
-What is left is to assume some distribution for $(x_k|x_{k-1})$ and find a way to fit the parameters.
+What is left is to assume some distribution for $(x_k\|x_{k-1})$ and find a way to fit the parameters.
 
 Also, from a graphical prespective we can _draw_ the model as:
 
@@ -77,11 +77,11 @@ where the arrows represent depencies.
 
 ### Gaussian Distribution
 
-A simple assumption is to assume that $p(x_k|x_{k-1})$ is Gaussian. Another way to look at the problem is to consider that $p(x_k,x_{k-1})$ is jointly Gaussian. If this is the case (there are many distributions where the marginals are Gaussians but they are not jointly Gaussian), and considering the dependencies on the data, one can say that an observation of $\{x_k,x_{k-1}\}$ is and independent observation. As it known, the MLE estimators for the joint Gaussian will be the mean and covariance of $y_k=\{x_k,x_{k-1}\}$.
+A simple assumption is to assume that $p(x_k\|x_{k-1})$ is Gaussian. Another way to look at the problem is to consider that $p(x_k\,x_{k-1})$ is jointly Gaussian. If this is the case (there are many distributions where the marginals are Gaussians but they are not jointly Gaussian), and considering the dependencies on the data, one can say that an observation of $x_k,x_{k-1}$ is and independent observation.
 
 If $\mu$,$\Sigma$ is the mean vector and covariance matrix of $y$, it is possible to make the following associations for the entries:
 
-$\mu=\{\mu_{x_k},\mu_{x_{k-1}} \}$
+$\mu=\begin{bmatrix} \mu_{x_k} & \mu_{x_{k-1}} \end{bmatrix}$
 
 $\Sigma=\begin{bmatrix} \Sigma_{x_k} & \Sigma_{x_k,x_{k-1}} \\ \Sigma_{x_{k-1},x_k} & \Sigma_{x_{k-1}} \end{bmatrix}$
 
@@ -89,7 +89,13 @@ Finally, the marginal given an observation $x_{k-1}=q$ is:
 
 $p(x_k|x_{k-1}=q)=N(\mu,\Sigma)$
 
-with $\mu=\mu_{x_k}+\Sigma_{x_k,x_{k-1}} \Sigma_{x_{k-1}}^{-1}(q-\mu_{x_{k-1}})$ and $\Sigma=\Sigma_{x_k}-\Sigma_{x_k,x_{k-1}} \Sigma_{x_{k-1}}^{-1} \Sigma_{x_{k-1},x_k}$.
+with 
+
+$\mu=\mu_{x_k}+\Sigma_{x_k,x_{k-1}} \Sigma_{x_{k-1}}^{-1}(q-\mu_{x_{k-1}})$ 
+
+and 
+
+$\Sigma=\Sigma_{x_k} - \Sigma_{x_k,x_{k-1}} \Sigma_{x_{k-1}}^{-1} \Sigma_{x_{k-1},x_k}$.
 
 This is a linear regression (as expected).
 
