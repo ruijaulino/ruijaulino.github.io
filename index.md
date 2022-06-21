@@ -1,3 +1,3 @@
-## RJ Technical Notes 
+
 
 
