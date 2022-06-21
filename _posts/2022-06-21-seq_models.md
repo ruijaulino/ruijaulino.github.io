@@ -1,4 +1,4 @@
-# SEQUENTIAL DATA MODEL - SP500 EXAMPLE
+# Sequential data models
 
 A central assumption in many modelling tasks is that we are in the presence of independent observations. When this assumption break (or we are just trying different approaches) we need to resort to models that take this structures into account.
 
