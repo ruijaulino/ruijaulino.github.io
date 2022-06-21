@@ -3,22 +3,16 @@
 
 ## PROBLEM STATEMENT
 
-Consider $q$ assets with returns $\vec x_1,\vec x_2,\cdots, \vec x_n$. A sequential investment with an allocation $\vec w$ induces the following wealth dynamics:
+Consider $q$ assets with returns $x_1,x_2,\cdots,x_n$. A sequential investment with an allocation $w$ induces the following wealth dynamics:
 
-$
-S_n=S_0 \cdot (1+\vec w \cdot \vec x_1) \cdot (1+\vec w \cdot \vec x_2) \cdots
-$
+$S_n=S_0 \cdot (1+w^T \cdot x_1) \cdot (1+ w^T \cdot x_2) \cdots$
 
-i.e, the capital at discrete time $n$ is the result of reinvestment at each period with some weights $\vec w$ on a sequence of independent returns $x_n$. As a result, geometric growth is created; with some manipulation we can write the following expression:
+i.e, the capital at discrete time $n$ is the result of reinvestment at each period with some weights $w$ on a sequence of independent returns $x_n$. As a result, geometric growth is created; with some manipulation we can write the following expression:
 
-$
-S_n=S_0 \exp(n \frac{1}{n} \sum_i \log(1+\vec w \cdot \vec x_i))=S_0 \exp(n \cdot G)
-$
+$S_n=S_0 \exp(n \frac{1}{n} \sum_i \log(1+w^T \cdot x_i))=S_0 \exp(n \cdot G)$
 
 and $G$ can be understood as a geometric growth rate:
-$
-G=\frac{1}{n} \sum_i \log(1+\vec w \cdot \vec x_i) \rightarrow_{LLN} \mathbf{E}[\log(1+\vec w \cdot \vec x)]
-$
+$G=\frac{1}{n} \sum_i \log(1+\vec w \cdot \vec x_i) \rightarrow_{LLN} \mathbf{E}[\log(1+ w^T \cdot x)]$
 
 where the expectation should be undersood with respect to the (multivariate) distribution of $\vec x$, $p(\vec x)$.
 
@@ -30,15 +24,13 @@ The objective is to study allocation schemes, i.e, ways to determine $\vec w$, a
 ### CONSTANT DISTRIBUTION
 
 
-The optimal allocation can be stated as finding $\vec w$ such that $G$ is maximized. If the distribution of returns, $p(\vec x)$, does not change over time and does do not have _large_ fluctuations then we can consider the Taylor expansion of $\log(1+\vec w \cdot \vec x)$ near $\vec w \cdot \vec x=0$ to yield:
+The optimal allocation can be stated as finding $\vec w$ such that $G$ is maximized. If the distribution of returns, $p(\vec x)$, does not change over time and does do not have _large_ fluctuations then we can consider the Taylor expansion of $\log(1+ w^T \cdot x)$ near $w^T \cdot x=0$ to yield:
 
-$
-\log(1+z) \approx z-\frac{1}{2}z^2 \rightarrow G=\mathbf{E}[\vec w \cdot \vec x]-\frac{1}{2}\mathbf{E}[(\vec w \cdot \vec x)^2]
-$
+$\log(1+z) \approx z-\frac{1}{2}z^2 \rightarrow G=\mathbf{E}[w^T \cdot x]-\frac{1}{2}\mathbf{E}[(w^T \cdot x)^2]$
 
-We can identify $\mathbf{E}[\vec w \cdot \vec x]$ as $\vec w \cdot \vec \mu$ and $\mathbf{E}[(\vec w \cdot \vec x)^2]$ as the second non central moment of $\vec w \cdot \vec x$ (note that $\vec w \cdot \vec x$ is a scalar) and this moment is related to the variance as $\mu_2=\sigma^2+\mu_1^2$; for practical application (financial time series) it is realistic to assume that $\mu_1=\vec w \cdot \vec \mu$ is small, i.e, $\mu_2 \approx \sigma^2 \rightarrow \mathbf{E}[(\vec w \cdot \vec x)^2]=\vec w^T \Sigma \vec w$ with $\Sigma$ the covariance matrix of $\vec x$.
+We can identify $\mathbf{E}\[w^T \cdot x\]$ as $w^T \cdot \mu$ and $\mathbf{E}\[(w^T \cdot x)^2\]$ as the second non central moment of $ w^T \cdot x$ (note that $ w^T \cdot x$ is a scalar) and this moment is related to the variance as $\mu_2=\sigma^2+\mu_1^2$; for practical application (financial time series) it is realistic to assume that $\mu_1=w^T \cdot \mu$ is small, i.e, $\mu_2 \approx \sigma^2 \rightarrow \mathbf{E}\[(w^T \cdot x)^2\]= w^T \Sigma  w$ with $\Sigma$ the covariance matrix of $ x$.
 
-Since $G=\vec w \cdot \vec \mu - \frac{\vec w^T \Sigma \vec w}{2}$, the optimal growth weight vector is $w^*=\Sigma^{-1} \cdot \vec \mu$ (take derivative of $G$ wrt $\vec w$ and equate to zero) and the maximum growth rate is $G^*=\frac{1}{2} \vec \mu^T \Sigma^{-1} \vec \mu$. 
+Since $G=w^T \cdot \mu - \frac{ w^T \Sigma w}{2}$, the optimal growth weight vector is $w^\*=\Sigma^{-1} \cdot \mu$ (take derivative of $G$ wrt $ w$ and equate to zero) and the maximum growth rate is $G^\*=\frac{1}{2} \mu^T \Sigma^{-1} \mu$. 
 
 
 ##### Comparing investments
