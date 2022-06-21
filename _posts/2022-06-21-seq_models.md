@@ -87,7 +87,7 @@ $\Sigma=\begin{bmatrix} \Sigma_{x_k} & \Sigma_{x_k,x_{k-1}} \\ \Sigma_{x_{k-1},x
 
 Finally, the marginal given an observation $x_{k-1}=q$ is:
 
-$p(x_k|x_{k-1}=q)=N(\mu,\Sigma)$
+$p(x_k\|x_{k-1}=q)=N(\mu,\Sigma)$
 
 with 
 
