@@ -39,5 +39,5 @@ kramdown:
   math_engine: katex
   input: GFM
   auto_ids: true
-  hard_wrap: true
+  hard_wrap: false
   syntax_highlighter: rouge
