@@ -28,9 +28,22 @@ The optimal allocation can be stated as finding $\vec w$ such that $G$ is maximi
 
 $\log(1+z) \approx z-\frac{1}{2}z^2 \rightarrow G=\mathbf{E}[w^T \cdot x]-\frac{1}{2}\mathbf{E}[(w^T \cdot x)^2]$
 
-We can identify $\mathbf{E}\[w^T \cdot x\]$ as $w^T \cdot \mu$ and $\mathbf{E}\[(w^T \cdot x)^2\]$ as the second non central moment of $ w^T \cdot x$ (note that $ w^T \cdot x$ is a scalar) and this moment is related to the variance as $\mu_2=\sigma^2+\mu_1^2$; for practical application (financial time series) it is realistic to assume that $\mu_1=w^T \cdot \mu$ is small, i.e, $\mu_2 \approx \sigma^2 \rightarrow \mathbf{E}\[(w^T \cdot x)^2\]= w^T \Sigma  w$ with $\Sigma$ the covariance matrix of $ x$.
 
-Since $G=w^T \cdot \mu - \frac{ w^T \Sigma w}{2}$, the optimal growth weight vector is $w^\*=\Sigma^{-1} \cdot \mu$ (take derivative of $G$ wrt $ w$ and equate to zero) and the maximum growth rate is $G^\*=\frac{1}{2} \mu^T \Sigma^{-1} \mu$. 
+We can identify $\mathbf{E}[w^T \cdot x]$ as $w\^T \cdot \mu$ and 
+
+$\mathbf{E}[(w^T \cdot x)^2]$ 
+
+as the second non central moment of 
+
+$w^T \cdot x$ (note that $w^T \cdot x$ is a scalar) and this 
+moment is related to the variance as 
+$\mu_2=\sigma^2+\mu_1^2$; 
+
+for practical application (financial time series) it is realistic to assume that $\mu_1=w^T \cdot \mu$ is small, i.e, 
+
+$\mu_2 \approx \sigma^2 \rightarrow \mathbf{E}[(w^T \cdot x)^2]=w^T \Sigma w$ with $\Sigma$ the covariance matrix of $x$. 
+
+Since $G=w^T \cdot \mu - \frac{ w^T \Sigma w}{2}$, the optimal growth weight vector is $w^\*=\Sigma^{-1} \cdot \mu$ (take derivative of $G$ wrt $w$ and equate to zero) and the maximum growth rate is $G^\*=\frac{1}{2} \mu^T \Sigma^{-1} \mu$. 
 
 
 ##### Comparing investments
