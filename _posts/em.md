@@ -358,9 +358,9 @@ $p(X,Z|\theta_0)$
 with 
 $q(Z)$ 
 fixed, we can notice that, as discussed before, the estimators were 
+
 $\mu_k=\frac{\sum_i \gamma_i(k) x_i}{\sum_i \gamma_i(k)}$, 
-$\sigma_k^2=\frac{1}{N_k} \sum_i \gamma_i(k)(x_i-\mu_k)^2
-$ 
+$\sigma_k^2=\frac{1}{N_k} \sum_i \gamma_i(k)(x_i-\mu_k)^2$ 
 and 
 $\phi_k=N_k/N$ . 
 
@@ -457,9 +457,9 @@ then the distribution on $x_i$ is determined. This is similar to a mixture model
 
 $z_1 \rightarrow z_2 \rightarrow $
 
-$ \downarrow \; \; \; \; \; \; \; \downarrow$
+$ \downarrow \\ \\ \\ \\ \\ \downarrow$
 
-$x_1 \; \; \; \; x_2$
+$x_1 \\ \\ \\ \\ x_2$
 
 
 Given this structure, we can write the joint distribution as:
