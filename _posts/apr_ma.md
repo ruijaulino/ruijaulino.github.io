@@ -61,7 +61,7 @@ $\theta$
 based on one of the maximums; the integral is dominated by their product near this 
 $\theta$):
 
-$p(D\|M_i) \approx p(D_2\|\hat{\theta_{D_1}})p(D_1\|\hat{\theta_{D_1}}) \frac{\delta_{\text{post}_{D_1}} \delta_{\text{post}_{D_2}}}{\delta_{\text{prior}}}$
+$p(D\|M_i) \approx p(D_2\|\hat{\theta_{D_1}}) p(D_1\|\hat{\theta_{D_1}}) \frac{\delta_{\text{post}\_{D_1}} \delta_{\text{post}\_{D_2}}}{\delta_{\text{prior}}}$
 
 This way lead us to measure 
 $p(D\|M_i)$ 
