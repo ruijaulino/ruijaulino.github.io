@@ -1,4 +1,4 @@
-# Cross Validation for Time Series/Sequential models
+# Cross Validation in Sequences
 
 In a typical ML problem we have a dataset $D$ which contains independent observations. For example, if $D=\{d_1,d_2,\cdots,d_n\}$ then the observation $d_i$ is independent of $d_j$ for any $i,j$.
 
@@ -313,5 +313,7 @@ Any strategy was able to estimate out of sample error without relevant bias. Sin
 
 Also, the sequential version of K-Fold tend to overestimate the error more than the others (altough is a small deviation); probably this can be attributed to the bias of not all predictions being made with the same number of points. The same happens with using the subsequences but the effect is smaller.
 
+
+Of course one can make the same study for more complex models (for example, a HMM) and check if some CV strategy introduces somes biases.
 
 
