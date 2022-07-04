@@ -1,1 +1,317 @@
-# Time Series Cross Validation
+# Cross Validation for Time Series/Sequential models
+
+In a typical ML problem we have a dataset $D$ which contains independent observations. For example, if $D=\{d_1,d_2,\cdots,d_n\}$ then the observation $d_i$ is independent of $d_j$ for any $i,j$.
+
+In general, the objective is to assess out of sample performance of a model; this means that, given the whole data, if we train our model in it, what performance can we expect in unseen data. 
+
+A typical procedure to evaluate out of sample performance of a model is to evaluate error/performance on cross validated sets. This can be understood as dividing $D$ into $k$ equal splits and, for each one, we train on all other splits and evaluate on that one. This can be illustraded in the following picture where the red part is where we test the model and the black is where we train the model (in the end we can compute an metric of error/performance for each fold):
+
+![png](/images/tscv/output_2_0.png)
+
+
+Also, it is typical for one to shuffle the data and run this procedure several times to approximate _better_ the cross validation metrics.
+
+
+For many time series models, observations are not modelled as being independent (in some cases, for example an HMM, we need a sequence - not a set of independent observations - to fit/train the model) - this lead us to question how can we generate/divide the data to perform cross validation; shuffling the data will eliminate the structure that we are trying to model.
+
+If we adopt the previous approach we can observe that there are situations where we are testing on some subsequence in the middle of data and we are left with a subsequence before and other after the test set. 
+
+A first option is to make a union of the two subsequences (after it ends, we put the data in the beggining); this will be, in all aspects, similar to regular cross validation (without shuffling) but, for models with long term dependencies, there can be a considerable error due to the fact that we joined two subsequences that did not happen in that order (as a note, for models that need a sequence probably the fitting procedure can also be extended to train at the same time for multiple sequences and this can solve the issue).
+
+
+A second option is to consider a sequential cross validation, where we test with all data before the current test set. Of course we need to _burn_ (at least) one of the folds. This is illustrated in the following picture (not the resemblence with a typical walk forward backtest):
+
+
+![png](/images/tscv/output_4_0.png)
+
+
+A possible problem with this approach is that the test set evaluations are not being made with the same number of points in the training set; this can introduce a bias in the results as the model may not have achieve _capacity_. When the data is abundant this may not be a problem.
+
+With these procedures, since we cannot shuffle the data, it is possible to generate multiple cross validation scores by either, changing the number of folds or, keep the number of folds constant but allow one of the folds to have a considerably different size than the others (i.e, start from a different point in time): this will introduce some change in the parameters estimation (data is different) and so, we can evaluate how stable they are (for a trading strategy this can a strategy to generate multiple backtests paths; the variety comes from different training sets).
+
+### Using subsequences
+
+A interesting approach to compute many cross validation scores is to admit that the model in question achieves it's capacity fast and so we can train on a subsequence of the training sets. This will not break the sequential nature of the data.
+
+For the regular cross validation, since there are training sequences/sets before and after the testing sequence, we can select one side at random and then select a random (contiguous) subsequence. This strategy is illustrated in the following pictures where the red is the test data and the black the (randomly) selected subsequence of training data (we generated several combinations of randomly selected sets).
+
+
+
+![png](/images/tscv/output_7_0.png)
+
+
+
+![png](/images/tscv/output_7_1.png)
+
+
+
+![png](/images/tscv/output_7_2.png)
+
+
+Of course we can use the idea of subsequences for the sequential(walk-forward) to generate many training sets. The following pictures illustrate this (the colors have the same meaning).
+
+![png](/images/tscv/output_9_0.png)
+
+
+
+![png](/images/tscv/output_9_1.png)
+
+
+
+![png](/images/tscv/output_9_2.png)
+
+
+### A remark
+
+For financial applications, if we are fitting a model there is the general idea that strategies that use _future_ data are not acceptable (note that in the previous discussions, train and test do not overlap as is expected). In reality, for example, consider a large sequence that the first half presents a up trend and the rest a down trend. Of course we will be tempted to model with some form of switching (or, even worst, we will find some justification for the signal to be different on both periods). The performance metric that we get using _future_ information will be much worst since you need a type of model that is good in both cases - in other words, the model should be able to capture a more fundamental aspect of the dynamics. So, doing this this way, this may not be as bad as one is lead to think. 
+
+Finally, for any sensible application, it is expected that we left some time pass after a model is assesed and get _true_ out of sample data to check if the performance is within expectation (we can call this paper trading).
+
+
+## NUMERICAL TESTS
+
+To test this ideas is to test if the estimators of out of sample performance that emerge from them match the true values. For theoretical examples we can perform this comparisson.
+
+We will use 3 different cross validation strategies:
+- regular K-Fold (there may be a problem when joining the data as discussed).
+- K-Fold with random subsequences.
+- Sequential cross validation (possibly biased due to most decisions being made on a small set of data).
+
+Also, the theoretical models under test are an Autoregressive Process (dependencies decay fast so there should not be a problem when using a regular K-Fold) and an HMM (dependencies can be long term and joining the data can induce more error).
+
+Also, we will make an assement of how this strategies for cross validation perform on model selection (but is not the topic of this post).
+
+
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from copy import deepcopy
+import seqmodels
+```
+
+The following code is a simple implementation of the cross validation strategies presented above. Probably one can do the same with pubic libraries but here is coded to exemplify the idea.
+
+
+```python
+# CROSS VALIDATION CLASS - univariate predictions..
+class seqCV(object):
+    def __init__(self,model,cv_type='K',k=10,f=0.3,sequential=False):
+        '''
+        model: python class with methods .estimate and .eval_error
+        cv_type: 'K' for regular Kfold
+                 'S' for subsample
+                 ** methods differ in the way to generate the training set **
+        '''
+        self.model=model
+        self.cv_type=cv_type
+        self.k=k
+        self.f=f
+        self.sequential=sequential
+    
+    def build_idx_train(self,i,idx_splits):
+        if self.cv_type=='K':
+            idx_train=[]
+            for j in range(len(idx_splits)):
+                if j!=i:
+                    idx_train.append(idx_splits[j])
+            idx_train=np.hstack(idx_train)             
+        
+        elif self.cv_type=='SK':
+            before_idx=idx_splits[:i]
+            if len(before_idx)!=0:
+                before_idx=np.hstack(before_idx)
+            else:
+                before_idx=np.array([])
+            after_idx=idx_splits[i+1:]
+            if len(after_idx)!=0:
+                after_idx=np.hstack(after_idx)
+            else:
+                after_idx=np.array([])
+            if before_idx.size==0:
+                train_idx=after_idx
+            elif after_idx.size==0:
+                train_idx=before_idx
+            else:
+                u=np.random.uniform(0,after_idx.size+before_idx.size)
+                if u<after_idx.size:
+                    train_idx=after_idx
+                else:
+                    train_idx=before_idx
+            size=int(self.f*train_idx.size)
+            start=np.random.randint(0,high=size,dtype=int)
+            end=np.random.randint(train_idx.size-size,high=train_idx.size-1,dtype=int)
+            idx_train=train_idx[start:end]            
+
+        elif self.cv_type=='S':
+            idx_train=np.hstack(idx_splits[:i])
+ 
+        return idx_train
+    
+    def run(self,x,n_paths=1):
+        '''
+        x: numpy (n,) array with the sequence
+        '''
+        x=np.copy(x)
+        idx=np.arange(x.size)
+        idx_splits=np.array_split(idx,self.k)
+        start=0
+        if self.cv_type=='S':
+            start=1
+        start=1
+        if self.cv_type=='SK':
+            n_paths=n_paths
+        else:
+            n_paths=1
+            
+        folds_mse=np.zeros(len(idx_splits)*n_paths)
+        c=0
+        for i in range(start,len(idx_splits)):
+            for p in range(n_paths):
+                idx_test=idx_splits[i]
+                idx_train=self.build_idx_train(i,idx_splits)
+                model=deepcopy(self.model)
+                x_test=x[idx_test]
+                x_train=x[idx_train]
+                model.estimate(x_train)
+                # each model receives a sequence
+                # it evaluates the estimations as seem more fit..
+                x_est=model.predict(x_test)
+                folds_mse[c]=np.mean(np.power(x_test-x_est,2))
+                c+=1
+        folds_mse=folds_mse[np.where(folds_mse!=0)[0]]
+        return folds_mse
+```
+
+### Autoregressive process example
+
+In this example, a sequence from a autoregressive process is generated. We will put dependencies on $t-2$ and $t-4$, that is $p(x_t)=p(x_t|x_{t-2},x_{t-4})$. The noise is Gaussian.
+
+After the data is generated, we estimate out of sample performance
+
+
+
+```python
+
+scale=0.01
+a=np.array([0.0,0.5,0.0,-0.1])
+n=50000
+cv_k=50
+n_oos=int(n/cv_k)
+
+def simulate_ar(n,a,scale):
+    x=np.zeros(n)
+    for i in range(a.size,n):
+        x[i]=np.dot(a[::-1],x[i-a.size:i])+np.random.normal(0,scale)
+    return x
+
+# Make simulation
+x=simulate_ar(n,a,scale)
+
+plt.plot(x)
+plt.show()
+
+# simple function to fit an AR model
+class ARp(object):
+    def __init__(self,p=1):
+        self.p=p
+        self.a=None
+        self.scale=None
+        
+    def estimate(self,x):
+        # build lags
+        x=np.copy(x)
+        _,x,y=seqmodels.ts_embed(x,self.p)
+        c=np.dot(x.T,x)/x.shape[0]
+        d=np.dot(x.T,y)/x.shape[0]
+        self.a=np.dot(np.linalg.inv(c),d).ravel()#[::-1]
+        self.scale=np.sqrt(np.mean(np.power(y.ravel()-np.sum(x*self.a,axis=1),2)))
+
+    def predict(self,x):
+        x=np.copy(x)
+        x_est=np.zeros(x.size)
+        _,x_,y_=seqmodels.ts_embed(x,self.p)
+        x_est[self.p:]=np.sum(x_*self.a,axis=1)
+        return x_est
+    
+    def view(self):
+        print('** PARAMS **')
+        print('a: ',self.a)
+        print('scale: ', self.scale)
+
+orders_kcv_mse=[]
+orders_skcv_mse=[]
+orders_scv_mse=[]
+
+orders_kcv_mses=[]
+orders_skcv_mses=[]
+orders_scv_mses=[]
+
+order=4
+
+print('** AR %s **'%order)
+kcv_mse=seqCV(ARp(4),cv_type='K',k=cv_k,f=0.2,sequential=False).run(x,10)
+print('    KFOLD CV ERROR:', np.mean(kcv_mse),'+/-',np.std(kcv_mse))
+
+skcv_mse=seqCV(ARp(order),cv_type='SK',k=cv_k,f=0.2,sequential=False).run(x,10)
+print('Sub-KFOLD CV ERROR:', np.mean(skcv_mse),'+/-',np.std(skcv_mse))
+
+scv_mse=seqCV(ARp(order),cv_type='S',k=cv_k,f=0.2,sequential=False).run(x,10)
+
+print('SEQ-KFOLD CV ERROR:', np.mean(scv_mse),'+/-',np.std(scv_mse))
+print('=====================')
+
+
+print('OUT OF SAMPLE ERROR EVALUATION')
+# estimate model with all data
+model=ARp(4)
+model.estimate(x)
+model.view()
+
+k=100
+oos_mse=np.zeros(k)
+
+for i in range(k):
+    x_oos=simulate_ar(n,a,scale)
+    x_est=model.predict(x_oos)
+    oos_mse[i]=np.mean(np.power(x_oos-x_est,2 ))
+
+print('-----------------')
+print('Mean OOS: ', np.mean(oos_mse),'+/-',np.std(oos_mse))
+plt.hist(oos_mse,alpha=0.5,color='k',label='OOS Err',density=True)
+plt.hist(skcv_mse,alpha=0.5,color='r',label='SKF Err',density=True)
+plt.legend()
+plt.xticks([])
+plt.show()
+
+```
+
+
+![png](/images/tscv/output_16_0.png)
+
+
+    ** AR 4 **
+        KFOLD CV ERROR: 0.00010060435744341412 +/- 4.736742426708236e-06
+    Sub-KFOLD CV ERROR: 0.00010061210203799705 +/- 4.73791741335348e-06
+    SEQ-KFOLD CV ERROR: 0.00010062614073446748 +/- 4.741800906791947e-06
+    =====================
+    OUT OF SAMPLE ERROR EVALUATION
+    ** PARAMS **
+    a:  [-1.05271920e-01  4.44718941e-04  5.07740769e-01 -8.29014821e-03]
+    scale:  0.010023506627230753
+    -----------------
+    Mean OOS:  0.00010001605847813058 +/- 5.67001691440929e-07
+
+
+
+![png](/images/tscv/output_16_2.png)
+
+
+#### Comments
+Any strategy was able to estimate out of sample error without relevant bias. Since the model is quite simple, the parameters converge fast (not many observations needed; capacity achieved easily). 
+
+Also, the sequential version of K-Fold tend to overestimate the error more than the others (altough is a small deviation); probably this can be attributed to the bias of not all predictions being made with the same number of points. The same happens with using the subsequences but the effect is smaller.
+
+
+
