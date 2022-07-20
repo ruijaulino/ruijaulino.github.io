@@ -9,15 +9,16 @@ Let us consider that we want to model a short sequence but we have many observat
 
 Figure below shows a HMM where all states can be visited after a finite number of steps.
 
-![regular_hmm.png](attachment:regular_hmm.png)
+![png](/images/mshmm/regular_hmm.png)
 
 The objective of this post is to adapt the estimation to train models like the one on the figure below. The states go from left to right and after this it cannot change. This can be a good idea to model short sequences with many observations.
 
-![lr_hmm.png](attachment:lr_hmm.png)
+![png](/images/mshmm/lr_hmm.png)
 
 A more realistic example, we may want to model returns durig a period (week, month), and it can make sense to make the model accomodate different behaviours (maybe volatile months have a different model). This is illustrated in the next figure; as the chain is unfolded (i.e, as we get observations) the model may switch to a different state path (which will have different emission properties).
 
-![lr_hmm2.png](attachment:lr_hmm2.png)
+![png](/images/mshmm/lr_hmm2.png)
+
 
 In theory, the only thing we have to do is to set some transitions probabilities to zero (in matrix $A$) and then, during the re-estimation, these entries will stay zero. This way we can force the state path to go on a certain path. 
 
@@ -114,7 +115,7 @@ plt.show()
 ```
 
 
-![png](/mshmm/output_12_0.png)
+![png](/images/mshmm/output_12_0.png)
 
 
 
@@ -322,7 +323,7 @@ plt.show()
 
 
 
-![png](\mshmm\output_14_1.png)
+![png](/images/mshmm/output_14_1.png)
 
 
 We can observe that the procedure converged and recovered the parameters used to generate the sequences (as desired).
