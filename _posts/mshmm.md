@@ -114,7 +114,7 @@ plt.show()
 ```
 
 
-![png](output_12_0.png)
+![png](/mshmm/output_12_0.png)
 
 
 
@@ -322,7 +322,7 @@ plt.show()
 
 
 
-![png](output_14_1.png)
+![png](\mshmm\output_14_1.png)
 
 
 We can observe that the procedure converged and recovered the parameters used to generate the sequences (as desired).
