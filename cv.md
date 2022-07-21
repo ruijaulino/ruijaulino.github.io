@@ -7,7 +7,8 @@ Born April 27, 1991
 
 Rua Luciano Cordeiro n79 5ºesq Lisboa, Portugal (+351 91 447 47 91)
 
-rui_jaulino@protonmail.com
+
+<a href="rui_jaulino@protonmail.com">rui_jaulino@protonmail.com</a>
 
 
 ### About me
@@ -20,7 +21,9 @@ Having worked mostly in small companies I have always been involved in many step
 
 Below there is a link to my full CV.
 
-https://drive.google.com/file/d/1u7HJP0fNBL8WVN1NZMNVrDYtvLZ6Kz8j/view?usp=sharing
+<pre>
+<a href="https://drive.google.com/file/d/1u7HJP0fNBL8WVN1NZMNVrDYtvLZ6Kz8j/view?usp=sharing">Rui Jaulino CV</a>
+</pre>
 
 Thanks!
 
