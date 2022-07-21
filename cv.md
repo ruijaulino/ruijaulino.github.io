@@ -1,4 +1,4 @@
-# CV
+# About me
 
 
 ## Rui Jaulino
@@ -11,7 +11,7 @@ Rua Luciano Cordeiro n79 5ºesq Lisboa, Portugal (+351 91 447 47 91)
 <a href="rui_jaulino@protonmail.com">rui_jaulino@protonmail.com</a>
 
 
-### About me
+### Short description
 
 Aerospace Engineer by formation that went from fluid turbulence to financial markets!
 
