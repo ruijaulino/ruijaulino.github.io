@@ -1,0 +1,556 @@
+# Notes on trading spreads
+
+There is a great deal of research devoted to trading spreads (pairs trading). The objective here is to present an alternative view on this class of models and,possibly, offer some simplifications. The focus is on study fluctuations rather than a model derived from non stationary prices (which is the usual way to look at this) as I find the latter more complicated to make inferences from.
+
+If we have a _price_ sequence that is stationary, in theory it should be easy to make money out of it: with some basic statistics on it we just buy when it's low and sell when it's high (the prices show some type of mean reversion). 
+
+Without going into much details, consider that _prices_ follow some autoregressive process (or, if you want some OL process) with a coefficient lower than one. The resulting price series will be stationary around the mean as shown in the next simulation.
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+# Generate stationary prices
+n=1000
+x=np.zeros(n)
+a=0.9
+for i in range(1,n):
+    x[i]=a*x[i-1]+np.random.normal(0,0.01)
+x+=10 # add some base to make it always positive for demonstrative purposes
+std=np.std(x)
+mean=np.mean(x)
+plt.title("Price over time")
+plt.plot(x,color='k',label='Price')
+plt.axhline(mean-2*std,color='g',label='Buy zone')
+plt.axhline(mean+2*std,color='r',label='Sell zone')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+
+    
+![png](output_1_0.png)
+    
+
+
+If the price _always_ behave that way, trading is trivial.
+
+Since, in practice, there are no observed stationary prices (at least, that we can assume that they are always stationary), we can try to synthetize a basket (i.e, long and short some set of securities with possible different weights) that have those properties.
+
+
+## A first (wrong) example
+
+Consider two assets and one wants to find a combination of them that is tradeable (mean reverting); also, both asset prices are random walks as shown in the next simulation (ignore the negative _prices_ as this makes no difference for this discussion).
+
+
+```python
+n=1000
+np.random.seed(10)
+x=np.cumsum(np.random.normal(0,1,n))
+y=np.cumsum(np.random.normal(0,1,n))
+plt.title('Random prices')
+plt.plot(x,color='r',label='Price X')
+plt.plot(y,color='b',label='Price Y')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+
+    
+![png](output_4_0.png)
+    
+
+
+A natural candidate to build a synthetic asset $z$ that may have the desired properties would be by combining $x$ and $y$ like $z_t=x-\beta y$, i.e, we go long one unit of $x$ and short $\beta$ units of $y$. I am exposing the problem this way because this type of models normally deal with assets that are _similar_ and so the spread between them would be long one short the other.
+
+If we look at the previously random generated random walks (I admit I played around with the random seed just to get a random plot that could trick someone to think that the two series are somehow related - just what could happen when you are searching for stocks to trade...) it does make some sense to try to build some combination of the assets that is stationary: the prices look correlated with the noise in between providing fluctuations to be exploited.
+
+To proceed, it is usefull to look at the scatter plot between the prices.
+
+
+```python
+plt.title('Relation between prices')
+plt.plot(x,y,'.',color='k')
+plt.grid(True)
+plt.show()
+```
+
+
+    
+![png](output_6_0.png)
+    
+
+
+Since one asset may be more _volatile_ than the other, $\beta$ can be estimated by making a regression of $y$ as function of $x$: $y=a+\beta x +\epsilon$. This implies that we are working/trading in the spread $y-\beta x = a+\epsilon$.
+
+
+```python
+# by linear regression
+aux=x-np.mean(x)
+covxx=np.mean(np.power(aux,2))
+covxy=np.mean(aux*(y-np.mean(y)))
+beta=covxy/covxx
+print('Estimated beta: ', beta)
+plt.title('Synthetic asset with estimated beta')
+plt.plot(y-beta*x,color='k')
+plt.grid(True)
+plt.show()
+```
+
+    Estimated beta:  0.8656945762378777
+    
+
+
+    
+![png](output_8_1.png)
+    
+
+
+### What is the problem here
+
+Even though the previous series look that it oscillate between -10 and 10 we need some certainty that it is not a random walk (in general, the procedure to find _pairs_ that can be traded is done this way; you fit the model and then check if it makes sense). One simple way to look at it (I am not doing statitical tests here, just simple observations) is to calculate the correlation between successive values of the spread.
+
+
+```python
+z=y-beta*x
+print("Correlation: ", np.corrcoef(z[1:],z[:-1])[0,1])
+```
+
+    Correlation:  0.989404296796403
+    
+
+Since successive spread values are highly correlated we cannot say that this process is mean reverting.
+
+In other words, we cannot make a regression on $y$ as function of $x$ unless the residuals of the regression are stationary (otherwise the model do not make sense). Think of this as $p(y|x)=N(a+\beta x,\sigma^2)$ which should be independent random variables.
+
+#### Spurius regression
+
+To gain more insight on why it is dangerous to make regression on non stationary variables, consider the model
+
+$y_t=a+b x_t + \epsilon_t$
+
+where $y_t$ and $x_t$ are random walks. Clearly $y_t$ and $x_t$ are not correlated. Let's see what happens to the correlation between them, $\rho(y_t,x_t)$ even when many samples are taken into account, i.e, check the convergence of the estimator.
+
+For a given lenght of the random walks, $n$, simulate (large value) of $k$ paths of $x_t$ and $y_t$ so for each value of $n$ we can compute a distribution for the correlation coefficient. We know that their correlation is zero but can we approximate this better if we increate the number of observations? In other words, when $n$ is increased does the estimator narrows to the true value of 0? 
+Let us check this with a numerical simulation.
+
+
+```python
+n_values=[100,500,1000,2000,5000,10000]
+for n in n_values:
+    k=1000
+    rho=np.zeros(k)
+    for i in range(k):
+        x=np.cumsum(np.random.normal(0,1,n))
+        y=np.cumsum(np.random.normal(0,1,n))
+        rho[i]=np.corrcoef(x,y)[0,1]
+    plt.hist(rho,alpha=0.5,label='lenght=%s'%n)
+plt.legend()
+plt.show()
+```
+
+
+    
+![png](output_12_0.png)
+    
+
+
+We can see that for _any_ $n$, the distribution of correlation coefficients is equal, i.e, it does not converge and so it does not exist. Even worst, the distribution is extremely flat in all domain; any estimation made this way will not be reliable.
+
+The same does not happen for the correlation in $x_t$ and $y_t$ fluctuations: as $n$ is increased, it's distribution get's more narrow around the true value of $\rho (=0)$.
+
+Let us check this also with an example; note that the fluctuations in $y_t$ are $y_t-y_{t-1}=\epsilon_t^y$ (the same for fluctuations in $x_t$).
+
+
+```python
+n_values=[100,500,1000,2000,5000,10000]
+for n in n_values:
+    k=1000
+    rho=np.zeros(k)
+    for i in range(k):
+        x=np.random.normal(0,1,n)
+        y=np.random.normal(0,1,n)
+        rho[i]=np.corrcoef(x,y)[0,1]
+    plt.hist(rho,alpha=0.5,label='lenght=%s'%n)
+plt.legend()
+plt.show()
+```
+
+
+    
+![png](output_14_0.png)
+    
+
+
+In this case, it is clear that the distribution get more narrow as the number of points increase.
+
+## A simple cointegration model and it's properties
+
+Given the previous discussion, let us build a device where the model actually makes sense. Assume there exists a _driver_ process $x_t$. For example, let $x_t$ be a random walk.
+
+$x_t=x_{t-1} + \epsilon_t$
+
+Now imagine two prices that are derived from $x$.
+
+$a_t=\beta_a x_t + \epsilon_t^a$
+
+$b_t=\beta_b x_t + \epsilon_t^b$
+
+With these two assets $a_t$ and $b_t$, consider a new variable $z$ as $z_t=a_t - \frac{\beta_a}{\beta_b} b_t$. It is easy to see that $z_t=\epsilon_t^a - \frac{\beta_a}{\beta_b} \epsilon_t^b$. This means that, in the presence of non-stationary random driving process $x_t$ and two (also) non stationary _prices_ $a_t$ and $b_t$ then we can make a _spread_ (derived processe) that is stationary. In this case, a regression of $a_t$ on $b_t$ makes sense. We say that, $a_t$ and $b_t$ are _cointegrated_. Also, $a_t$ and $b_t$ have the same form as a random walk with noise (which is a fairly simple structure but this is not refered many times).
+
+Let us make a simulation for this case.
+
+
+```python
+n=10000
+x_scale=1
+x=np.cumsum(np.random.normal(0,x_scale,n))
+beta_a=0.5
+beta_b=0.8# 0.5
+a_scale=0.5
+b_scale=1
+a=beta_a*x+np.random.normal(0,a_scale,n)
+b=beta_b*x+np.random.normal(0,b_scale,n)
+ax=plt.subplot(211)
+plt.plot(x,color='k',label='x')
+plt.legend()
+plt.grid(True)
+ax=plt.subplot(212)
+plt.plot(a,color='b',label='a')
+plt.plot(b,color='r',label='b')
+plt.grid(True)
+plt.legend()
+plt.show()
+plt.title('b=f(a)')
+plt.plot(a,b,'.',color='k')
+plt.grid(True)
+plt.show()
+plt.title('Spread a-k*b')
+plt.plot(a-beta_a*b/beta_b,color='k')
+plt.grid(True)
+plt.show()
+
+```
+
+
+    
+![png](output_17_0.png)
+    
+
+
+
+    
+![png](output_17_1.png)
+    
+
+
+
+    
+![png](output_17_2.png)
+    
+
+
+Compared with the previous case, the spread now makes much more sense given the model.
+
+### The usual approach
+
+In literature the common procedure is to model the prices (making a regression on one into the other) and check somehow if the residual (the actual _asset_ that you will trade on) behaves properly, i.e, is mean reverting. Then, given on how you model the residual, there are strategies that can be made (for example, if the residual is a OL process then we have a characteristic time scale for reversion that can be used to trade). The point on this post is to model the _fluctuations_ (and even infer the model from them) inside this same framework of cointegration; I think modelling them is more natural and some features may appear there as well. Also, building the more in the price space (especially when we are loose with the conditions on the residual process) can lead to more false results. 
+
+### Properties of the processes
+
+The fact that $a_t$ and $b_t$ are cointegrated induces some properties on their fluctuations (which are the quantities of interest when one is focused on strategies).
+
+Starting from $x_t$, trivially, one can observe $r_t^x=x_t-x_{t-1}=\epsilon_t$; this means that there is no information to predict the next flucutation based on the previous data as $\rho(r_t^x,r_{t-1}^x) \propto \text{cov}(\epsilon_t,\epsilon_{t-1}) = 0$.
+
+The same thing does not happen for $a_t$ and $b_t$: the model induces autocorrelation that can be exploited. 
+
+$r_t^a=a_t-a_{t-1} = \epsilon_t^a + \beta_a \epsilon_t - \epsilon_{t-1}^a$
+
+this implies that
+
+$\rho(r_t^a,r_{t-1}^a)=\frac{\text{cov}( \epsilon_t^a + \beta_a \epsilon_t - \epsilon_{t-1}^a, \epsilon_{t-1}^a + \beta_a \epsilon_{t-1} - \epsilon_{t-2}^a)}{\sqrt{\text{Var}(r_t^a) \text{Var}(r_{t-1}^a)}} = -\frac{\sigma_a^2}{2 \sigma_a^2 + \beta_a^2 \sigma_x^2}$
+
+The same is valid for $b_t$.
+
+Note that, for the variance of $r_t^a$ we have that $\text{Var}(r_t^a)=2 \sigma_a^2 + \beta_a^2 \sigma_x^2$.
+
+Let check the formulas:
+
+
+```python
+ra=a[1:]-a[:-1]
+rb=b[1:]-b[:-1]
+print('Predicted autocorrelation of fluctuations in a: ', -(a_scale*a_scale)/(2*a_scale*a_scale+beta_a*beta_a*x_scale*x_scale))
+print('Estimated autocorrelation of fluctuations in a: ', np.corrcoef(ra[:-1],ra[1:])[0,1])
+print('Predicted variance of fluctuations in a: ', 2*a_scale*a_scale+beta_a*beta_a*x_scale*x_scale)
+print('Estimated variance of fluctuations in a: ', np.var(ra))
+```
+
+    Predicted autocorrelation of fluctuations in a:  -0.3333333333333333
+    Estimated autocorrelation of fluctuations in a:  -0.3357333807122097
+    Predicted variance of fluctuations in a:  0.75
+    Estimated variance of fluctuations in a:  0.7381954005708548
+    
+
+Regarding the cross correlation between $r_t^a$ and $r_t^b$ we have the interesting observation that
+
+$\rho(r_t^a,r_t^b) = \frac{\beta_a \beta_b \sigma_x^2}{\sqrt{(2\sigma_a^2+\beta_a^2 \sigma_x^2)(2\sigma_b^2 + \beta_b^2 \sigma_x^2)}} = \frac{\beta_a \beta_b}{\sqrt{(\beta_a^2+2\frac{\sigma_a^2}{\sigma_x^2})(\beta_b^2+2\frac{\sigma_b^2}{\sigma_x^2})}}$
+
+which can be as close to zero as we want (for example, by changing the magnitude of the specific noises amplitudes relative to the driver process): one can observe a zero correlation between the flucutations of the cointegrated prices but they are related somehow.
+
+
+```python
+print('Predicted correlation between fluctuations in a and b: ',beta_a*beta_b*x_scale*x_scale/np.sqrt((2*a_scale*a_scale+beta_a*beta_a*x_scale*x_scale)*(2*b_scale*b_scale+beta_b*beta_b*x_scale*x_scale)))
+print('Estimated correlation between fluctuations in a and b: ',np.corrcoef(ra,rb)[0,1])
+```
+
+    Predicted correlation between fluctuations in a and b:  0.2842676218074806
+    Estimated correlation between fluctuations in a and b:  0.3011646260786629
+    
+
+As a note, the process $a_t$ and $b_t$ will have a correlation of approximately 1 (so, contrary to fluctuations, here we will always see a high correlation). This can be checked with:
+
+$\rho(a_t,b_t)=\frac{\text{cov}(\beta_a x_t + \epsilon_t^a,\beta_b x_t + \epsilon_t^b)}{\sqrt{\text{Var}(\beta_a x_t + \epsilon_t^a) \text{Var}(\beta_b x_t + \epsilon_t^b)}} = \frac{\beta_a \beta_b \text{Var}(x_t)}{\sqrt{(\beta_a^2 \text{Var}(x_t)+\sigma_a^2)(\beta_b^2 \text{Var}(x_t)+\sigma_b^2)}}$
+
+Since the variance of $x_t$ varies with $t$ its values will be much larger that the individual noises. The the correlation will go to one with many observations.
+
+
+
+```python
+print("Correlation between a and b: ", np.corrcoef(a,b)[0,1])
+```
+
+    Correlation between a and b:  0.9993877264500775
+    
+
+In conclusion, given that two variables are cointegrated, their fluctuations may not be correlated but they will have negative autocorrelations. In theory this may be enough to exploit the series (although this point is never refered). Anyway, let us go further to study the properties of the spread process.
+
+#### The spread
+
+As before, let us define the process $z_t=a_t - \frac{\beta_a}{\beta_b} b_t$. Again, it is easy to see that $z_t=\epsilon_t^a - \frac{\beta_a}{\beta_b} \epsilon_t^b$ and so, we can say that the process $z_t$ is just a sequence of normal random variables.
+
+In a normal situation, we need to estimate $\frac{\beta_a}{\beta_b}$. This can be done with a linear regression. To check why we can do this, let us recap that the slope of a linear regression of $y$ as function of $x$ is estimated with $\hat \beta=\frac{\text{cov}(y,x)}{\text{cov}(x,x)}$. For this case, we can observe that
+
+$
+\frac{\text{cov}(a_t,b_t)}{\text{cov}(b_t,b_t)}=\frac{\text{cov}(\beta_a x_t + \epsilon_t^b,\beta_b x_t + \epsilon_t^b)}{\text{cov}(\beta_b x_t + \epsilon_t^b,\beta_b x_t + \epsilon_t^b)} = \frac{\beta_a \beta_b \text{Var}(x_t)}{\beta_b^2 \text{Var}(x_t)+\sigma_b^2}
+$
+
+Since the variance of $x_t$ is linear with $t$ it will dominate $\sigma_b^2$ and we can say that the slope of $a_t$ as function of $b_t$ estimates $\frac{\beta_a}{\beta_b}$. As a note, imagine we want to estimate $\frac{\beta_a}{\beta_b}$ with the fluctuations of $a_t$ and $b_t$. Let 
+
+$r_t^a=a_t-a_{t-1} = \beta_a (\epsilon_t - \epsilon_{t-1}^a) + \epsilon_t^a $ 
+
+and 
+
+$r_t^b=b_t-b_{t-1} = \beta_b ( \epsilon_t - \epsilon_{t-1}^b) + \epsilon_t^b$
+
+if we consider the quantity $\frac{<r_t^a>}{<r_t^b>}$ (and assuming that, without loss of generality, the specific noises are zero mean) we can check that, on expectation, it will go to:
+
+$
+\frac{<r_t^a>}{<r_t^b>} = \frac{\beta_a}{\beta_b}
+$
+
+and so, we can also estimate this quantity from the variations.
+
+
+
+```python
+aux=b-np.mean(b)
+covxx=np.mean(np.power(aux,2))
+covxy=np.mean(aux*(a-np.mean(a)))
+beta=covxy/covxx
+print('Predicted beta_a/beta_b: ',beta_a/beta_b)
+print('Estimated beta_a/beta_b (from slope): ',beta)
+print('Estimated beta_a/beta_b (from variations): ',np.mean(ra)/np.mean(rb))
+```
+
+    Predicted beta_a/beta_b:  0.625
+    Estimated beta_a/beta_b (from slope):  0.6244332746858016
+    Estimated beta_a/beta_b (from variations):  0.6283817703038759
+    
+
+Now, given that we built a spread with 1 unit of $a_t$ and $\frac{\beta_a}{\beta_b}$ units of $b_t$ what are the autocorrelation properties it's fluctuations?
+
+Given that $r_t^s=z_t-z_{t-1}=\epsilon_t^a -\epsilon_{t-1}^a + \frac{\beta_a}{\beta_b}(-\epsilon_t^b + \epsilon_{t-1}^b)$ we can work out the calculations to get:
+
+$\rho(r_t^s,r_{t-1}^s) = -\frac{1}{2}$
+
+The variance of $r_t^s$ is given by $\sigma_s^2=2\sigma_a^2+2 \frac{\beta_a}{\beta_b}^2\sigma_b^2$.
+
+
+
+```python
+z=a-beta*b
+plt.title('Spread process with estimated beta')
+plt.plot(z)
+plt.show()
+rz=z[1:]-z[:-1]
+plt.title('Autocorrelation of fluctuations of z process')
+plt.plot(rz[:-1],rz[1:],'.')
+plt.show()
+print('Predicted autocorrelation of fluctuations of z process: ',-0.5)
+print('Estimated autocorrelation of fluctuations of z process: ',np.corrcoef(rz[:-1],rz[1:])[0,1])
+print("Predicted variance of fluctuations of z process: ", np.var(rz))
+print("Estimated variance of fluctuations of z process: ", 2*a_scale*a_scale+2*beta*beta*b_scale*b_scale)
+```
+
+
+    
+![png](output_28_0.png)
+    
+
+
+
+    
+![png](output_28_1.png)
+    
+
+
+    Predicted autocorrelation of fluctuations of z process:  -0.5
+    Estimated autocorrelation of fluctuations of z process:  -0.4992979905365426
+    Predicted variance of fluctuations of z process:  1.2595065584175587
+    Estimated variance of fluctuations of z process:  1.2798338290696676
+    
+
+Also, we can compare the negative correlation that we obtain with the spread process with the one from a single process, let say $a_t$:
+
+$\frac{\sigma_a^2}{2 \sigma_a^2 + \beta_a^2 \sigma_x^2}>\frac{1}{2}$
+
+which only verifies if $\sigma_x^2<0$. Since this is impossible then the spread process always have a more negative autocorrelation on its fluctuations and, as consequence, we can exploit it better for trading.
+
+#### Covariance structure
+
+Given the two cointegrated prices it is interesting to check the covariance structure of the variable
+
+$\vec R_{ab} = (r_a^t,r_b^t,r_a^{t-1},r_b^{t-1})$
+
+which represents the fluctuations of the prices at $t$ and at $t-1$. The distribution is jointly Gaussian with zero mean vector. The covariance matrix is (after some straightforward calculations) given by:
+
+$
+\begin{bmatrix}
+    2\sigma_a^2 +\beta_a\beta_a \sigma_x^2 & \beta_a\beta_x \sigma_x^2 & -\sigma_a^2 & 0 \\
+     \beta_a\beta_x \sigma_x^2       & 2\sigma_b^2 +\beta_b\beta_b \sigma_x^2 & 0 & -\sigma_b \\
+    -\sigma_a^2 & 0 & 2\sigma_a^2+\beta_a\beta_a \sigma_x^2 & \beta_a\beta_b \sigma_x^2 \\
+    0 & -\sigma_b^2 & \beta_a \beta_b \sigma_x^2 & 2\sigma_b^2+\beta_b \beta_b \sigma_x^2
+\end{bmatrix}
+$
+
+This reflects the fact that the next fluctuation only depends on the previous fluctuation in itself (is independent on what happened previously in the other variable).
+
+
+Regarding the fluctuations of the spread process, the variable
+
+$\vec R_s = (r_s^t,r_s^{t-1})$
+
+is also jointly Gaussian with zero mean vector and covariance matrix
+
+$
+\begin{bmatrix}
+    2(\sigma_a^2 + \frac{\beta_a}{\beta_b}^2 \sigma_b^2 ) & -(\sigma_a^2 + \frac{\beta_a}{\beta_b}^2 \sigma_b^2) \\
+     -(\sigma_a^2 + \frac{\beta_a}{\beta_b}^2 \sigma_b^2) & 2(\sigma_a^2 + \frac{\beta_a}{\beta_b}^2 \sigma_b^2 ) \\
+\end{bmatrix}
+$
+
+
+## Trading the cointegrated processes
+
+The previous model for the fluctuations of two cointegrated processes can be used to design trading strategies. Again, instead on focusing on the spread _levels_ we trade the fluctuations. There are two options: we trade the spread or we let the weights on each asset vary. 
+
+Given the joint distribution is Gaussian it is easy to make a prediction given the previous observation (check Expectation-Maximization and applications post for these formulas); also, we will use the Kelly criterion with the prediction distribution. In the end this is just an autoregressive process on the variations of the spread or a multivariate one on the individual fluctuations.
+
+
+```python
+n=1000
+
+# Parameters
+scale_x=1
+beta_a=0.1
+beta_b=0.5
+scale_a=0.5
+scale_b=1
+
+# derived parameters
+var_x=scale_x*scale_x
+var_a=scale_a*scale_a
+var_b=scale_b*scale_b
+var_z=2*var_a+2*beta*beta*var_b
+
+# theoretical values
+theo_z_cov=np.array([
+                    [2*var_a+beta_a*beta_a*var_x,beta_a*beta_b*var_x,-var_a,0],
+                    [beta_a*beta_b*var_x,2*var_b+beta_b*beta_b*var_x,0,-var_b],
+                    [-var_a,0,2*var_a+beta_a*beta_a*var_x,beta_a*beta_b*var_x],
+                    [0,-var_b,beta_a*beta_b*var_x,2*var_b+beta_b*beta_b*var_x]])
+A=np.array([[2*var_a+beta_a*beta_a*var_x,beta_a*beta_b*var_x],[beta_a*beta_b*var_x,2*var_b+beta_b*beta_b*var_x]])
+B=np.array([[-var_a,0],[0,-var_b]])
+C=B
+D=A
+pred_aux=np.dot(B,np.linalg.inv(D))
+pred_cov=A-np.dot(B,np.dot(np.linalg.inv(D),C))
+pred_cov_inv=np.linalg.inv(pred_cov)
+
+beta=beta_a/beta_b
+
+# simulate process
+x=np.cumsum(np.random.normal(0,x_scale,n))
+a=beta_a*x+np.random.normal(0,a_scale,n)
+b=beta_b*x+np.random.normal(0,b_scale,n)
+# compute returns
+rx=x[1:]-x[:-1]
+ra=a[1:]-a[:-1]
+rb=b[1:]-b[:-1]
+
+rab=np.hstack((ra[:,None],rb[:,None]))
+
+z=(1/(1+np.abs(beta)))*a-beta*b/(1+np.abs(beta))
+rz=ra-beta*rb
+
+s_spread=np.zeros(rz.size)
+s_mar=np.zeros(rz.size)
+
+l_spread=np.zeros(rz.size)
+l_mar=np.zeros(rz.size)
+
+w_spread=0
+w_mar=np.array([0,0])
+
+for i in range(rz.size):
+    l_spread[i]=np.abs(w_spread)
+    l_mar[i]=np.sum(np.abs(w_mar))
+    s_mar[i]=np.dot(w_mar,rab[i])
+    s_spread[i]=w_spread*rz[i]
+    w_spread=-1*rz[i]/(3*(var_a+beta*beta*var_b))
+    w_mar=np.dot(pred_cov_inv,np.dot(rab[i],pred_aux))
+    
+plt.plot(np.cumsum(s_spread),color='k',label='Spread Strategy')
+plt.plot(np.cumsum(s_mar),color='r',label='AR Strategy')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+print('Sharpe Ratio SPREAD: ', np.mean(s_spread)/np.std(s_spread))
+print('Sharpe Ratio Multivariate Model: ', np.mean(s_mar)/np.std(s_mar))
+
+```
+
+
+    
+![png](output_32_0.png)
+    
+
+
+    Sharpe Ratio SPREAD:  0.4606428098065839
+    Sharpe Ratio Multivariate Model:  0.6258593928102705
+    
+
+It looks like that using the full autoregressive process is better. This is of no surprise since, given that the full joint is Gaussian then making this model should be optimal (check post on Making bets with models).
+
+The increase in performance comes from the situation where both $a_t$ and $b_t$ have fluctuations of the same sign and the optimal allocation makes a mean reversion on both (instead of long one, short the other). Also, as seen, both process have negative autocorrelations in their own fluctuations; the correlation with $r_t^a$ and $r_{t-1}^b$ is zero. Since $r_t^a$ and $r_t^b$ are correlated then, depending on the previous fluctuation the best allocation, can be _hedged_ of not.
+
+This result is interesting as we can observe that, in the presence of two cointegrated series, the best strategy is to make an autoregressive model. The only remark is that, in a practical application this means that one trade with much more frequency and probably the transaction costs are too high; because of this maybe the common approaches are more feasible.
+
+
+```python
+
+```
