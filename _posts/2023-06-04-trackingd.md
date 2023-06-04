@@ -12,72 +12,54 @@ For this end, I will consider a sequence of returns and assume that they are gen
 
 Let $x_t$ be the (multivariate) returns at some instant $t$:
 
-$x_t \sim p(x_t|\mu_t,\Sigma_t)$
+$x_t \sim p(x_t\|\mu_t,\Sigma_t)$
 
 Also, the state/hidden variables/parameters, depend on their previous values under some law
 
-$\mu_t,\Sigma_t \sim p(\mu_t,\Sigma_t|\mu_{t-1},\Sigma_{t-1})$
+$\mu_t,\Sigma_t \sim p(\mu_t,\Sigma_t\|\mu_{t-1},\Sigma_{t-1})$
 
 
 Given a new return observation, the objective is to compute the filtering distribution:
 
-$p(\mu_t,\Sigma_t|x_{1:t})$
+$p(\mu_t,\Sigma_t\|x_{1:t})$
 
 Assume that, at some instant $t$ we have the joint distribution for the latent variables. A natural (and known) candidate for this is the Normal-Inverse-Wishart distribution. It is conjugate to the Gaussian (which we are assuming as distribution for the returns); it's general form is
 
-$p(\mu,\Sigma|m,\lambda,\nu,V) = \text{N}(\mu|m,\frac{1}{\lambda}\Sigma) \text{IW}(\Sigma|\nu,V)   \propto \Sigma^{-\frac{\nu+d+2}{2}} \exp \left(  -\frac{\lambda}{2} (\mu-m)^T \Sigma^{-1} (\mu-m) - \frac{1}{2} \text{Tr}(\Sigma^{-1}V) \right) $
+$p(\mu,\Sigma\|m,\lambda,\nu,V) = \text{N}(\mu\|m,\frac{1}{\lambda}\Sigma) \text{IW}(\Sigma\|\nu,V)   \propto \Sigma^{-\frac{\nu+d+2}{2}} \exp \left(  -\frac{\lambda}{2} (\mu-m)^T \Sigma^{-1} (\mu-m) - \frac{1}{2} \text{Tr}(\Sigma^{-1}V) \right) $
 
-When used as prior for the parameters of a Gaussian, $p(\mu,\Sigma|x) \propto p(x|\mu,\Sigma)p(\mu,\Sigma)$, the posterior is also a NIW distribution.
+When used as prior for the parameters of a Gaussian, $p(\mu,\Sigma\|x) \propto p(x\|\mu,\Sigma)p(\mu,\Sigma)$, the posterior is also a NIW distribution.
 
 With that in mind, let us assume that at time $t-1$, the distribution of the state variables is:
 
-$
-p(\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) = \text{NIW}\left( m_{t-1},\lambda_{t-1},\nu_{t-1},V_{t-1} \right)
-$
+$p(\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) = \text{NIW}\left( m_{t-1},\lambda_{t-1},\nu_{t-1},V_{t-1} \right)$
 
 From Bayes:
 
-$
-p(\mu_t,\Sigma_t|x_{1:t}) \propto p(x_t|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t|x_{1:t-1})
-$
+$p(\mu_t,\Sigma_t|x_{1:t}) \propto p(x_t|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t|x_{1:t-1})$
 
 Now, the second term can be written as (due to the dependencies assumed in the model)
 
-$
-p(\mu_t,\Sigma_t|x_{1:t-1}) = \int \int p(\mu_t,\Sigma_t,\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1} = \int \int p(\mu_t,\Sigma_t|\mu_{t-1},\Sigma_{t-1}) p(\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1}
-$
+$p(\mu_t,\Sigma_t|x_{1:t-1}) = \int \int p(\mu_t,\Sigma_t,\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1} = \int \int p(\mu_t,\Sigma_t|\mu_{t-1},\Sigma_{t-1}) p(\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1}$
 
 We do not have a law for latent variables dynamics but, it would be interesting and practical if $p(\mu_t,\Sigma_t|\mu_{t-1},\Sigma_{t-1})$ had such a form that the previous expression reduced to a NIW distribution as well; this construction is quite difficult to make but we can make the assumption that this happens, i.e, $p(\mu_t,\Sigma_t|x_{1:t-1}) \sim NIW(\cdot)$. One sensible way to transform the parameters is to assume that latent variables expectations is kept unchanged but their uncertainty increases (of course one can think of more transformation that make sense but we will stay with this simple one). With this in mind, let us consider/assume (__prediction step__):
 
-$
-p(\mu_t,\Sigma_t|x_{1:t-1}) \sim \text{NIW}\left( m_{t}^-,\lambda_{t}^-,\nu_{t}^-,V_{t}^- \right)
-$
+$p(\mu_t,\Sigma_t|x_{1:t-1}) \sim \text{NIW}\left( m_{t}^-,\lambda_{t}^-,\nu_{t}^-,V_{t}^- \right)$
 
 with
 
-$
-m_{t}^-=m_{t-1}
-$
+$m_{t}^-=m_{t-1}$
 
-$
-\lambda_{t}^-=\phi \lambda_{t-1}
-$
+$\lambda_{t}^-=\phi \lambda_{t-1}$
 
-$
-\nu_{t}^-=\phi (\nu_{t-1}-d-1)+d+1
-$
+$\nu_{t}^-=\phi (\nu_{t-1}-d-1)+d+1$
 
-$
-V_{t}^-=\phi V_{t-1}
-$
+$V_{t}^-=\phi V_{t-1}$
 
 It is easy to see that this transformation of parameters, for $\phi \in (0,1)$, preserves the expected values of $\mu$ and $\Sigma$. 
 
 Now, going back to the estimation of the filtering distribution 
 
-$
-p(\mu_t,\Sigma_t|x_{1:t}) \propto p(x_t|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t|x_{1:t-1})
-$
+$p(\mu_t,\Sigma_t|x_{1:t}) \propto p(x_t|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t|x_{1:t-1})$
 
 we can observe that $p(\mu_t,\Sigma_t|x_{1:t})$ is also a NIW distribution with (__update step__):
 
@@ -85,21 +67,13 @@ $p(\mu_t,\Sigma_t|x_{1:t}) \sim \text{NIW}\left( m_{t},\lambda_{t},\nu_{t},V_{t}
 
 with 
 
-$
-m_{t}=\frac{\lambda_t^- m_t^-+x_t}{1+\lambda_t^-}
-$
+$m_{t}=\frac{\lambda_t^- m_t^-+x_t}{1+\lambda_t^-}$
 
-$
-\lambda_{t}=\lambda_{t}^- + 1
-$
+$\lambda_{t}=\lambda_{t}^- + 1$
 
-$
-\nu_{t}=\nu_t^- + 1
-$
+$\nu_{t}=\nu_t^- + 1$
 
-$
-V_{t}=V_t^- + \frac{\lambda_t^-}{\lambda_t^-+1}(x_t-m_t^-)(x_t-m_t^-)^T
-$
+$V_{t}=V_t^- + \frac{\lambda_t^-}{\lambda_t^-+1}(x_t-m_t^-)(x_t-m_t^-)^T$
 
 
 This recursive formulas can be used as new information arrives to estimate the current mean and covariance. Also, we can _predict_ the next values (although, by design they are the same as the ones just estimated) and use that information to make a bet; also, we can notice that notice that this simple model is just an estimate of mean and covariance with the most recent observations weighted in an exponential way ($\phi$ controls the decay). 
@@ -216,14 +190,14 @@ plt.show()
 ```
 
 
-    
-![png](output_6_0.png)
+![png](/images/trackingd/output_6_0.png)
+
     
 
 
 
-    
-![png](output_6_1.png)
+![png](/images/trackingd/output_6_1.png)
+
     
 
 
@@ -252,13 +226,12 @@ plt.show()
 ```
 
 
-    
-![png](output_8_0.png)
+![png](/images/trackingd/output_8_0.png)
+
     
 
 
 
-    
-![png](output_8_1.png)
-    
+![png](/images/trackingd/output_8_1.png)  
+
 
