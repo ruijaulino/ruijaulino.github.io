@@ -31,19 +31,19 @@ When used as prior for the parameters of a Gaussian, $p(\mu,\Sigma\|x) \propto p
 
 With that in mind, let us assume that at time $t-1$, the distribution of the state variables is:
 
-$p(\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) = \text{NIW}\left( m_{t-1},\lambda_{t-1},\nu_{t-1},V_{t-1} \right)$
+$p(\mu_{t-1},\Sigma_{t-1}\|x_{1:t-1}) = \text{NIW}\left( m_{t-1},\lambda_{t-1},\nu_{t-1},V_{t-1} \right)$
 
 From Bayes:
 
-$p(\mu_t,\Sigma_t|x_{1:t}) \propto p(x_t|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t|x_{1:t-1})$
+$p(\mu_t,\Sigma_t\|x_{1:t}) \propto p(x_t\|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t\|x_{1:t-1})$
 
 Now, the second term can be written as (due to the dependencies assumed in the model)
 
-$p(\mu_t,\Sigma_t|x_{1:t-1}) = \int \int p(\mu_t,\Sigma_t,\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1} = \int \int p(\mu_t,\Sigma_t|\mu_{t-1},\Sigma_{t-1}) p(\mu_{t-1},\Sigma_{t-1}|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1}$
+$p(\mu_t,\Sigma_t\|x_{1:t-1}) = \int \int p(\mu_t,\Sigma_t,\mu_{t-1},\Sigma_{t-1}\|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1} = \int \int p(\mu_t,\Sigma_t\|\mu_{t-1},\Sigma_{t-1}) p(\mu_{t-1},\Sigma_{t-1}\|x_{1:t-1}) \text{d} \mu_{t-1} \text{d} \Sigma_{t-1}$
 
 We do not have a law for latent variables dynamics but, it would be interesting and practical if $p(\mu_t,\Sigma_t|\mu_{t-1},\Sigma_{t-1})$ had such a form that the previous expression reduced to a NIW distribution as well; this construction is quite difficult to make but we can make the assumption that this happens, i.e, $p(\mu_t,\Sigma_t|x_{1:t-1}) \sim NIW(\cdot)$. One sensible way to transform the parameters is to assume that latent variables expectations is kept unchanged but their uncertainty increases (of course one can think of more transformation that make sense but we will stay with this simple one). With this in mind, let us consider/assume (__prediction step__):
 
-$p(\mu_t,\Sigma_t|x_{1:t-1}) \sim \text{NIW}\left( m_{t}^-,\lambda_{t}^-,\nu_{t}^-,V_{t}^- \right)$
+$p(\mu_t,\Sigma_t\|x_{1:t-1}) \sim \text{NIW}\left( m_{t}^-,\lambda_{t}^-,\nu_{t}^-,V_{t}^- \right)$
 
 with
 
@@ -59,11 +59,11 @@ It is easy to see that this transformation of parameters, for $\phi \in (0,1)$, 
 
 Now, going back to the estimation of the filtering distribution 
 
-$p(\mu_t,\Sigma_t|x_{1:t}) \propto p(x_t|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t|x_{1:t-1})$
+$p(\mu_t,\Sigma_t\|x_{1:t}) \propto p(x_t\|\mu_t,\Sigma_t)p(\mu_t,\Sigma_t\|x_{1:t-1})$
 
-we can observe that $p(\mu_t,\Sigma_t|x_{1:t})$ is also a NIW distribution with (__update step__):
+we can observe that $p(\mu_t,\Sigma_t\|x_{1:t})$ is also a NIW distribution with (__update step__):
 
-$p(\mu_t,\Sigma_t|x_{1:t}) \sim \text{NIW}\left( m_{t},\lambda_{t},\nu_{t},V_{t} \right)$
+$p(\mu_t,\Sigma_t\|x_{1:t}) \sim \text{NIW}\left( m_{t},\lambda_{t},\nu_{t},V_{t} \right)$
 
 with 
 
