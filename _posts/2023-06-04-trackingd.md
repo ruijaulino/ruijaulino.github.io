@@ -25,7 +25,7 @@ $p(\mu_t,\Sigma_t\|x_{1:t})$
 
 Assume that, at some instant $t$ we have the joint distribution for the latent variables. A natural (and known) candidate for this is the Normal-Inverse-Wishart distribution. It is conjugate to the Gaussian (which we are assuming as distribution for the returns); it's general form is
 
-$p(\mu,\Sigma\|m,\lambda,\nu,V) = \text{N}(\mu\|m,\frac{1}{\lambda}\Sigma) \text{IW}(\Sigma\|\nu,V)   \propto \Sigma^{-\frac{\nu+d+2}{2}} \exp \left(  -\frac{\lambda}{2} (\mu-m)^T \Sigma^{-1} (\mu-m) - \frac{1}{2} \text{Tr}(\Sigma^{-1}V) \right) $
+$p(\mu,\Sigma\|m,\lambda,\nu,V) = \text{N}(\mu\|m,\frac{1}{\lambda}\Sigma) \text{IW}(\Sigma\|\nu,V)   \propto \|\Sigma\|^{-\frac{\nu+d+2}{2}} \exp \left(  -\frac{\lambda}{2} (\mu-m)^T \Sigma^{-1} (\mu-m) - \frac{1}{2} \text{Tr}(\Sigma^{-1}V) \right) $
 
 When used as prior for the parameters of a Gaussian, $p(\mu,\Sigma\|x) \propto p(x\|\mu,\Sigma)p(\mu,\Sigma)$, the posterior is also a NIW distribution.
 
@@ -77,6 +77,40 @@ $V_{t}=V_t^- + \frac{\lambda_t^-}{\lambda_t^-+1}(x_t-m_t^-)(x_t-m_t^-)^T$
 
 
 This recursive formulas can be used as new information arrives to estimate the current mean and covariance. Also, we can _predict_ the next values (although, by design they are the same as the ones just estimated) and use that information to make a bet; also, we can notice that notice that this simple model is just an estimate of mean and covariance with the most recent observations weighted in an exponential way ($\phi$ controls the decay). 
+
+
+#### On the limit
+
+When data arrives, parameters change; in the limit of many iterations one can observe that $\lambda$ converges to $\lim_{t \rightarrow \inf} \lambda_t = \lambda = \frac{1}{1-\phi}$ and $\nu$ to $\lim_{t \rightarrow \inf} \nu_t  = \nu = p + 1 + \frac{1}{1-\phi}$. Replacing this into the updates for $m_t$ and $V_t$ we see that, after many iteration, they are updated as
+
+$m_t = \phi m_{t-1} + (1-\phi) x_t$
+
+and
+
+$V_t = \phi \left( V_{t-1} + (x_t-m_{t-1})(x_t-m_{t-1})^T \right)$
+
+In particular, consider some iterations for $m_t$:
+
+$t=0 \rightarrow m_0$
+
+$t=1 \rightarrow m_1=\phi m_0 + (1-\phi)x_1$
+
+$t=2 \rightarrow m_2=\phi^2 m_0 + \phi(1-\phi)x_1 + (1-\phi) x_2$
+
+$t=3 \rightarrow m_2=\phi^3 m_0 + \phi^2(1-\phi)x_1 + \phi(1-\phi) x_2 + (1-\phi) x_3$
+
+and for $V_t$:
+
+$t=0 \rightarrow V_0$
+
+$t=1 \rightarrow V_1=\phi V_0 + \phi (x_1-m_0)(x_1-m_0)^T$
+
+$t=2 \rightarrow V_2=\phi^2 V_0 + \phi^2 (x_1-m_0)(x_1-m_0)^T + \phi (x_2-m_1)(x_2-m_1)^T$
+
+$t=3 \rightarrow V_3=\phi^3 V_0 + \phi^3 (x_1-m_0)(x_1-m_0)^T + \phi^2 (x_2-m_1)(x_2-m_1)^T + \phi (x_2-m_2)(x_3-m_2)^T$
+
+And so, at any given instant, the previous observations are weighted as $\phi^t(1-\phi)=\phi^t-\phi^{t+1}$ for the mean and $\phi^{t+1}$ for the covariance ($t$ means the relative distance to the current time step), which represents the fact that will use more _observations_ to estimate the mean when $1>\phi>\frac{1}{2}$ (and the reverse).
+
 
 #### Other considerations
 
