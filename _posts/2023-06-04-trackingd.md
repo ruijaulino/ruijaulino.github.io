@@ -116,6 +116,8 @@ And so, at any given instant, the previous observations are weighted as $\phi^t(
 
 In practice we still have to determine the parameter $\phi$; this can be done by usign the prediction error decomposition and noticing that the posterior predictive is a T-distribution - this way we have a _trend following_ model that can be trained as a regular model instead of focusing on sharpe ratios or other second order metrics that may hide the fact that the model may not fit the data that well.
 
+As exposed, the idea can be used to track a multivariate distribution; care must be taken here if one is to invert the estimated covariance later (for betting): as the number of assets grow the inverse gets too unstable. I believe it is better to solve each problem individually or just consider a diagonal covariance for betting.
+
 Another consideration is the bets: given the future prediction we can bet with $w=\Sigma^{-1} \mu$ but we need to normalize this quantity in a proper way (in the sense of the other posts in this blog); this can be done with some training data to check the leverage values that are observed.
 
 
