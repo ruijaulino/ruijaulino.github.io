@@ -81,7 +81,7 @@ This recursive formulas can be used as new information arrives to estimate the c
 
 #### On the limit
 
-When data arrives, parameters change; in the limit of many iterations one can observe that $\lambda$ converges to $\lim_{t \rightarrow \inf} \lambda_t = \lambda = \frac{1}{1-\phi}$ and $\nu$ to $\lim_{t \rightarrow \inf} \nu_t  = \nu = p + 1 + \frac{1}{1-\phi}$. Replacing this into the updates for $m_t$ and $V_t$ we see that, after many iteration, they are updated as
+When data arrives, parameters change; in the limit of many iterations one can observe that $\lambda$ converges to $\lim_{t \rightarrow \inf} \lambda_t = \lambda = \frac{1}{1-\phi}$ and $\nu$ to $\lim_{t \rightarrow \inf} \nu_t  = \nu = p + 1 + \frac{1}{1-\phi}$ (the fact that we need more observations than variables to estimate the covariance is reflected here). Replacing this into the updates for $m_t$ and $V_t$ we see that, after many iterations, they are updated as
 
 $m_t = \phi m_{t-1} + (1-\phi) x_t$
 
