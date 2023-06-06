@@ -109,7 +109,7 @@ $t=2 \rightarrow V_2=\phi^2 V_0 + \phi^2 (x_1-m_0)(x_1-m_0)^T + \phi (x_2-m_1)(x
 
 $t=3 \rightarrow V_3=\phi^3 V_0 + \phi^3 (x_1-m_0)(x_1-m_0)^T + \phi^2 (x_2-m_1)(x_2-m_1)^T + \phi (x_3-m_2)(x_3-m_2)^T$
 
-And so, at any given instant, the previous observations are weighted as $\phi^t(1-\phi)=\phi^t-\phi^{t+1}$ for the mean and $\phi^{t+1}$ for the covariance ($t$ means the relative distance to the current time step), which represents the fact that will use more _observations_ to estimate the mean when $1>\phi>\frac{1}{2}$ (and the reverse).
+And so, at any given instant, the previous observations are weighted as $\phi^t(1-\phi)=\phi^t-\phi^{t+1}$ for the mean and $\phi^{t+1}$ for the covariance ($t$ means the relative distance to the current time step), which represents the fact that will use more _observations_ to estimate the mean (in other words, distance past observations have a larger weight than on the covariance) when $1>\phi>\frac{1}{2}$ (and the reverse).
 
 
 #### Other considerations
