@@ -1,0 +1,523 @@
+# Betting with linear models
+
+
+Suppose we are modelling the return $x_t=\frac{p_t-p_{t-1}}{p_{t-1}}$ as linearly dependent on a single variable/feature $z_t$. This means that:
+
+$x=a+bz+\epsilon$
+
+where $\epsilon$ is noise from a normal distribution like $\epsilon \sim N(0,\sigma^2)$. $z$ can be anything (for example, it can come from a uniform distribution between $a$ and $b$). We are saying that returns at different instants of time are independent and they depend on some other variable (and so we can drop the subscript $t$). This setup is quite common.
+
+Without loss of intuition (and similar to many real cases) let us consider that $a=0$ (the average return is usually near zero) and $z$ to come from a normal distribution like $z \sim N(0,\phi^2)$ (imagine this as using as predictor a past fluctuation of the asset for example).
+
+For this case:
+
+$x=bz+\epsilon$
+
+As seen, given that we know the current value of $z$, our optimal bet should be of weight $w=\frac{bz}{\sigma^2}$ (the predicted variance for the returns is constant over time given that we know $z$; in other words we can say that the bet should be proportional to $bz$).
+
+
+If we do this, we will realize a portfolio with fluctuations like $s=wx$; the distribution $s$ is far from trivial because, by varying the bet size according to the expected value (and variance - but not relevant for this toy example), we will (sometimes) induce larger variations and most of the time we will be making small bets. 
+
+The numerical experiment below illustrates this.
+
+
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import datetime as dt
+import tqdm
+from scipy.stats import norm
+# plt.style.use('dark_background')
+
+phi=0.06 # z scale (some random value)
+sigma=0.08 # x noise scale (some random value)
+b=0.09 # coefficient
+
+n=10000 # number of points
+
+z=np.random.normal(0,phi,n)
+x=b*z+np.random.normal(0,sigma,n)
+w=b*z/(sigma*sigma)
+s=w*x
+# plot cumulative sum of strategy - analogue to equity curve
+plt.title('Equity curve')
+plt.plot(np.cumsum(s))
+plt.grid(True)
+plt.show()
+# plot histograms
+plt.title('Return fluctuations distribution')
+plt.hist(x,bins=100,density=True)
+plt.grid(True)
+plt.show()
+
+plt.title('Strategy fluctuations distribution')
+plt.hist(s,bins=100,density=True)
+plt.grid(True)
+plt.show()
+```
+
+
+    
+![png](output_1_0.png)
+    
+
+
+
+    
+![png](output_1_1.png)
+    
+
+
+
+    
+![png](output_1_2.png)
+    
+
+
+One way to understand this non trivial strategy returns distribution is to note that both $x$ and $w$ have normal distributions and they are dependent on each other (through $z$) and, even stronger, the joint $p(x,w)$ is a multivariate normal - then $s$ has the distribution of the product of two dependent normal distributions:
+
+$p(s)=\frac{1}{\pi \sigma_1 \sigma_2} \exp \left( \frac{\rho s}{\sigma_1 \sigma_2 (1-\rho^2)} \right) \text{K}_0 \left( \frac{|s|}{\sigma_1 \sigma_2 (1-\rho^2)} \right)$
+
+with $\text{K}_0(\cdot)$ the Bessel function of the second kind.
+
+To calculate the parameters $\rho$, $\sigma_1$ and $\sigma_2$ we can note that when we make the bet $w=\frac{bz}{\sigma^2}$, we can write $x=\sigma^2w+\epsilon$. From that (and noting that $\text{cov}(z,\epsilon)=0$) we can derive that $\text{cov}(w,x)=\frac{b^2\phi^2}{\sigma^2}$, $\text{cov}(x,x)=b^2\phi^2+\sigma^2$ and $\text{cov}(w,w)=\frac{b^2\phi^2}{\sigma^4}$. From these quantities it is trivial to deduct the parameters for the normal product distribution.
+
+Let us do it for the previous example.
+
+
+
+```python
+from scipy.special import kn
+
+def prod_density(x_pdf,rho,s1,s2):
+    t1=np.exp(rho*x_pdf/(s1*s2*(1-rho*rho)))
+    t2=kn(0,np.abs(x_pdf)/(s1*s2*(1-rho*rho)))
+    t3=(np.pi*s1*s2)
+    return t1*t2/t3
+
+x_pdf=np.linspace(np.min(s),np.max(s),500)
+phi2=phi*phi
+sigma2=sigma*sigma
+rho_xw=b*phi/np.sqrt(b*b*phi2+sigma2)
+ww_scale=np.sqrt(b*b*phi2/(sigma2*sigma2))
+xx_scale=np.sqrt(b*b*phi2+sigma2)
+y_pdf=prod_density(x_pdf,rho=rho_xw,s1=ww_scale,s2=xx_scale)
+
+plt.title('Strategy fluctuations distribution')
+plt.hist(s,bins=100,density=True,label='Estimated PDF')
+plt.plot(x_pdf,y_pdf,label='Theoretical PDF')
+plt.grid(True)
+plt.legend()
+plt.show()
+```
+
+
+    
+![png](output_3_0.png)
+    
+
+
+Also, the expected value is given by (just compute the expected value of $w(bz+\epsilon)$):
+
+$\mathbb{E}[s]=\frac{b^2\phi^2}{\sigma^2}$
+
+and the second non central moment is (just compute the expected value of $\left( w(bz+\epsilon) \right)^2$):
+
+$\mathbb{E}[s^2]=\frac{1}{\sigma^4}\left(  3b^4\phi^4 + b^2\phi^2 \sigma^2 \right)$
+
+If we make the approximation that $\mathbb{E}[s^2] \approx \text{Var}(s^2)$ (in other words, the expected value of $s$ is small), then the sharpe ratio of the strategy is
+
+$\text{SR} = \frac{\mathbb{E}[s]}{\sqrt{\text{Var}(s^2)}}  \approx \frac{\mathbb{E}[s]}{\sqrt{\mathbb{E}[s^2]}} = \frac{b^2\phi^2}{\sqrt{3b^4\phi^4 + b^2\phi^2 \sigma^2}}$
+
+
+For small $b$ (which is the case in finance):
+
+$\text{SR} \approx |b|\frac{\phi}{\sigma}$
+
+This result is interesting as is shows a clear relation between the regression coefficient $b$ and the sharpe ratio of the strategy (when we use kelly betting); one could estimate regression coefficients only, assess their significance and at the same time have the sharpe of the strategy.
+
+Let us make this calculation for the previous case.
+
+
+```python
+print('SR[s] estimated     : ', np.round(np.mean(s)/np.std(s),4))
+print('SR[s] approximation : ',np.round(b*phi/sigma,4))
+```
+
+    SR[s] estimated     :  0.0651
+    SR[s] approximation :  0.0675
+    
+
+The values look quite similar.
+
+As a comparison, we can consider the more traditional case where one would bet with $\text{sng}(bz)$; this means that we bet the whole capital long or short according to the prediction. What happens to the strategy returns distribution in this case? Let us simulate it.
+
+
+
+```python
+s1=np.sign(w)*x # strategy with the sign
+# plot cumulative sum of strategy - analogue to equity curve
+plt.title('Equity curve')
+plt.plot(np.cumsum(s1))
+plt.grid(True)
+plt.show()
+# plot histograms
+plt.title('Return fluctuations distribution')
+plt.hist(x,bins=100,density=True,alpha=0.5,label='Returns distribution')
+plt.hist(s1,bins=100,density=True,alpha=0.5,label='Strategy returns distribution')
+plt.legend(loc='lower left')
+plt.grid(True)
+plt.show()
+```
+
+
+    
+![png](output_7_0.png)
+    
+
+
+
+    
+![png](output_7_1.png)
+    
+
+
+First observation is that the strategy returns distribution is quite similar to the returns distribution in shape; this is quite easy to understand by intuition (we are just multiplying the returns by 1 or -1 with some edge). This picture changes if $b$ is large but we are not interested in this case as it is not realistic for this problem. Expanding the calculation to get a better approximation (recall $x=bz+\epsilon$ and now $x=\text{sgn}(bz)$):
+
+$s=wx=\text{sgn}(bz)(bz+\epsilon) = \text{sgn}(bz)bz + \text{sgn}(bz)\epsilon$
+
+We can see that $s$ can be interpreted as the sum of two random variables. The second term, $\text{sgn}(bz)\epsilon$, is just the multiplication of a random discrete variable that takes values 1 or -1 with equal probability with $\epsilon$ - trivially this term has the same distribution as $\epsilon \sim N(0,\sigma^2)$. With some observation, we can conclude that the first term can be interpreted as the product of $b$ with a half-normal random variable. 
+
+Given this, the distribution of $s$ for this betting scheme is the convolution of the pdfs for the two random variables described above; this is complicated but if we focus on the small $b$ case we can make the approximation that $s$ is a normal centered at the expected value of the first random variable with the variance of the second (if $b$ is small then the variance of the first term is small compared to the variance of the second term; this is illustrated in the previous numerical experiment as well):
+
+$s \sim N\left(|b| \phi \sqrt{\frac{2}{\pi}},\sigma^2\right)$
+
+Let is check our approximation (with the sharpe ratio):
+
+
+```python
+print('SR[s] estimated     : ', np.round(np.mean(s1)/np.std(s1),4))
+print('SR[s] approximation : ',np.round(b*phi*np.sqrt(2/np.pi)/sigma,4))
+```
+
+    SR[s] estimated     :  0.0503
+    SR[s] approximation :  0.0539
+    
+
+As expected, the sharpe is lower (the betting scheme is not the optimal one) but we can also derive an expression for the sharpe in terms of the regression coefficient.
+
+The sharpe we get by betting with $\text{sgn}(bz)$ is lower than the optimal one by a factor of $\sqrt{\frac{2}{\pi}} \approx 0.8$ (it is 20% lower).
+
+
+
+## Skew
+
+From the two previous examples, focusing on near-real life settings, betting with $\text{sng}(bz)$, does not induce skew in the strategy returns distribution (it induces but it is very small) while betting with $\propto bz$ induces a positive skew. This is a non-trivial feature of the scheme and it is normally considered beneficial to have positive skew.
+
+Also, consider what is called a mean-reversing strategy; in a time-series description, this can be described as a negative correlation between fluctuations in successive periods of time. These strategies are usually associated with a negative skew; if we model and bet like this we can induce a positive skew in the trades distribution.
+
+In the first case, we can estimate the third moment as
+
+$\mathbb{E}[s^3] = \mathbb{E} [ \left( \frac{bz}{\sigma^2}(bz+\epsilon) \right)^3 ] $
+
+Expanding this gives
+
+$\mathbb{E}[s^3] = \mathbb{E} [ \frac{b^6 z^6 + 3b^5\epsilon z^5 + 3b^4\epsilon^2z^4 + b^3\epsilon^3z^3}{\sigma^6} ] = 15(\frac{b\phi}{\sigma})^6 + 9(\frac{b\phi}{\sigma})^4$
+
+for $b$ small we can write
+
+$\mathbb{E}[s^3] \approx  9(\frac{b\phi}{\sigma})^4 $
+
+For the bet with $\text{sgn}(bz)$, under our approximations, we are not expecting any skew. Let us verify with the previous experiments.
+
+
+```python
+print('E[s^3] estimated     : ', np.round(np.mean(np.power(s,3)),5) )
+print('E[s^3] approximation : ', np.round(9*np.power(b*phi/sigma,4),5) )
+print('E[s1^3] estimated    : ',np.round(np.mean(np.power(s1,3)),8) )
+```
+
+    E[s^3] estimated     :  0.00017
+    E[s^3] approximation :  0.00019
+    E[s1^3] estimated    :  8.814e-05
+    
+
+The skew value (as third non central moment) for the bet with $\text{sgn}(bz)$ is several orders of magnitude lower than the one obtained for the bet with $\propto bz$.
+
+## Practical bet size
+
+Making optimal bets with $w=\frac{bz}{\sigma^2}$ can yield large values for the weights and beting with $\text{sgn}(bz)$ is not optimal (sharpe-wise). As discussed in other posts we need a multiplier to makes the weights suitable for practical application but must be constant over time. For this linear model, we can solve the problem easily. Since $w=\frac{bz}{\sigma^2}$ and $z \sim N(0,\phi^2)$, from conservation of probability (i.e, a change in variable), $p(w)\text{d}w=p(z)\text{d}z$, we can derive the distribution of _possible_ weights as
+
+$w \sim N(0,\left( \frac{\phi b}{\sigma^2} \right)^2 )$
+
+The standard deviation of the weights is $\frac{|b|\phi}{\sigma^2}$; considering a constant $k$ representing the quantile of the distribution (for example $k=3$ to make sure weights larger than one do not happen that often and so we can cap them withou changing the results too much) we have that a suitable _normalized_ (and appropriate for practical applications) weight is
+
+$w^* = \frac{w}{k \frac{|b|\phi}{\sigma^2} } = \text{sign}(b) \frac{z}{k\phi}$
+
+which makes sense: it is similar to a standardization of the $z$ variable (with the sign of the coefficient). If $|w^*|>1$ then we set it to $\text{sign}(w^*)$. 
+
+The strategy with $w^*$ preserves the sharpe ratio (when we do not have to cap it; we are expecting this not to happen that much and so for all practical measures the values are the same).
+
+
+```python
+k=3
+w_mod=np.sign(b)*z/(k*phi)
+aux=np.where(np.abs(w_mod)>1)[0]
+w_mod[aux]=np.sign(w_mod[aux])
+
+plt.title('Normalized w versus original')
+plt.plot(w,w_mod,'.')
+plt.xlabel('Original weight')
+plt.ylabel('Normalized weight')
+plt.grid(True)
+plt.show()
+```
+
+
+    
+![png](output_14_0.png)
+    
+
+
+# Searching for ideas
+
+To use similar ideas as discussed in a real setting one must first think on hypothesis, then gather data finally assess if there is some _true_ strategy in it; also ideally one also want ot estimate future performance of the idea. 
+
+Suppose now we have data and we want to model the returns with some variables in a linear fashion (of couse, like was described above). One way to assess out-of-sample performance of the model is to run a cross-validation estimate. We would split the data in equal parts and train/test with the different folds.
+
+Let us to an example of this with synthetic data.
+
+
+```python
+# univariate regression model
+# the intercept term is also estimated
+class LRModel(object):
+    def __init__(self):
+        self.a=None
+        self.b=None
+        self.scale=None
+    def fit(self,x,y):
+        '''
+        x: numpy (n,) array
+        y: numpy (n,) array
+        '''
+        mxy=np.mean(x*y)
+        mx=np.mean(x)
+        my=np.mean(y)
+        mxx=np.mean(x*x)        
+        self.b=(mxy-my*mx)/(mxx-mx*mx)
+        self.a=my-self.b*mx        
+        self.scale=np.sqrt(np.mean(np.power(y-self.a-self.b*x,2)))
+        return self    
+    def predict(self,x):
+        return self.a+self.b*x
+    def get_weight(self,x):
+        return self.predict(x)/(self.scale*self.scale+self.a*self.a)
+
+# estimate strategy returns by cross validation
+def cv(z,x,k_folds=4,model=LRModel):
+    l=x.size
+    idx=np.arange(l,dtype=int)
+    folds_idx=np.array_split(idx,k_folds)
+    s=np.zeros(l)
+    for i in range(k_folds):
+        train=np.where(~np.in1d(idx,folds_idx[i]))[0]
+        test=folds_idx[i]
+        fold_model=model().fit(z[train],x[train])
+        w=fold_model.get_weight(z[test])
+        s[test]=x[test]*w
+    return s    
+```
+
+
+```python
+# run the simulation
+# same values as above
+phi=0.06 # z scale (some random value)
+sigma=0.08 # x noise scale (some random value)
+b=0.09 # coefficient
+n=2000 # number of points
+
+z=np.random.normal(0,phi,n)
+x=b*z+np.random.normal(0,sigma,n)
+s=cv(z,x,k_folds=4,model=LRModel)
+plt.title('OOS Strategy equity curve estimation')
+plt.plot(np.cumsum(s))
+plt.grid(True)
+plt.show()
+plt.title('OOS Strategy Fluctuations')
+plt.hist(s,bins=50,density=True,label='PDF Estimate')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+
+    
+![png](output_17_0.png)
+    
+
+
+
+    
+![png](output_17_1.png)
+    
+
+
+There are many variations of this; we could do it in a walk forward fashion by reestimating the parameters with the past data (of course, if our hypothesis is correct the returns only depend on the $z$ variable and there should not be much error in using data after that period. Also, if we believe there is some regime changing in the parameters we should model that transition and check if it works out of sample as well), but for this toy example this is enough.
+
+The equity curve goes up (expected as there is some true relation between $z$ and $x$) and our strategy returns distribution is somewhat similar to what we saw previously (but now we have some variations from randomness in parameter estimation). The sharpe ratio we obtained is:
+
+
+```python
+print('Cross-Validation SR : ', np.round(np.mean(s)/np.std(s),5) )
+print('Theoretical SR      : ', np.round(b*phi/sigma,5))
+```
+
+    Cross-Validation SR :  0.06204
+    Theoretical SR      :  0.0675
+    
+
+The value is in agreement with the theoretical expectation but now we will observe lot of variation (if you run the previous experiment many times) of it due to the uncertainty in parameters.
+
+One important question is: we observe a positive out-of-sample sharpe but are we sure it is positive? We only have one observation of the sharpe - our result! - and we do not possess the distribution of possible out of sample sharpe values for out data. A way to answer this question is to take the cross-validation strategy returns observations and do a bootstrap estimate of the distribution of sharpes (in a real setting with our assumptions this continues to be correct as individual returns are being modelled as independent).
+
+
+```python
+def bootstrap_sharpe(s,n_boot=1000):
+    l=s.size
+    idx=np.arange(l,dtype=int)
+    idx_=np.random.choice(idx,(l,n_boot),replace=True)
+    s_=s[idx_]
+    boot_samples=np.mean(s_,axis=0)/np.std(s_,axis=0)
+    return boot_samples
+boot_samples=bootstrap_sharpe(s,n_boot=2000)
+plt.title('Sharpe ratio bootstrap distribution')
+plt.hist(boot_samples,bins=50,density=True,label='PDF Estimate')
+plt.grid(True)
+plt.legend()
+plt.show()
+```
+
+
+    
+![png](output_21_0.png)
+    
+
+
+We see that we have very few values below zero and one can say that we reject the hypothesis of sharpe equal to zero under probability:
+
+
+```python
+print('P(OOS SR<0)=',np.where(boot_samples<0)[0].size/boot_samples.size)
+```
+
+    P(OOS SR<0)= 0.0005
+    
+
+The usual is to define a small probability level $\alpha$, for example $\alpha=0.05$ and if our calculated probability is lower than that value we consider our result non trivial - this is the basis of statistical testing; what we are saying is that, when we repeat the experiment $n$ times, we expect to believe that a strategy that does not exist _exists_ a fraction $\alpha$ of $n$, i.e, finding a false positive.
+
+## Multiple testing
+
+Whether our hypothesis make lot of sense or not, invariably we will try many things. In the same line of though, we are interested in the probability to reject the hypothesis (which always be that there is no signal) giving that it is true (type 1 error); if all experiments are independent, the probability to accept the hypothesis (under $\alpha$) for all experiments is $(1-\alpha)^k$. With that, it is easy to write the probability to reject the hypothesis for at least one experiment:
+
+$p(H_0 \text{ not accepted}) = 1-(1-\alpha)^k$
+
+For example, with $k=10$ and $\alpha=0.05$ (10 independent experiments, each one evaluated individually to a confidence level $\alpha=0.05$), the probability to reject the hypothesis (for example, conclude that the shape is positive when in reality it is not for some of the experiments) is $1-(1-\alpha)^k \approx 0.4$ which is quite different from the 0.05 error rate that we were targetting at the begining. One way to solve this problem is to evaluate the experiments individually with a level of confidence $\hat{\alpha}$ that makes the error rate of the multiple comparissons become our target $\alpha$. This is easily solved by:
+
+$\alpha=1-(1-\hat{\alpha} )^n \rightarrow \hat{\alpha}=1-(1-\alpha)^\frac{1}{n}$
+
+The known Bonferroni correction is to consider
+
+$\hat{\alpha}=\frac{\alpha}{n}$
+
+Which is the Taylor expansion of the formula for small $\alpha$
+
+
+```python
+def multiple_testing(phi,sigma,n,n_boot,k,m,alpha,k_folds=4,intercept=False):
+    # generate this only one time (makes no difference)
+    boot_idx=np.random.choice(np.arange(n,dtype=int),(n,n_boot),replace=True)  
+    # aux variables
+    c=np.zeros(m)
+    c_bonferroni=np.zeros(m)
+    idx=np.arange(n,dtype=int)
+    folds_idx=np.array_split(idx,k_folds)
+    s=np.zeros((n,k))    
+    # repeat many times the multiple testing
+    for j in tqdm.tqdm(range(m)):
+        # generate data
+        x=np.random.normal(0,phi,(n,k))
+        y=np.random.normal(0,sigma,(n,k))
+        # cross-validation (vectorized version)
+        # is is easy to write the test for the linear regression
+        # without so many cycles (done for fun)
+        for i in range(k_folds):
+            train=np.where(~np.in1d(idx,folds_idx[i]))[0]
+            test=folds_idx[i]
+            x_train=np.copy(x[train])
+            y_train=np.copy(y[train])
+            # fit model
+            mxy=np.mean(x_train*y_train,axis=0)
+            mx=np.mean(x_train,axis=0)
+            my=np.mean(y_train,axis=0)
+            mxx=np.mean(x_train*x_train,axis=0)        
+            b_est=(mxy-my*mx)/(mxx-mx*mx)
+            a_est=my-b_est*mx        
+            scale_est=np.sqrt(np.mean(np.power(y-b_est*x,2),axis=0))
+            # get weight
+            # if we use the wrong model (here is adding the bias)
+            # then we get more false positives!
+            # we need a lower alpha for those cases
+            if intercept:
+                w=(a_est+b_est*x[test])/(scale_est*scale_est+a_est*a_est)
+            else:
+                w=(x[test]*b_est)/(scale_est*scale_est)
+            # evaluate strategy
+            s[test]=np.copy(y[test])*w
+        # bootstrap on strategies returns
+        boot_data=s[boot_idx]
+        boot_samples=np.mean(boot_data,axis=0)/np.std(boot_data,axis=0)
+        # significance level
+        p_vals=np.sum(boot_samples<0,axis=0)/n_boot
+        # detect at least one false positive under alpha
+        c[j]=np.sign(np.sum(p_vals<alpha))
+        # detect at least one false positive under alpha corrected with bonferroni
+        c_bonferroni[j]=np.sign(np.sum(p_vals<alpha/k))        
+    return np.sum(c)/m,np.sum(c_bonferroni)/m
+```
+
+
+```python
+# make a faster code to simulate the FWER for CV with a linear model
+phi=1 # some random scale
+sigma=1 # some random scale
+n=1000 # number of observations
+n_boot=500 # number of bootstrap samples
+alpha=0.05 # significance level
+k=20 # number of experiments for multiple comparisson
+m=1000 # number of times to repeat the experiment
+k_folds=4 # number of folds in cross validation
+rate,rate_cb=multiple_testing(phi,sigma,n,n_boot,k,m,alpha,k_folds,intercept=False)
+```
+
+    100%|██████████████████████████████████████████████████████████████████████████████| 1000/1000 [02:39<00:00,  6.26it/s]
+    
+
+
+```python
+print('Non corrected estimated false discovery rate : ', np.round(rate,5) )
+print('Non corrected expected false discovery rate  : ', np.round(1-np.power(1-alpha,k),5) )
+print()
+print('Corrected estimated false discovery rate     : ', np.round(rate_cb,5))
+print('Corrected expected false discovery rate      : ', np.round(alpha,5))
+```
+
+    Non corrected estimated false discovery rate :  0.58
+    Non corrected expected false discovery rate  :  0.64151
+    
+    Corrected estimated false discovery rate     :  0.056
+    Corrected expected false discovery rate      :  0.05
+    
