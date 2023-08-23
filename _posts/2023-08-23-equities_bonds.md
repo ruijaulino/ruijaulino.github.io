@@ -553,7 +553,7 @@ Not a fantastic result, but we have a annual return and sharpe similar to the SP
 
 ### Validity of the approximation
 
-The optimal growth problem was formulated with a second order approximation to the growth rate. Let us repeat the previous analysis by considering the full (constrained) problem: maximization of 
+The optimal growth problem was formulated with a second order approximation to the growth rate. Let us repeat the previous analysis by considering the full (constrained) problem which is the maximization of:
 
 $$\mathbb{E}(\log(1+wx))$$
 
