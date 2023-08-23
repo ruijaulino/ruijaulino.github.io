@@ -20,7 +20,7 @@ $G=w\mu-\frac{1}{2}w^T\Sigma w$
 
 which has as (unconstrained) maximum $w = \Sigma^{-1}\mu$. For the particular (and on focus here) case of two assets, the solution to the problem is:
 
-$ \begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \begin{bmatrix} \sigma_1^2 & \sigma_1 \sigma_2 \rho \\ \sigma_1 \sigma_2 \rho & \sigma_2^2 \end{bmatrix}^{-1}  \begin{bmatrix} \mu_1 \\ \mu_2 \end{bmatrix} = \frac{1}{\sigma_1\sigma_2(1-\rho^2)} \begin{bmatrix} \frac{\sigma_2}{\sigma_1}\mu_1-\rho\mu_2 \\ \frac{\sigma_1}{\sigma_2}\mu_2-\rho\mu_1 \end{bmatrix} $
+$$\begin{bmatrix} w_1 \\\ w_2 \end{bmatrix} = \begin{bmatrix} \sigma_1^2 & \sigma_1 \sigma_2 \rho \\\ \sigma_1 \sigma_2 \rho & \sigma_2^2 \end{bmatrix}^{-1}  \begin{bmatrix} \mu_1 \\\ \mu_2 \end{bmatrix} = \frac{1}{\sigma_1\sigma_2(1-\rho^2)} \begin{bmatrix} \frac{\sigma_2}{\sigma_1}\mu_1-\rho\mu_2 \\\ \frac{\sigma_1}{\sigma_2}\mu_2-\rho\mu_1 \end{bmatrix}$$
 
 One can observe that, in the absence of any correlation, $\rho \rightarrow 0$, the solution is equivalent to the Kelly solution for each individual asset; the maximum leverage increases with decreasing scales and correlations and the allocation to one of the assets can even turn negative for positive expected returns (depending on the correlation magnitude).
 
@@ -171,7 +171,7 @@ plt.show()
     
 
 
-Let us forget for now that the weights can be very large and are not feasible for practical use, and note that the estimated values are quite diferent (also in proportion) to the traditional 60/40. Also, the sharpe is higher (although we are usign the training data as part of the test).
+Let us forget for now that the weights can be very large and are not feasible for practical use, and  the estimated values are quite diferent (also in proportion) to the traditional 60/40. Also, the sharpe is higher (although we are usign the training data as part of the test).
 
 Having a single estimate is not of much use. One way to use the data we have is to make a bootstrap estimate of the optimal weights. 
 
@@ -249,15 +249,13 @@ into a smaller one:
 
 $G_k = k w^T\mu - k ^2 \frac{1}{2}w^T\Sigma w$
 
-Note that $0<k<1$.
+Note that $0 \le k \leq 1$ .
 
 If we consider as a measure of _risk_ the amount of money bet, we can say that, when we multiply $w$ by $k$ we are reducing our exposure by a factor $k$; of course, our growth rate is going to be lower because we bet a smaller amount. If we compare how the growth rate is reduced in proportion to how the exposure was reduced is it possible to conclude that it's reduction is smaller as:
 
-$
-\frac{G_k}{G}>\frac{k}{1} \rightarrow -k^2 w^T\Sigma w + k w^T\Sigma w>0
-$
+$\frac{G_k}{G} \ge \frac{k}{1} \rightarrow -k^2 w^T\Sigma w + k w^T\Sigma w \ge 0$
 
-(where we wrote the inequality to the side where it means that the reduction in growth rate was lower than the reduction in exposure) which is true for any $0<k<1$. This shows that we can have a smaller growth rate reduction in proportion to what was reduced in the exposure and justifies that having a fractional Kelly bet is an interesting decision.
+(where we wrote the inequality to the side where it means that the reduction in growth rate was lower than the reduction in exposure) which is true for any $0 \le k \le 1$. This shows that we can have a smaller growth rate reduction in proportion to what was reduced in the exposure and justifies that having a fractional Kelly bet is an interesting decision.
 
 A natural factor $k$ is one such that the sum of weights (absolute value) is equal to a desired leverage (for example, no leverage); note that, since the weights are large we can do this without problem: if the weights were small then, the act of multiplying by a constant to get a desired leverage, could lead to a negative growth rate. Doing this for the previously calculated bootstrap weights:
 
@@ -371,11 +369,11 @@ $w \propto \Sigma^{-1} \vec{\sigma}$
 
 Solving the two dimensional system:
 
-$ \begin{bmatrix} w_1 \\ w_2 \end{bmatrix} \propto \begin{bmatrix} \sigma_1^2 & \sigma_1 \sigma_2 \rho \\ \sigma_1 \sigma_2 \rho & \sigma_2^2 \end{bmatrix}^{-1}  \begin{bmatrix} \sigma_1 \\ \sigma_2 \end{bmatrix} $
+$$\begin{bmatrix} w_1 \\\ w_2 \end{bmatrix} \propto \begin{bmatrix} \sigma_1^2 & \sigma_1 \sigma_2 \rho \\\ \sigma_1 \sigma_2 \rho & \sigma_2^2 \end{bmatrix}^{-1}  \begin{bmatrix} \sigma_1 \\\ \sigma_2 \end{bmatrix}$$
 
 We get that the optimal weights are proportional to the inverse scales:
 
-$ \begin{bmatrix} w_1 \\ w_2 \end{bmatrix} \propto \frac{1}{1+\rho} \begin{bmatrix} \frac{1}{\sigma_1} \\ \frac{1}{\sigma_2} \end{bmatrix} $
+$$\begin{bmatrix} w_1 \\\ w_2 \end{bmatrix} \propto \frac{1}{1+\rho} \begin{bmatrix} \frac{1}{\sigma_1} \\\ \frac{1}{\sigma_2} \end{bmatrix}$$
 
 and the amount of leverage that can be applied increases with a decrese in correlation.
 
@@ -556,7 +554,11 @@ Not a fantastic result, but we have a annual return and sharpe similar to the SP
 
 ### Validity of the approximation
 
-The optimal growth problem was formulated with a second order approximation to the growth rate. Let us repeat the previous analysis by considering the full (constrained) problem: maximization of $\mathbb{E}(\log(1+wx))$).
+The optimal growth problem was formulated with a second order approximation to the growth rate. Let us repeat the previous analysis by considering the full (constrained) problem: maximization of 
+
+$$\mathbb{E}(\log(1+wx))$$
+
+
 
 
 ```python
@@ -631,9 +633,9 @@ $w_i=\frac{1/\sigma_i^t}{\sum_j 1/\sigma_j^t}$
 
 where $\sigma_i^t$ is, for example, the standard deviation of the past $l$ returns for asset $i$. Examples and opinions appart, those procedures assume that the parameters change over time. We can formalize the idea as having a return vector $x_t$ at instant $t$ that was generated from some distribution with parameters $\mu_t,\Sigma_t$ (let us characterize this distribution with the first and second moment for simplicity and in an obvious connection to the Gaussian - even being a wrong one). In order to build a model we need to specify how and why the parameters (the unobserved - only estimated - states) vary over time. The most simple idea we can think of is to assume that they depend on the imediate previous values. With this:
 
-$x_t \sim p(x_t|\mu_t,\Sigma_t)$
+$x_t \sim p(x_t\|\mu_t,\Sigma_t)$
 
-$\mu_t,\Sigma_t \sim p(\mu_t,\Sigma_t|\mu_{t-1},\Sigma_{t-1})$
+$\mu_t,\Sigma_t \sim p(\mu_t,\Sigma_t\|\mu_{t-1},\Sigma_{t-1})$
 
 Future returns are difficult to estimate and we can take advantage of the observation that the Sharpe ratios tend to be similar and use this in our model; if this is the case we only need to estimate a time-varying covariance (then $\mu_i \propto \sigma_i = \sqrt{\Sigma_{ii}}$). A model like this can be estimated in a simple manner by just computing the covariance with the previous $l$ observations and the optimal allocation follows by $w \propto \hat{\Sigma}^{-1} \hat{\sigma}$. Following the ideas of how to make a bet with a model we cannot renormalize the weights at each time step to a given level of leverage or we do not achieve the best sharpe ratio (this idea is similar to having a target risk of the portfolio where the leverage is allowed to fluctuate but still not optimal in the sense of the idea of having a changing distribution).
 
@@ -858,29 +860,29 @@ We have a hidden/unobserved variable $\Sigma_k$ (the covariance); under this cov
 
 The model consists on a sequence of conditional distributions (state space model; the state is the hidden covariance):
 
-$\Sigma_k \sim p(\Sigma_k | \Sigma_{k-1})$
+$\Sigma_k \sim p(\Sigma_k \| \Sigma_{k-1})$
 
-$x_k \sim p(x_k | \Sigma_k)$
+$x_k \sim p(x_k \| \Sigma_k)$
 
-Under this model, we want to find a algorithm to estimate $p(\Sigma_k | x_{0:k})$ (this means the distribution of current covariance, $\Sigma_k$, given all observations of $x_i$ until now). With this and the transition mechanism, $p(\Sigma_k | \Sigma_{k-1})$, we can predict the next covariance given the observations that we made until now.
+Under this model, we want to find a algorithm to estimate $p(\Sigma_k \| x_{0:k})$ (this means the distribution of current covariance, $\Sigma_k$, given all observations of $x_i$ until now). With this and the transition mechanism, $p(\Sigma_k \| \Sigma_{k-1})$, we can predict the next covariance given the observations that we made until now.
 
-First, assume that at some instant $k-1$ we have a distribution for the covariance given all the observations until now - $p(\Sigma_{k-1} | x_{0:k-1})$ - and we know it's parameters. A suitable form for this distribution is a Inverse-Wishart distribution. Let us write this as:
+First, assume that at some instant $k-1$ we have a distribution for the covariance given all the observations until now - $p(\Sigma_{k-1} \| x_{0:k-1})$ - and we know it's parameters. A suitable form for this distribution is a Inverse-Wishart distribution. Let us write this as:
 
-$p(\Sigma_{k-1} | x_{0:k-1}) = \text{IW}(\nu_{k-1},S_{k-1})$
+$p(\Sigma_{k-1} \| x_{0:k-1}) = \text{IW}(\nu_{k-1},S_{k-1})$
 
 where $\nu_{k-1}$ is the degree of freedom parameter and $S_{k-1}$ is the scale matrix, both at instant $k-1$ (again, assume these parameters are known).
 
 Now we can use the Bayes theorem to write:
 
-$p(\Sigma_k | x_{0:k}) \propto p(x_k | \Sigma_k) p(\Sigma_k|x_{0:k-1})$
+$p(\Sigma_k \| x_{0:k}) \propto p(x_k \| \Sigma_k) p(\Sigma_k\|x_{0:k-1})$
 
-Now, $p(x_k | \Sigma_k) = \text{N}(x_k|0,\Sigma_k)$ (it is just a normal distribution with covariance $\Sigma_k$). If $p(\Sigma_k|x_{0:k-1})$ is a Inverse-Wishart with some parameters, then (since it is conjugate to the Normal) $p(\Sigma_k | x_{0:k})$ will also be Inverse-Wishart with some other parameters.
+Now, $p(x_k \| \Sigma_k) = \text{N}(x_k\|0,\Sigma_k)$ (it is just a normal distribution with covariance $\Sigma_k$). If $p(\Sigma_k\|x_{0:k-1})$ is a Inverse-Wishart with some parameters, then (since it is conjugate to the Normal) $p(\Sigma_k \| x_{0:k})$ will also be Inverse-Wishart with some other parameters.
 
 The other term is more involved. In terms of known quantities we can write it as (Chapman-Kolmogorov equation):
 
-$p(\Sigma_k|x_{0:k-1})=\int p(\Sigma_k|\Sigma_{k-1}) p(\Sigma_{k-1}|x_{0:k-1}) d\Sigma_{k-1}$
+$p(\Sigma_k\|x_{0:k-1})=\int p(\Sigma_k\|\Sigma_{k-1}) p(\Sigma_{k-1}\|x_{0:k-1}) d\Sigma_{k-1}$
 
-In general, it is difficult to build a distribution $p(\Sigma_k|\Sigma_{k-1})$ such that, when multiplied by an Inverse-Wishart ($p(\Sigma_{k-1}|x_{0:k-1})$) and integrated produces another Inverse-Wishart (which would simplify the calculations from what we saw above). Anyway, it is reasonable to say that $p(\Sigma_k|\Sigma_{k-1})$ has such a form that $p(\Sigma_k|x_{0:k-1})$ is a Inverse-Wishart with parameters $\nu_k^-$ and $S_k^-$ (where these parameters are functions on the previously known ones, $\nu_{k-1}$ and $S_{k-1}$).
+In general, it is difficult to build a distribution $p(\Sigma_k\|\Sigma_{k-1})$ such that, when multiplied by an Inverse-Wishart ( $p(\Sigma_{k-1}\|x_{0:k-1})$ ) and integrated produces another Inverse-Wishart (which would simplify the calculations from what we saw above). Anyway, it is reasonable to say that $p(\Sigma_k\|\Sigma_{k-1})$ has such a form that $p(\Sigma_k\|x_{0:k-1})$ is a Inverse-Wishart with parameters $\nu_k^-$ and $S_k^-$ (where these parameters are functions on the previously known ones, $\nu_{k-1}$ and $S_{k-1}$).
 
 It makes sense to consider that our prediction (expected value) for covariance is the same as it was before (we have no new information and so we cannot add anything) but has a higher uncertainty (larger variance). The following new parameters keep $\mathbf{E}[\Sigma_k]=\mathbf{E}[\Sigma_{k-1}]$ but increases the uncertainty.
 
@@ -892,9 +894,9 @@ with $\phi \in (0,1)$.
 
 Going back to the estimate of $\Sigma_k$ we can write:
 
-$p(\Sigma_k | x_{0:k}) \propto p(x_k | \Sigma_k) p(\Sigma_k|x_{0:k-1}) = \text{IW}(\nu_k^- + 1, S_k^- + \vec{x_k}\vec{x_k}^T)$
+$p(\Sigma_k \| x_{0:k}) \propto p(x_k \| \Sigma_k) p(\Sigma_k\|x_{0:k-1}) = \text{IW}(\nu_k^- + 1, S_k^- + \vec{x_k}\vec{x_k}^T)$
 
-and so $p(\Sigma_k | x_{0:k})$ is a Inverse-Wishart with updated parameters $\nu_k^- + 1$ and $S_k^- + \vec{x_k}\vec{x_k}^T$.
+and so $p(\Sigma_k \| x_{0:k})$ is a Inverse-Wishart with updated parameters $\nu_k^- + 1$ and $S_k^- + \vec{x_k}\vec{x_k}^T$.
 
 This model can be interpreted as estimating the current covariance with the past observation with exponentially decaying weights (with the decay controled by parameters $\phi$).
 
@@ -902,21 +904,21 @@ This model can be interpreted as estimating the current covariance with the past
 
 The previous model depends on a single parameters $\phi$ that we can interpret as a _lookback window_ to calculate the covariance. For a set of data (sequence $x_{0:T}$) we calculate it's optimal value by considering:
 
-$p(\phi|x_{0:T}) \propto p(x_{0:T}|\phi) p(\phi)$
+$p(\phi\|x_{0:T}) \propto p(x_{0:T}\|\phi) p(\phi)$
 
 We can write the sequence probability as
 
-$p(x_{0:T}|\phi) = \Pi_{k=0}^T p(x_k|x_{0:k-1},\phi)$
+$p(x_{0:T}\|\phi) = \Pi_{k=0}^T p(x_k\|x_{0:k-1},\phi)$
 
 which can be interpreted as a _prediction error_. The value that maximizes the probability of future unseen data should be optimal.
 
 The posterior predictive distribution when $x_k$ is normal and the covariance is Inverse-Wishart is a (multivariate) T-distribution. 
 
-$p(x_k|x_{0:k-1},\phi)=\text{T}(x_k | S_k^-/(\nu_k^- -d +1),\nu_k^- -d +1)$
+$p(x_k\|x_{0:k-1},\phi)=\text{T}(x_k \| S_k^-/(\nu_k^- -d +1),\nu_k^- -d +1)$
 
 A more convinient way to consider the problem is to write
 
-$\log p(\phi|x_{0:T}) \propto \log p(x_{0:T}|\phi) \log p(\phi) = \log p(\phi) + \sum_{k=0}^T \log p(x_k|x_{0:k-1},\phi)$
+$$\log p(\phi\|x_{0:T}) \propto \log p(x_{0:T}\|\phi) \log p(\phi) = \log p(\phi) + \sum_{k=0}^T \log p(x_k\|x_{0:k-1},\phi)$$
 
 To optimize $\phi$ we just run for a part of the data with some values and find the best one. 
 
