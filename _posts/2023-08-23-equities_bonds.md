@@ -918,7 +918,7 @@ $p(x_k\|x_{0:k-1},\phi)=\text{T}(x_k \| S_k^-/(\nu_k^- -d +1),\nu_k^- -d +1)$
 
 A more convinient way to consider the problem is to write
 
-$$\log p(\phi\|x_{0:T}) \propto \log p(x_{0:T}\|\phi) \log p(\phi) = \log p(\phi) + \sum_{k=0}^T \log p(x_k\|x_{0:k-1},\phi)$$
+$\log p(\phi\|x_{0:T}) \propto \log p(x_{0:T}\|\phi) \log p(\phi) = \log p(\phi) + \sum_{k=0}^T \log p(x_k\|x_{0:k-1},\phi)$
 
 To optimize $\phi$ we just run for a part of the data with some values and find the best one. 
 
