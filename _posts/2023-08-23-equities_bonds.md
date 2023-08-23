@@ -622,7 +622,7 @@ We obtained a similar result and so the approximation is good enough.
 Staring from the data and solving for the optimal resource allocation problem, by observation, the _risk parity_ idea is consistent with the data. Of course this assumes a static world where the distribution does not change; also, the popular notion of leveraging to prop up the returns also makes sense as the optimal allocation is quite large - of course there is a great deal of variation over parameters (just look at the histograms of optimal weights) but on average this can make sense.
 
 
-If no leverage, just buy equities of put a small allocation to bonds; otherwise rebalance between $\approx 30/70$ with some leverage. Of couse, nothing will prevent you to loose money when both fall in value.
+If no leverage, just buy equities or put a small allocation to bonds; otherwise rebalance between $\approx 30/70$ with some leverage. Of couse, nothing will prevent you to loose money when both fall in value.
 
 ## Changing distribution
 
