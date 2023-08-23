@@ -49,7 +49,7 @@ plt.show()
 
 
     
-![png](output_2_0.png)
+![png](/images/equities_bonds/output_2_0.png)
     
 
 
@@ -64,7 +64,7 @@ plt.show()
 
 
     
-![png](output_3_0.png)
+![png](/images/equities_bonds/output_3_0.png)
     
 
 
@@ -132,7 +132,7 @@ plt.show()
 
 
     
-![png](output_8_1.png)
+![png](/images/equities_bonds/output_8_1.png)
     
 
 
@@ -167,7 +167,7 @@ plt.show()
 
 
     
-![png](output_11_1.png)
+![png](/images/equities_bonds/output_11_1.png)
     
 
 
@@ -215,19 +215,19 @@ print('Optimal weights [bootstrap]: ', np.round(w_opt_boot,2))
 
 
     
-![png](output_13_0.png)
+![png](/images/equities_bonds/output_13_0.png)
     
 
 
 
     
-![png](output_13_1.png)
+![png](/images/equities_bonds/output_13_1.png)
     
 
 
 
     
-![png](output_13_2.png)
+![png](/images/equities_bonds/output_13_2.png)
     
 
 
@@ -328,13 +328,13 @@ plt.show()
 
 
     
-![png](output_18_1.png)
+![png](/images/equities_bonds/output_18_1.png)
     
 
 
 
     
-![png](output_18_2.png)
+![png](/images/equities_bonds/output_18_2.png)
     
 
 
@@ -408,13 +408,13 @@ plt.show()
 
 
     
-![png](output_23_0.png)
+![png](/images/equities_bonds/output_23_0.png)
     
 
 
 
     
-![png](output_23_1.png)
+![png](/images/equities_bonds/output_23_1.png)
     
 
 
@@ -485,7 +485,7 @@ plt.show()
 
 
     
-![png](output_26_1.png)
+![png](/images/equities_bonds/output_26_1.png)
     
 
 
@@ -542,13 +542,13 @@ plt.show()
 
 
     
-![png](output_28_1.png)
+![png](/images/equities_bonds/output_28_1.png)
     
 
 
 
     
-![png](output_28_2.png)
+![png](/images/equities_bonds/output_28_2.png)
     
 
 
@@ -610,7 +610,7 @@ plt.show()
 
 
     
-![png](output_31_1.png)
+![png](/images/equities_bonds/output_31_1.png)
     
 
 
@@ -719,7 +719,7 @@ plt.show()
 
 
     
-![png](output_37_1.png)
+![png](/images/equities_bonds/output_37_1.png)
     
 
 
@@ -836,13 +836,13 @@ plt.show()
 
 
     
-![png](output_42_1.png)
+![png](/images/equities_bonds/output_42_1.png)
     
 
 
 
     
-![png](output_42_2.png)
+![png](/images/equities_bonds/output_42_2.png)
     
 
 
@@ -978,7 +978,7 @@ plt.show()
 
 
     
-![png](output_47_1.png)
+![png](/images/equities_bonds/output_47_1.png)
     
 
 
@@ -1102,13 +1102,13 @@ plt.show()
 
 
     
-![png](output_50_1.png)
+![png](/images/equities_bonds/output_50_1.png)
     
 
 
 
     
-![png](output_50_2.png)
+![png](/images/equities_bonds/output_50_2.png)
     
 
 
