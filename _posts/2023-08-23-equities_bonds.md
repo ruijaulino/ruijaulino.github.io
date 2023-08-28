@@ -139,7 +139,7 @@ This strategy achieved a higher risk/return ratio; the annual return is decent a
 
 ## Constant distribution
 
-The most basic model is to assume that the distribution is constant across time instants. If this assumption is true we just need to estimate it's parameters (the problem now is a statistical one). Recall that we want to estimate the optimal allocation:
+The most basic model is to assume that the distribution is constant across time instants. If this assumption is true we just need to estimate it's parameters. Recall that we want to estimate the optimal allocation:
 
 $w=\Sigma^{-1} \mu$
 
