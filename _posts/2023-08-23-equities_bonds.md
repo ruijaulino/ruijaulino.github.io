@@ -1,6 +1,6 @@
 # Equities and Bonds
 
-Although there are many asset classes, a fundamental decision for many people/institutions is how to invest in stocks or bonds - or more generally, between growth and income. In the recent past we saw the demise of both (and many strategies that bet on both) with a fast raise in interest rates accompanied by a fall in value.
+Although there are many asset classes, a fundamental decision for many people/institutions is how to invest in stocks or bonds - or more generally, between growth and income. In the recent past we saw the demise of both (and of many strategies that bet on both) with a fast raise in interest rates accompanied by a fall in value.
 
 In general, this investment will be sequential: we allocate to both classes, get rewarded (or penalized) with a return and, finally, rebalance the exposure. Assuming a starting capital $S_0$, if $x_t$ is the vector of returns that the assets had from $t-1$ to $t$ then, proceding in this manner yield the following dynamics for the capital:
 
