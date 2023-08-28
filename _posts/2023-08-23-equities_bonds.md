@@ -236,7 +236,7 @@ print('Optimal weights [bootstrap]: ', np.round(w_opt_boot,2))
 
 Now we have a clearer picture of what are the optimal weights and their distribution; they vary a lot and their means are not (by chance probably) that different that what we calculated with the first half of data. 
 
-Another quantity of interest is of ratio of weight in IEI to the weight in SPY: we can see that the weight in IEI is $\approx 2.7$ times the weight in SPY (and the distribution is quite concentrated around this value).
+Another quantity of interest is the ratio of weight in IEI to the weight in SPY: we can see that the weight in IEI is $\approx 2.7$ times the weight in SPY (and the distribution is quite concentrated around this value).
 
 ### Normalization
 
@@ -254,7 +254,7 @@ If we consider as a measure of _risk_ the amount of money bet, we can say that, 
 
 $\frac{G_k}{G} \ge \frac{k}{1} \rightarrow -k^2 w^T\Sigma w + k w^T\Sigma w \ge 0$
 
-(where we wrote the inequality to the side where it means that the reduction in growth rate was lower than the reduction in exposure) which is true for any $0 \le k \le 1$. This shows that we can have a smaller growth rate reduction in proportion to what was reduced in the exposure and justifies that having a fractional Kelly bet is an interesting decision.
+(where we wrote the inequality to the side where it means that the reduction in growth rate was lower than the reduction in exposure) which is true for any $0 \le k \le 1$. This shows that we can have a smaller growth rate reduction in proportion to what was reduced in the exposure and justifies that making a fractional Kelly bet is an interesting decision.
 
 A natural factor $k$ is one such that the sum of weights (absolute value) is equal to a desired leverage (for example, no leverage); note that, since the weights are large we can do this without problem: if the weights were small then, the act of multiplying by a constant to get a desired leverage, could lead to a negative growth rate. Doing this for the previously calculated bootstrap weights:
 
@@ -268,7 +268,7 @@ print('Optimal weights normalized [bootstrap]: ', np.round(w_opt_boot_norm,2))
     Optimal weights normalized [bootstrap]:  [0.27 0.73]
     
 
-As discussed in previously, this weights, properly levered achieve the optimal growth rate.
+As discussed in previously, this weights, properly levered, achieve the optimal growth rate.
 
 ### Backtest
 
@@ -335,14 +335,14 @@ plt.show()
     
 
 
-Shapewise, we see a large improvement over the 60/40; the annual return is 5% compared to the 8% of the benchmark but comes with a large reduction in the scale of the fluctuations. The weights are quite stable over training sets.
+Shapewise, we see a large improvement over the 60/40; the annual return is 5% compared to the 8% of the benchmark but comes with a large reduction in the scale of the fluctuations. The weights are quite stable over training sets (second figure shows the distributions quite concentrated around the means).
 
 With those weights one can leverage and prop up the returns (although it will expose us to more risks and exacerbate the model/estimation errors that we may make here).
 
 In terms of modelling as constant distribution across time instants that can be levered, this seems to be what the data tell us to do.
 
 ### Relation to Risk Parity
-The previous weights are similar to the ones one would obtain if we do the so called _risk parity_ approach - allocation proportional to the inverse scale of the distribution (compare with the weights obtained by bootstrap; the cross validation part was to assess out of sample performance):
+The previous weights are similar to the ones we obtain if we do the so called _risk parity_ approach - allocation proportional to the inverse scale of the distribution (compare with the weights obtained by bootstrap; the cross validation part was to assess out of sample performance):
 
 
 ```python
@@ -417,7 +417,7 @@ plt.show()
 
 Although the SPY has a higher sharpe, the distributions overlap quite a lot; looking at the distribution of Sharpe ratio difference we cannot reject that the difference has mean zero (we just have to eyeball it).
 
-It seems that we can explain the calculated optimal weights with the equality in sharpe ratios; also, since we normalized the weights then the correlations do not matter (we can say that they control the maximum leverage but we are not interested in this as the this value is too large).
+It seems that we can explain the calculated optimal weights with the equality in sharpe ratios; also, since we normalized the weights then the correlations do not matter (we can say that they control the maximum leverage but we are not interested in this as the this value is too large for practical use).
 
 ### We cannot eat risk-adjusted returns
 
@@ -486,7 +486,7 @@ plt.show()
     
 
 
-The allocation is quite concentrated in equities but that is expected as there is the constraint in leverage and, to achieve a higher growth rate (and due to the fact that daily fluctuations in the sample are not that wild), we have to allocate much more to the asset class that grows more. We can also say that, without the possiblity to leverage the exposure (of if we do not want to have the model risk), just buy equities.
+The allocation is quite concentrated in equities but that is expected as there is the constraint in leverage and, to achieve a higher growth rate (and due to the fact that daily fluctuations in the sample are not that wild), we have to allocate much more to the asset class that grows more. We can also say that, without the possiblity to leverage the exposure (or if we do not want the model risk), just buy equities.
 
 In the same fashion, let us try to evaluate the out of sample performance of this strategy through cross-validation.
 
@@ -615,7 +615,7 @@ plt.show()
     
 
 
-We obtained a similar result and so the approximation is good enough.
+We obtained a similar result and so the approximation is good enough (as expected given the scale of the fluctuations is small, i.e, much smaller than 1).
 
 ### Notes
 
@@ -724,9 +724,9 @@ plt.show()
     
 
 
-The first conclusion is that the sharpe ratios are higher for non-constrained solutions and are higher that those obtained previously by considering a constant allocation - this lead us to the conclusion that time-varying covariances model better the data. Also, the unconstrained solution with the full covariance has a considerable higher sharpe than the others - we can attribute this to the change in leverage that is created due to the time-varying nature of correlation (when we normalized to unit leverage the advantage disapeared and so, given the theoretical solution to the problem, we can make this association); also, this model had a much lower drawdown when both assets feel recently - they becase quite correalated and the ammount invested was reduced. 
+The first conclusion is that the sharpe ratios are higher for non-constrained solutions and are higher than those obtained previously by considering a constant allocation - this lead us to the conclusion that time-varying covariances model better the data (this could be stated/tested in a more formal way by computing the probability of the data given the model, $p(D\|M)$ - which would penalize the added complexity - but let us not complicate the current idea). Also, the unconstrained solution with the full covariance has a considerable higher sharpe than the others - we can attribute this to the change in leverage that is created due to the time-varying nature of correlation (when we normalized to unit leverage the advantage disapeared and so, given the theoretical solution to the problem, we can make this association); also, this model had a much lower drawdown when both assets feel recently - they became quite correlated and the ammount invested was reduced. 
 
-Of course, to compare the equity curves we need to normalize the returns of the strategies because, it the unconstrained ones, the weights can vary a lot (also, non of those are _valid_ strategies in the sense that we need to estimate the bounds of the weights to proper normalize them).
+Of course, to compare the equity curves we need to normalize the returns of the strategies because, in the unconstrained ones, the weights can vary a lot (also, none of those are _valid_ strategies in the sense that we need to estimate the bounds of the weights to proper normalize them).
 
 Since the idea seems to improve the results, we need to find a way to estimate the out-of-sample performance. In particular, we need to estimate a bound to the weights and also optimize the lookback window. We can use the cross validation idea to run the model on a training set without any constraint and measure a bound to weights that we are expecting to see; then we evaluate on the testing set with the weights normalized (divided) by this bound. 
 
@@ -849,7 +849,7 @@ plt.show()
 
 The annual return is quite low but most of time we have many cash to the sides - if one has the capability to leverage a bit this can be a nice strategy.
 
-What is more relevant to a practical application is bounding the weights to a feasible set and that exercise is independent of _how_ (under which criteria) a lookback windows is optimized - should we choose the one that yields the higher sharpe? This question is ill defined because, in reality, what we did is a quite phenomenological approach and we did not specify a model on how stuff changes; without that it is difficult/ambiguous to define what is a good fit. Let us try to answer that in the next section.
+What is more relevant to a practical application is bounding the weights to a feasible set and that exercise is independent of _how_ (under which criteria) a lookback windows is optimized - should we choose the one that yields the higher sharpe or some other ratio that people feel confortable looking at? This question is ill defined because, in reality, what we did is a quite phenomenological approach and we did not specify a model on how stuff changes; without that it is difficult/ambiguous to define what is a good fit. Let us try to answer that in the next section.
 
 #### A state space model to estimate Covariance
 
@@ -1130,6 +1130,6 @@ Which is different from $\phi=1$; this supports that the parameters change over 
 ### Notes
 We did all this analysis for US market benchmarks which had a great performance in the past years. One could try the same ideas with other markets and check if the results hold.
 
-If you do not consider the changing nature of correlation the result is similar to just holding a constant rebalanced portfolio (sharpe of 1 versus sharpe of 0.9). 
+If you do not consider the changing nature of correlation (i.e, the variation of bet size) the result is similar to just holding a constant rebalanced portfolio (sharpe of 1 versus sharpe of 0.9). 
 
 
