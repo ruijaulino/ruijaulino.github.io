@@ -14,7 +14,7 @@ Let $x_t$ be the (multivariate) returns at some instant $t$:
 
 $x_t \sim p(x_t\|\mu_t,\Sigma_t)$
 
-Also, the state/hidden variables/parameters, depend on their previous values under some law
+This is similar to a Kalman filter (the state is the mean) with heteroscedastic noise. Also, the state/hidden variables/parameters, depend on their previous values under some law
 
 $\mu_t,\Sigma_t \sim p(\mu_t,\Sigma_t\|\mu_{t-1},\Sigma_{t-1})$
 
