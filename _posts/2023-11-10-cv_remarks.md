@@ -3,7 +3,7 @@
 
 The single most important aspect in any systematic trading model is the quantification of future performance - or, in other words, out-of-sample performance.
 
-In general, a model consists in the definition of the distribution of the target variable given some feature variables (that can include past observations of the target), $p(y|x)$; this distribution can be specified under some parameters $\theta$ that need to be _fitted_(or _learned_) from data.
+In general, a model consists in the definition of the distribution of the target variable given some feature variables (that can include past observations of the target), $p(y\|x)$; this distribution can be specified under some parameters $\theta$ that need to be _fitted_(or _learned_) from data.
 
 A common way to make this evaluation is to run a walk-forward simulation; we follow the data in time and, as new data comes, we retrain the model; then we evaluate the model in the next data points. This is simple to interpret as it resembles the actual trading process. This is illustrated in the next figure.
 
