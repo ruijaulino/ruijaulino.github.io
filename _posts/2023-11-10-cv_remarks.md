@@ -3,13 +3,13 @@
 
 The single most important aspect in any systematic trading model is the quantification of future performance - or, in other words, out-of-sample performance.
 
-In general, a model consists in the definition of the distribution of the target variable given some feature variables (that can include past observations of the target), $p(y|x)$; this distribution can be speficied under some parameters $\theta$ that need to be _fitted_(or _learned_) from data.
+In general, a model consists in the definition of the distribution of the target variable given some feature variables (that can include past observations of the target), $p(y|x)$; this distribution can be specified under some parameters $\theta$ that need to be _fitted_(or _learned_) from data.
 
 A common way to make this evaluation is to run a walk-forward simulation; we follow the data in time and, as new data comes, we retrain the model; then we evaluate the model in the next data points. This is simple to interpret as it resembles the actual trading process. This is illustrated in the next figure.
 
 
     
-![png](output_2_0.png)
+![png](/images/cv_remarks/output_2_0.png)
     
 
 
@@ -17,7 +17,7 @@ Another variation of this is to ditch _old_ data for training; this looks like
 
 
     
-![png](output_4_0.png)
+![png](/images/cv_remarks/output_4_0.png)
     
 
 
@@ -31,19 +31,19 @@ A less consensual way of estimating out-of-sample performance is to it in a reve
 
 
     
-![png](output_7_0.png)
+![png](/images/cv_remarks/output_7_0.png)
     
 
 
 
     
-![png](output_7_1.png)
+![png](/images/cv_remarks/output_7_1.png)
     
 
 
 
     
-![png](output_7_2.png)
+![png](/images/cv_remarks/output_7_2.png)
     
 
 
@@ -54,7 +54,7 @@ For example, consider the dataset divided into three disjoint sets $S_1,S_2,S_3$
 
 
     
-![png](output_9_0.png)
+![png](/images/cv_remarks/output_9_0.png)
     
 
 
@@ -71,7 +71,7 @@ A more correct case, would be to consider a setup like the next figure, where we
 
 
     
-![png](output_11_0.png)
+![png](/images/cv_remarks/output_11_0.png)
     
 
 
@@ -80,7 +80,7 @@ As a final remark, consider the data divided into three disjoint sets $S_1,S_2,S
 
 
     
-![png](output_13_0.png)
+![png](/images/cv_remarks/output_13_0.png)
     
 
 
