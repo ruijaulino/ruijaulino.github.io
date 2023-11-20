@@ -1,5 +1,5 @@
 
-# Small thought on backtesting
+# Small remark on backtesting
 
 The single most important aspect in any systematic trading model is the quantification of future performance - or, in other words, out-of-sample performance.
 
