@@ -1,7 +1,7 @@
 
 # Small remark on backtesting
 
-The single most important aspect in any systematic trading model is the quantification of future performance - or, in other words, out-of-sample performance.
+The most important aspect in any systematic trading model is the quantification of future performance - or, in other words, out-of-sample performance.
 
 In general, a model consists in the definition of the distribution of the target variable given some feature variables (that can include past observations of the target), $p(y\|x)$; this distribution can be specified under some parameters $\theta$ that need to be _fitted_(or _learned_) from data.
 
@@ -75,13 +75,11 @@ A more correct case, would be to consider a setup like the next figure, where we
     
 
 
-As a final remark, consider the data divided into three disjoint sets $S_1,S_2,S_3$ and, also, consider each set divided into a train a test subset.
+As a final remark, consider the data divided into three disjoint sets $S_1,S_2,S_3$ and, also, consider each set divided into a train and a test subset.
 
 
-
-    
 ![png](/images/cv_remarks/output_13_0.png)
     
 
 
-If we assume that all distributions $\Omega_i$ are different and different from the distribution of future data, then we cannot conclude nothing about future performance of the algorithm (no free-lunch). We always need to make assumptions to fit models.
+If we assume that all distributions $\Omega_i$ are different and different from the distribution of future data, then we cannot conclude nothing about future performance of the algorithm (no free-lunch). We always need to make assumptions to fit models; if we consider that a walk-forward is correct then there is no reason to assume that a procedure like cross-validation (that can use data generated in time _after_ the testing observations) is not valid and/or will induce a positive bias in the results (provided that we ensure the train and test are properly uncorrelated).
