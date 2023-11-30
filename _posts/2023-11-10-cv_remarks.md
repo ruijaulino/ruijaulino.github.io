@@ -24,7 +24,7 @@ Another variation of this is to ditch _old_ data for training; this looks like
 There are some limitations on this type of procedure; one only gets a single historical path, it depends on the order of the events that took place (unless we made that assumption explicitly, there is not reason to assume that the same data distribution will precede some events) and it uses the data in a ineficient manner.
 
 
-A less consensual way of estimating out-of-sample performance is to it in a reverse order (of course provided that there is no _superposition_ between the training and test sets; this can happen if the features are generated with past data - in this situation it is useful to leave some data out between the training and testing sets) or using from period before and after the testing set (more similar to cross-validation).
+A less consensual way of estimating out-of-sample performance is to do it in a reverse order (of course provided that there is no _superposition_ between the training and test sets; this can happen if the features are generated with past data - in this situation it is useful to leave some data out between the training and testing sets) or using from period before and after the testing set (more similar to cross-validation). Please note that I am not talking about testing on the reversed return sequence; what is meant is to train on return sequence that was generated after the test return sequence happened.
 
 
 
