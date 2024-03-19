@@ -3,11 +3,6 @@
 
 Rui Jaulino
 
-Born April 27, 1991
-
-Rua Luciano Cordeiro n79 5ºesq Lisboa, Portugal (+351 91 447 47 91)
-
-
 <a href="rui_jaulino@protonmail.com">rui_jaulino@protonmail.com</a>
 
 
