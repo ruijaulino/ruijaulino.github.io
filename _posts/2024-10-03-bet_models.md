@@ -41,11 +41,11 @@ $\blacksquare$
 
 Going back to the problem of finding the function $f(z)$ for the regression:
 
-$\int \frac{\partial F}{\partial f} \text{d}x = \int \frac{\partial \left( f(z) - x \right)^2 }{\partial f} p(x|z)p(z)\text{d}x = 2 \int \left( f(z) - x \right) p(x|z)\text{d}x p(z) = 0$
+$\int \frac{\partial F}{\partial f} \text{d}x = \int \frac{\partial \left( f(z) - x \right)^2 }{\partial f} p(x\|z)p(z)\text{d}x = 2 \int \left( f(z) - x \right) p(x\|z)\text{d}x p(z) = 0$
 
 from where:
 
-$f(z) = \int x p(x|z) \text{d}z = \mathbb{E}\[x|z\]$
+$f(z) = \int x p(x\|z) \text{d}z = \mathbb{E}\[x\|z\]$
 
 And we can conclude that the best prediction is to take the expected value of $x$ given $z$. Even better, we can now focus on model just the conditional (like a linear regression for example) and use that as prediction - it should be optimal for this loss. This procedure answers the question on how should the joint distribution is to be used when we want to minimize square loss making predictions. For different problems there are different objectives and let us see now how can we use infered models in a investment setting, making the bridge from typical machine learning to trading application.
 
