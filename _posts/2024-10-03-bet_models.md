@@ -620,7 +620,7 @@ lm.analysis(n)
     
 
 
-The estimates match quite well the simulation. The concavity in growth rate and sharpe with respect to bias intensity is present and behaves as predicted. Let us see what happens when we decrease the parameter $b$.
+The estimates up to second order match quite well the simulation. The concavity in growth rate and sharpe with respect to bias intensity is present and behaves as predicted. The theoretical density function for strategy returns has some differences but we cannot expect it to match properly as the parameters are outside the approximation. Let us see what happens when we make biases and correlation smaller.
 
 
 ```python
