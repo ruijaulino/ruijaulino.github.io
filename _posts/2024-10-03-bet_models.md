@@ -207,9 +207,9 @@ It is easy to think of this in a continuous setting; for example, this means tha
 
 ### Fractional Bet
 
-Weights to big, model is wrong, bet less. How does this affect growth rate
+For a real application the optimal weights tend to be quite large and there is also the risk that the estimated model is wrong. In any sensible application one is interested in controling the amount of money that is commited to the bet. If we consider a fraction of the optimal bet only, how this affects the growth rate? 
 
-Let $w = kM\_{x\|z}^{-1}\mu\_{x\|z}$, then
+Let $w = kM\_{x\|z}^{-1}\mu\_{x\|z}$ where $k$ is some value $\in \[0,1\]$, then
 
 $G(k) = k \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] -\frac{1}{2}k^2 \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] = gk(1-\frac{k}{2})$
 
