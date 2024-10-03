@@ -85,7 +85,7 @@ $G^* = \int \int \left( \mu\_{x\|z}^T M\_{x\|z}^{-1} x - \frac{1}{2} \mu\_{x\|z}
 
 grouping the integrals in $x$
 
-$G^\* = \int \mu_{x|z}^T M_{x|z}^{-1} \left[\int x p(x|z) \text{d}x \right] p(z) \text{d}z - \frac{1}{2} \int \mu_{x|z}^T M_{x|z}^{-1} \left[\int xx^T p(x|z) \text{d}x \right] M_{x|z}^{-1}\mu_{x|z} p(z) \text{d}z $
+$G^\* = \int \mu\_{x\|z}^T M\_{x\|z}^{-1} \left\[\int x p(x\|z) \text{d}x \right\] p(z) \text{d}z - \frac{1}{2} \int \mu\_{x\|z}^T M\_{x\|z}^{-1} \left\[\int xx^T p(x\|z) \text{d}x \right\] M\_{x\|z}^{-1}\mu\_{x\|z} p(z) \text{d}z $
 
 which gives:
 
