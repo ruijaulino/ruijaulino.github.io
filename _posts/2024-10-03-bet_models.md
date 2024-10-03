@@ -8,28 +8,28 @@ For any practical application we must specify predictions based on the joint or,
 
 ## The regression problem
 
-In a typical regression case we must choose a function $f(z)$ to provide an estimate for $x$ given some value of $z$. Of course, we must decide on what we want to do with this estimate - after all, the model must have some use - and so, we can associate some performance measure to the choice of this function $f(z)$. Let encode this by saying we incur a loss $L[x,f(z)]$ when some functional form for $f$ is taken. The average loss can be written as:
+In a typical regression case we must choose a function $f(z)$ to provide an estimate for $x$ given some value of $z$. Of course, we must decide on what we want to do with this estimate - after all, the model must have some use - and so, we can associate some performance measure to the choice of this function $f(z)$. Let encode this by saying we incur a loss $L\[x,f(z)\]$ when some functional form for $f$ is taken. The average loss can be written as:
 
-$\mathbb{E}[L] = \int \int L[x, f(z)] p(x,z) \text{d}x \text{d}z$
+$\mathbb{E}\[L\] = \int \int L\[x, f(z)\] p(x,z) \text{d}x \text{d}z$
 
-For a regression problem it is usual to define squared loss as an appropriate measure for the objective - this kind of make sense since we are trying to pass a _line_ between a bunch of points and we want it wiggle around the mean value - $L[x,f(z)] = \left(f(z) - x\right)^2$. This gives:
+For a regression problem it is usual to define squared loss as an appropriate measure for the objective - this kind of make sense since we are trying to pass a _line_ between a bunch of points and we want it wiggle around the mean value - $L\[x,f(z)\] = \left(f(z) - x\right)^2$. This gives:
 
-$\mathbb{E}[L] = \int \int \left( f(z) - x \right)^2 p(x,z) \text{d}x \text{d}z$
+$\mathbb{E}\[L\] = \int \int \left( f(z) - x \right)^2 p(x,z) \text{d}x \text{d}z$
 
 Now, what is the functional form of $f(z)$ such that expected loss is minimal?
 
 #### Variations
 The expected loss is a real valued quantity that depends on some function $f(z)$. Let us write it as:
 
-$\mathbb{E}[L] = I[f(z), z, x] = \int \int F[f(z), z, x] \text{d}x \text{d}z$
+$\mathbb{E}\[L\] = I\[f(z), z, x\] = \int \int F\[f(z), z, x\] \text{d}x \text{d}z$
 
-with $F[f(z), z, x] = \left( f(z) - x \right)^2 p(x,z)$ being a short and more general notation. To find extrema of $I$ in relation to some of it's variables we need to do the equivalent of finding where the derivative is zero: in this case we are trying to find the _function_ that minimizes $I$ rather than just a set of values. To make an analogy with a derivative, we can perturb $f(z)$ with some arbitrary function $\eta(z)$ like $f(z) \rightarrow f(z) + \epsilon \eta(z)$, where $\epsilon$ is some small value to make the perturbation small. Let us expand the integral near this point:
+with $F\[f(z), z, x\] = \left( f(z) - x \right)^2 p(x,z)$ being a short and more general notation. To find extrema of $I$ in relation to some of it's variables we need to do the equivalent of finding where the derivative is zero: in this case we are trying to find the _function_ that minimizes $I$ rather than just a set of values. To make an analogy with a derivative, we can perturb $f(z)$ with some arbitrary function $\eta(z)$ like $f(z) \rightarrow f(z) + \epsilon \eta(z)$, where $\epsilon$ is some small value to make the perturbation small. Let us expand the integral near this point:
 
-$I[f(z)+\epsilon \eta(z), z, x] \approx \int \int \left( F[f(z), z, x] + \epsilon \frac{\partial F}{\partial f} \eta(z) \right) \text{d}x \text{d}z  = I[f(z), z, x] + \epsilon \int \left( \int \frac{\partial F}{\partial f} \text{d}x \right) \eta(z) \text{d}z$
+$I\[f(z)+\epsilon \eta(z), z, x\] \approx \int \int \left( F\[f(z), z, x\] + \epsilon \frac{\partial F}{\partial f} \eta(z) \right) \text{d}x \text{d}z  = I\[f(z), z, x\] + \epsilon \int \left( \int \frac{\partial F}{\partial f} \text{d}x \right) \eta(z) \text{d}z$
 
 Rearranging we can write something that looks like a derivative with respect to the function:
 
-$\delta I = \frac{I[f(z)+\epsilon \eta(z), z, x] - I[f(z), z, x]}{\epsilon} =  \int \left( \int \frac{\partial F}{\partial f} \text{d}x \right) \eta(z) \text{d}z$
+$\delta I = \frac{I\[f(z)+\epsilon \eta(z), z, x\] - I\[f(z), z, x\]}{\epsilon} =  \int \left( \int \frac{\partial F}{\partial f} \text{d}x \right) \eta(z) \text{d}z$
 
 Since we want $I$ to be stationary for any perturbation $\eta(z)$, we can say that $I$ is minimized when $f(z)$ take a form such that:
 
@@ -45,7 +45,7 @@ $\int \frac{\partial F}{\partial f} \text{d}x = \int \frac{\partial \left( f(z) 
 
 from where:
 
-$f(z) = \int x p(x|z) \text{d}z = \mathbb{E}[x|z]$
+$f(z) = \int x p(x|z) \text{d}z = \mathbb{E}\[x|z\]$
 
 And we can conclude that the best prediction is to take the expected value of $x$ given $z$. Even better, we can now focus on model just the conditional (like a linear regression for example) and use that as prediction - it should be optimal for this loss. This procedure answers the question on how should the joint distribution is to be used when we want to minimize square loss making predictions. For different problems there are different objectives and let us see now how can we use infered models in a investment setting, making the bridge from typical machine learning to trading application.
 
@@ -59,21 +59,21 @@ In a general way, it is possible to say that the objective is to find a function
 
 After $n$ periods of bets, the capital will follow the dynamics:
 
-$S_n = S_0 \left(1 + w(z_1)^T x_1 \right) \cdots \left(1 + w(z_n)^T x_n \right) = S_0 \exp (nG)$
+$S\_n = S\_0 \left(1 + w(z\_1)^T x\_1 \right) \cdots \left(1 + w(z\_n)^T x\_n \right) = S\_0 \exp (nG)$
 
-where $G = \frac{1}{n} \sum_i \log \left( 1 + w(z_i)^T x_i \right) \rightarrow \mathbb{E} \left[\log \left( 1 + w(z)^T x \right)\right]$. $S_t$ is the capital at instant $t$.
+where $G = \frac{1}{n} \sum\_i \log \left( 1 + w(z\_i)^T x\_i \right) \rightarrow \mathbb{E} \left[\log \left( 1 + w(z)^T x \right)\right]$. $S\_t$ is the capital at instant $t$.
 
-Here we can make the approximation $G = \mathbb{E} \left[\log \left( 1 + w(z)^T x \right)\right] \approx \mathbb{E} \left[w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2\right]$ which is valid when $|x|<<1$ (this approximation is quite good for many assets especially when dealing with shorter time horizons).
+Here we can make the approximation $G = \mathbb{E} \left[\log \left( 1 + w(z)^T x \right)\right] \approx \mathbb{E} \left[w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2\right]$ which is valid when $\|x\|<<1$ (this approximation is quite good for many assets especially when dealing with shorter time horizons).
 
 If we are using our model for the joint to maximize compounded wealth, what is the functional form for $w(z)$ that achieves this? Making an analogy with the regression case (check notes on variations), the condition that maximizes growth rate $G = \int \int \left( w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2 \right) p(x,z) \text{d}z \text{d}x$ is given by:
 
-$\int \frac{\partial \left( w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2 \right)}{\partial w} p(x|z) \text{d}x = 0 \rightarrow \int \left( x - xx^T w \right) p(x|z) \text{d}x = 0$
+$\int \frac{\partial \left( w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2 \right)}{\partial w} p(x\|z) \text{d}x = 0 \rightarrow \int \left( x - xx^T w \right) p(x\|z) \text{d}x = 0$
 
 from where we can write:
 
-$w(z) = \left( \int xx^T p(x|z) \text{d}x\right)^{-1} \left( \int x p(x|z) \text{d}x \right) = M_{x|z}^{-1} \mu_{x|z}$
+$w(z) = \left( \int xx^T p(x\|z) \text{d}x\right)^{-1} \left( \int x p(x\|z) \text{d}x \right) = M\_{x\|z}^{-1} \mu\_{x\|z}$
 
-where $M_{x|z}$ is the conditional second non central moment and $\mu_{x|z}$ is the conditional mean.
+where $M\_{x\|z}$ is the conditional second non central moment and $\mu\_{x\|z}$ is the conditional mean.
 
 As a note, although in a regression we focus on the conditional value of $x$ given $z$, for optimal compounding, how we model covariance matters and take part in the action.
 
@@ -81,7 +81,7 @@ As a note, although in a regression we focus on the conditional value of $x$ giv
 
 Under the optimal solution, what is the growth rate? We can replace back to get:
 
-$G^* = \int \int \left( \mu_{x|z}^T M_{x|z}^{-1} x - \frac{1}{2} \mu_{x|z}^T M_{x|z}^{-1} xx^T M_{x|z}^{-1}\mu_{x|z}\right) p(x|z)p(z)\text{d}x\text{d}z$
+$G^* = \int \int \left( \mu\_{x\|z}^T M\_{x\|z}^{-1} x - \frac{1}{2} \mu\_{x\|z}^T M\_{x\|z}^{-1} xx^T M\_{x\|z}^{-1}\mu\_{x\|z}\right) p(x\|z)p(z)\text{d}x\text{d}z$
 
 grouping the integrals in $x$
 
@@ -97,7 +97,7 @@ $g = \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] = \
 
 where $C\_{x\|z}$ is the conditional covariance matrix. This also means that growth rate is bounded by $\frac{1}{2}$ and, after many optimal bets:
 
-$\log(S_n) - \log(S_0) \leq \frac{n}{2}$
+$\log(S\_n) - \log(S\_0) \leq \frac{n}{2}$
 
 This is already a large value and assumes that all the leverage set by the optimal bet can be put in place; in practice this will never occur but still an interesting bound.
 
@@ -120,7 +120,7 @@ $SR = \frac{\mathbb{E}\[s\]}{\sqrt{\mathbb{E}\[s^2\]}} = \sqrt{\mathbb{E}\_z \le
 
 Also, from the bound previously calculated, $SR \leq 1$ but of course this is difficult to interpret because it is in relation to the rebalance frequency and Sharpe ratio has dimensions of inverse of square root of time.
 
-As a note, to measure sharpe with the standard deviation, we can compute the variance as $\text{Var}[s] =\mathbb{E}[s^2] - \mathbb{E}[s]^2  = g(1-g)$ and then take the square root of it. This gives:
+As a note, to measure sharpe with the standard deviation, we can compute the variance as $\text{Var}\[s\] =\mathbb{E}\[s^2\] - \mathbb{E}\[s\]^2  = g(1-g)$ and then take the square root of it. This gives:
 
 $SR = \frac{\sqrt{g}}{\sqrt{1-g}}$
 
