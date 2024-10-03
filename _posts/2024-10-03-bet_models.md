@@ -166,11 +166,11 @@ $\int \frac{\partial r}{\partial w} -\lambda\frac{\partial h}{\partial w}  \text
 
 Replacing the functions $r$ and $h$ defined above:
 
-$\int xp(x|z) -\lambda xx^T p(x|z)  \text{d}x = 0$
+$\int xp(x\|z) -\lambda xx^T p(x\|z)  \text{d}x = 0$
 
 Solving yields (similar to maximization of growth rate)
 
-$w \propto M_{x|z}^{-1}\mu_{x|z}$
+$w \propto M_{x\|z}^{-1}\mu_{x\|z}$
 
 The weights that optimizes sharpe ratio is proportional to the one that maximizes growth rate and proportionality constant must be constant for all values of $z$.
 
@@ -180,25 +180,25 @@ The message is that, for any of the objectives, the functional form of the weigh
 
 Optimal growth weights tend to be large and practical constraints force us to _scale_ the weights in some fashion. For example, a common approach is to normalize the weights to unit leverage (sum of absolute value to one); also, from the above results, since the weights that optimize sharpe are proportional to the optimal weights why not make this normalization for each time instant? A trivial case of this is when we have some model for the returns and we just consider the sign of the prediction (go long if positive mean and vice-versa).
 
-Let us illustrate better the optimal weight formula $w=\lambda M_{x|z}^{-1}\mu_{x|z}$ to provide a more comprehensive example on why the scaling factor should be the same across time otherwise the Sharpe ratio is lower.
+Let us illustrate better the optimal weight formula $w=\lambda M_{x\|z}^{-1}\mu_{x\|z}$ to provide a more comprehensive example on why the scaling factor should be the same across time otherwise the Sharpe ratio is lower.
 
-The problem is easy to formulate in the discrete case. To do that let us assume that our _features_ are indicator variables and for each one the distribution of $x$ has mean $\mu_k$ and covariance $M_k$.
+The problem is easy to formulate in the discrete case. To do that let us assume that our _features_ are indicator variables and for each one the distribution of $x$ has mean $\mu\_k$ and covariance $M\_k$.
 
 Now, for one of the output distributions ($j$), we will use as optimal weight $w\_j=\phi M\_j ^{-1} \mu\_j$ (where $\phi$ is a constant different from 1) instead of $M\_j ^{-1} \mu\_j$; for all other output distributions we use the optimal value $w\_k = M\_k^{-1} \mu\_k$. 
 
 The sharpe ratio of this weighting scheme is (this is just a weighted mean and variance; the weights $p_i$ represent the number of times distribution $i$ is _seen_, i.e, a probability):
 
-$\text{SR}=\frac{\phi p_j \mu_j^T M_j^{-1} \mu_j + \sum_{k-1} p_k \mu_k^T M_k^{-1} \mu_k }{\sqrt{\phi^2 p_j \mu_j^T M^{-1} \mu_j + \sum_{k-1} p_k \mu_k^T M_k^{-1} \mu_k }}$
+$\text{SR}=\frac{\phi p\_j \mu\_j^T M\_j^{-1} \mu\_j + \sum\_{k-1} p\_k \mu\_k^T M\_k^{-1} \mu\_k }{\sqrt{\phi^2 p\_j \mu\_j^T M^{-1} \mu\_j + \sum\_{k-1} p\_k \mu\_k^T M\_k^{-1} \mu\_k }}$
 
 As before, the sharpe ratio of using the optimal weights can be written as (with the $j$ term being taken out of the sum for comparison):
 
-$\text{SRopt}=\frac{ p_j \mu_j^T M_j^{-1} \mu_j + \sum_{k-1} p_k \mu_k^T M_k^{-1} \mu_k }{\sqrt{ p_j \mu_j^T M_j^{-1} \mu_j + \sum_{k-1} p_k \mu_k^T M_k^{-1} \mu_k }}$
+$\text{SRopt}=\frac{ p\_j \mu\_j^T M\_j^{-1} \mu\_j + \sum\_{k-1} p\_k \mu\_k^T M\_k^{-1} \mu\_k }{\sqrt{ p\_j \mu\_j^T M\_j^{-1} \mu\_j + \sum\_{k-1} p\_k \mu\_k^T M\_k^{-1} \mu\_k }}$
 
 Of course the only difference is the $\phi$ term (the weight that we changed). To test the condition for $\text{SR} \le \text{SRopt}$, we can write in a more simplified way:
 
 $\frac{A+\phi B}{\sqrt{A+\phi^2B}} \le \frac{A+B}{\sqrt{A+B}}=\sqrt{A+B}$
 
-where $A = \sum_{k-1} p_k \mu_k^T M_k^{-1} \mu_k$ and $B=p_j \mu_j^T M_j^{-1} \mu_j$. This inequality is true for any $\phi \neq 1$. Also, trivially, one can check that if we multiply all $w_k$ for the same factor nothing changes because the factors cancel out. This concludes that, to achieve an optimal sharpe ratio _all_ optimal weights should be scaled by the same value. This is equivalent to keep proportionality over time of perceived risk of the model. 
+where $A = \sum\_{k-1} p\_k \mu\_k^T M\_k^{-1} \mu\_k$ and $B=p\_j \mu\_j^T M\_j^{-1} \mu\_j$. This inequality is true for any $\phi \neq 1$. Also, trivially, one can check that if we multiply all $w\_k$ for the same factor nothing changes because the factors cancel out. This concludes that, to achieve an optimal sharpe ratio all optimal weights should be scaled by the same value. This is equivalent to keep proportionality over time of perceived risk of the model. 
 
 It is easy to think of this in a continuous setting; for example, this means that, if we have a regression to predict the return, we must make a bet proportional to the expected value (ignore the second non central moment for intuition) and, for example, if we take the sign of the prediction as a weight (which can make sense at first sight), that is not optimal.
 
@@ -209,7 +209,7 @@ It is easy to think of this in a continuous setting; for example, this means tha
 
 Weights to big, model is wrong, bet less. How does this affect growth rate
 
-Let $w = kM_{x|z}^{-1}\mu_{x|z}$, then
+Let $w = kM\_{x\|z}^{-1}\mu\_{x\|z}$, then
 
 $G(k) = k \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] -\frac{1}{2}k^2 \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] = gk(1-\frac{k}{2})$
 
@@ -283,15 +283,15 @@ with $\epsilon ~ N(0, p)$
 
 The returns have unconditional distribution $x \sim N(a+bm, b^2q + p)$.
 
-Under this model, the optimal weights $w = M_{x|z}^{-1}\mu_{x|z}$ are $w = \frac{a+bz}{p+(a+bz)^2}$; the $b$ parameter represents the correlation between the feature and the target. It biases and correlation are small this can be approximated with $w \approx \frac{a+bz}{p}$.
+Under this model, the optimal weights $w = M\_{x\|z}^{-1}\mu\_{x\|z}$ are $w = \frac{a+bz}{p+(a+bz)^2}$; the $b$ parameter represents the correlation between the feature and the target. It biases and correlation are small this can be approximated with $w \approx \frac{a+bz}{p}$.
 
-The optimal growth rate is $G = \frac{1}{2}g$ with $g = \mathbb{E}\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z} \right]$. For this model
+The optimal growth rate is $G = \frac{1}{2}g$ with $g = \mathbb{E}\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\]$. For this model
 
-$g = \mathbb{E}\left[\frac{\left(a+bz\right)^2}{p+\left(a+bz\right)^2}\right]$
+$g = \mathbb{E}\left\[\frac{\left(a+bz\right)^2}{p+\left(a+bz\right)^2}\right\]$
 
 This is the expected value of a quotient and it's difficult to compute in closed form. Consider the following approximation:
 
-$\mathbb{E}[\frac{R}{S}] \approx \frac{\mu_R}{\mu_S} - \frac{\text{Cov}(R,S)}{\mu_S^2} + \frac{\text{Var}(S)\mu_R}{\mu_S^3}$
+$\mathbb{E}\[\frac{R}{S}\] \approx \frac{\mu\_R}{\mu\_S} - \frac{\text{Cov}(R,S)}{\mu\_S^2} + \frac{\text{Var}(S)\mu\_R}{\mu\_S^3}$
 
 where the last two terms are second order corrections. It is expected that these terms are important when correlation $b$ is large. Using the approximation (after some calculations):
 
@@ -299,17 +299,17 @@ $g \approx \frac{b^2q+(a+bm)^2}{p+b^2q+(a+bm)^2} - \frac{2 b^4 q^2 + 4(a+bm)^2 b
 
 Recall here the sharpe ratio $SR = \sqrt{g}$. In a similar fashion we can work out an approximation for the expected value of optimal weight:
 
-$\mathbb{E}\left[{M_{x|z}^{-1}\mu_{x|z}}\right] = \mathbb{E}\left[ \frac{a+bz}{p+(a+bz)^2} \right]$
+$\mathbb{E}\left\[{M\_{x\|z}^{-1}\mu\_{x\|z}}\right\] = \mathbb{E}\left\[ \frac{a+bz}{p+(a+bz)^2} \right\]$
 
 Again, this is a ratio of random variables, and, after some calculations, we can approximate it as:
 
-$\mathbb{E}\left[{M_{x|z}^{-1}\mu_{x|z}}\right] \approx \frac{a+bm}{p+b^2q+(a+bm)^2} - \frac{2(a+bm)^2 b^2 q}{\left(p+b^2q+(a+bm)^2 \right)^2} + \frac{\left(4(a+bm)^2 b^2 q + 2b^4q^2\right)(a+bm)}{\left(p+b^2q+(a+bm)^2 \right)^3}$
+$\mathbb{E}\left\[{M\_{x\|z}^{-1}\mu\_{x\|z}}\right\] \approx \frac{a+bm}{p+b^2q+(a+bm)^2} - \frac{2(a+bm)^2 b^2 q}{\left(p+b^2q+(a+bm)^2 \right)^2} + \frac{\left(4(a+bm)^2 b^2 q + 2b^4q^2\right)(a+bm)}{\left(p+b^2q+(a+bm)^2 \right)^3}$
 
 Other quantities of interest are the expected value and second non central moment of $x$:
 
-$\mathbb{E}\left[\mu_{x|z}\right] = a+bm$
+$\mathbb{E}\left\[\mu\_{x\|z}\right\] = a+bm$
 
-$\mathbb{E}\left[M_{x|z}\right] = p+b^2 q (a+bm)^2$
+$\mathbb{E}\left\[M\_{x\|z}\right\] = p+b^2 q (a+bm)^2$
 
 #### Small parameters approximation
 
@@ -317,11 +317,11 @@ To gain more intuition about making bets with a linear model, consider that bias
 
 $\blacksquare$
 
-Let $x_1 \sim N(\mu_1, \sigma_1^2)$, $x_2 \sim N(\mu_2, \sigma_2^2)$ and $\rho = \frac{\text{cov}(x_1, x_2)}{\sigma_1 \sigma_2}$. The variable $y = x_1 x_2$ has probability density given by
+Let $x\_1 \sim N(\mu\_1, \sigma\_1^2)$, $x\_2 \sim N(\mu\_2, \sigma\_2^2)$ and $\rho = \frac{\text{cov}(x\_1, x\_2)}{\sigma\_1 \sigma\_2}$. The variable $y = x\_1 x\_2$ has probability density given by
 
-$p(y) = \exp \left( -\frac{1}{2(1-\rho^2)} \left( \frac{\mu_1}{\sigma_1^2} + \frac{\mu_2}{\sigma_2^2} - \frac{2\rho(y+\mu_1 \mu_2)}{\sigma_1 \sigma_2} \right) \right) \sum_{n=0}^{\infty} \sum_{m=0}^{2n} \frac{y^{2n-m} |y|^{m-n} \sigma_1^{m-n-1} }{ \pi (2n)! (1-\rho^2)^{2n-1/2} \sigma_2^{m-n+1}} \binom{2n}{m} \left(\frac{\mu_1}{\sigma_1^2} - \frac{\rho \mu_2}{\sigma_1 \sigma_2}\right)^m \left( \frac{\mu_2}{\sigma_2^2} - \frac{\rho \mu_1}{\sigma_1 \sigma_2} \right)^{2n-m} K_{m-n}\left( \frac{|y|}{(1-\rho^2)\sigma_1 \sigma_2} \right)  $
+$p(y) = \exp \left( -\frac{1}{2(1-\rho^2)} \left( \frac{\mu\_1}{\sigma\_1^2} + \frac{\mu\_2}{\sigma\_2^2} - \frac{2\rho(y+\mu\_1 \mu\_2)}{\sigma\_1 \sigma\_2} \right) \right) \sum\_{n=0}^{\infty} \sum\_{m=0}^{2n} \frac{y^{2n-m} \|y\|^{m-n} \sigma\_1^{m-n-1} }{ \pi (2n)! (1-\rho^2)^{2n-1/2} \sigma\_2^{m-n+1}} \binom{2n}{m} \left(\frac{\mu\_1}{\sigma\_1^2} - \frac{\rho \mu\_2}{\sigma\_1 \sigma\_2}\right)^m \left( \frac{\mu\_2}{\sigma\_2^2} - \frac{\rho \mu\_1}{\sigma\_1 \sigma\_2} \right)^{2n-m} K\_{m-n}\left( \frac{\|y\|}{(1-\rho^2)\sigma\_1 \sigma\_2} \right)  $
 
-where $K_{v}(z)$ is the modified Bessel function of the second kind with order $v$.
+where $K\_{v}(z)$ is the modified Bessel function of the second kind with order $v$.
 
 $\blacksquare$
 
@@ -329,7 +329,7 @@ With small biases and correlations we can approximate with
 
 $G \approx \frac{1}{2} \frac{b^2 q}{p}$
 
-$SR \approx |b|\sqrt{\frac{q}{p}}$
+$SR \approx \|b\|\sqrt{\frac{q}{p}}$
 
 which are usefull expressions for fast estimation.
 
