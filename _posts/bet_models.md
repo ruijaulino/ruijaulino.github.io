@@ -89,13 +89,13 @@ $G^\* = \int \mu_{x|z}^T M_{x|z}^{-1} \left[\int x p(x|z) \text{d}x \right] p(z)
 
 which gives:
 
-$G^\* = \frac{1}{2} \mathbb{E}_z \left\[ \mu_{x\|z}^T M_{x\|z}^{-1} \mu_{x\|z} \right\] = \frac{1}{2} g$
+$G^\* = \frac{1}{2} \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] = \frac{1}{2} g$
 
 this means the rate at which the money grows. We can write an interesting relation for $g$.
 
-$g = \mathbb{E}_z \left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z} \right] = \mathbb{E}_z\left[\mu_{x|z}^T \left(C_{x|z} + \mu_{x|z}\mu_{x|z}^T\right)^{-1} \mu_{x|z} \right] = \mathbb{E}_z \left[ \frac{\mu_{x|z}^T C_{x|z}^{-1}\mu_{x|z}}{1+\mu_{x|z}^T C_{x|z}^{-1}\mu_{x|z}}\right] \leq  \frac{\mathbb{E}_z \left[\mu_{x|z}^T C_{x|z}^{-1}\mu_{x|z}\right]}{\mathbb{E}_z \left[1+\mu_{x|z}^T C_{x|z}^{-1}\mu_{x|z}\right]} \leq 1$
+$g = \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] = \mathbb{E}\_z\left[\mu\_{x\|z}^T \left(C\_{x\|z} + \mu\_{x\|z}\mu\_{x\|z}^T\right)^{-1} \mu\_{x\|z} \right\] = \mathbb{E}\_z \left\[ \frac{\mu\_{x\|z}^T C_{x\|z}^{-1}\mu\_{x\|z}}{1+\mu\_{x\|z}^T C\_{x\|z}^{-1}\mu\_{x\|z}}\right\] \leq  \frac{\mathbb{E}\_z \left\[\mu\_{x\|z}^T C\_{x\|z}^{-1}\mu\_{x\|z}\right\]}{\mathbb{E}\_z \left\[1+\mu\_{x\|z}^T C\_{x\|z}^{-1}\mu\_{x\|z}\right\]} \leq 1$
 
-where $C_{x|z}$ is the conditional covariance matrix. This also means that growth rate is bounded by $\frac{1}{2}$ and, after many optimal bets:
+where $C\_{x\|z}$ is the conditional covariance matrix. This also means that growth rate is bounded by $\frac{1}{2}$ and, after many optimal bets:
 
 $\log(S_n) - \log(S_0) \leq \frac{n}{2}$
 
@@ -108,15 +108,15 @@ It is common to evaluate strategies based on the so called Sharpe Ratio which me
 
 The expected value of the strategy $s = w^T x$ with the optimal weights is:
 
-$\mathbb{E}[s] = \int \int \mu_{x|z}^T M_{x|z}^{-1} x p(x|z) p(z) \text{d}z \text{d}x = \int \mu_{x|z}^T M_{x|z}^{-1} \left[\int x p(x|z) \text{d}x \right] p(z) \text{d}z = \mathbb{E}_z \left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z} \right]$
+$\mathbb{E}\[s\] = \int \int \mu\_{x\|z}^T M\_{x\|z}^{-1} x p(x\|z) p(z) \text{d}z \text{d}x = \int \mu\_{x\|z}^T M\_{x\|z}^{-1} \left\[\int x p(x\|z) \text{d}x \right\] p(z) \text{d}z = \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\]$
 
 The second non central moment of it:
 
-$\mathbb{E}[s^2] = \int \int \mu_{x|z}^T M_{x|z}^{-1} xx^T M_{x|z}^{-1}\mu_{x|z} p(x|z) p(z) \text{d}z \text{d}x = \int \mu_{x|z}^T M_{x|z}^{-1} \left[\int xx^T p(x|z) \text{d}x \right] M_{x|z}^{-1}\mu_{x|z} p(z) \text{d}z = \mathbb{E}_z \left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z} \right]$
+$\mathbb{E}\[s^2\] = \int \int \mu\_{x\|z}^T M\_{x\|z}^{-1} xx^T M\_{x\|z}^{-1}\mu\_{x\|z} p(x\|z) p(z) \text{d}z \text{d}x = \int \mu\_{x\|z}^T M\_{x\|z}^{-1} \left\[\int xx^T p(x\|z) \text{d}x \right\] M\_{x\|z}^{-1}\mu\_{x\|z} p(z) \text{d}z = \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\]$
 
 Then, the sharpe ratio is
 
-$SR = \frac{\mathbb{E}[s]}{\sqrt{\mathbb{E}[s^2]}} = \sqrt{\mathbb{E}_z \left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z} \right]} = \sqrt{g}$
+$SR = \frac{\mathbb{E}\[s\]}{\sqrt{\mathbb{E}\[s^2\]}} = \sqrt{\mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\]} = \sqrt{g}$
 
 Also, from the bound previously calculated, $SR \leq 1$ but of course this is difficult to interpret because it is in relation to the rebalance frequency and Sharpe ratio has dimensions of inverse of square root of time.
 
@@ -184,7 +184,7 @@ Let us illustrate better the optimal weight formula $w=\lambda M_{x|z}^{-1}\mu_{
 
 The problem is easy to formulate in the discrete case. To do that let us assume that our _features_ are indicator variables and for each one the distribution of $x$ has mean $\mu_k$ and covariance $M_k$.
 
-Now, for one of the output distributions ($j$), we will use as optimal weight $w_j=\phi M_j ^{-1} \mu_j$ (where $\phi$ is a constant different from 1) instead of $M_j ^{-1} \mu_j$; for all other output distributions we use the optimal value $ w_k=M_k ^{-1} \mu_k$. 
+Now, for one of the output distributions ($j$), we will use as optimal weight $w\_j=\phi M\_j ^{-1} \mu\_j$ (where $\phi$ is a constant different from 1) instead of $M\_j ^{-1} \mu\_j$; for all other output distributions we use the optimal value $w\_k = M\_k^{-1} \mu\_k$. 
 
 The sharpe ratio of this weighting scheme is (this is just a weighted mean and variance; the weights $p_i$ represent the number of times distribution $i$ is _seen_, i.e, a probability):
 
@@ -211,63 +211,63 @@ Weights to big, model is wrong, bet less. How does this affect growth rate
 
 Let $w = kM_{x|z}^{-1}\mu_{x|z}$, then
 
-$G(k) = k \mathbb{E}_z \left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z} \right] -\frac{1}{2}k^2 \mathbb{E}_z \left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z} \right] = gk(1-\frac{k}{2})$
+$G(k) = k \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] -\frac{1}{2}k^2 \mathbb{E}\_z \left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z} \right\] = gk(1-\frac{k}{2})$
 
-Of course, for $k \in [0,1]$ this $G(k)<G$, but how low? $\frac{\partial G(k)}{\partial k} = g(1-k) \geq 0$ meaning that growth rate decreases when we go from $1$ to $0$ and  $\frac{\partial^2 G(k)}{\partial^2 k} = -g < 0$ meaning that this decrease is concave to a reduction in _leverage_: the growth rate does not reduce proportionately to the reduction in leverage, it reduces less. This property can be interpreted as some sort of free lunch as we can deploy less risk without having the proportional reduction in growth.
+Of course, for $k \in \[0,1\]$ this $G(k)<G$, but how low? $\frac{\partial G(k)}{\partial k} = g(1-k) \geq 0$ meaning that growth rate decreases when we go from $1$ to $0$ and  $\frac{\partial^2 G(k)}{\partial^2 k} = -g < 0$ meaning that this decrease is concave to a reduction in _leverage_: the growth rate does not reduce proportionately to the reduction in leverage, it reduces less. This property can be interpreted as some sort of free lunch as we can deploy less risk without having the proportional reduction in growth.
 
 ### De-biasing
 
 Another problem we can face in a practical application is the case where the learnt model produces weights that have a bias to one side. For example, consider the intercept term in a linear regression; over time, we will make more bets to one side than to the other and this _may_ not be desirable. Also, it may happen that we cannot _neutralize_ the exposure with many assets because the trades are not contemporaneous. A possible solution is to remove the bias in weights by subtracting the mean weight vector that we expect the model to produce over many periods. Let us analyse this case and it's consequences in terms of performance.
 
-Consider that we bet with $w = M_{x|y}^{-1}\mu_{x|z} - \phi v$ where $v$ is some arbitrary vector (later we will chose an expression for it). The growth rate becomes:
+Consider that we bet with $w = M\_{x\|y}^{-1}\mu\_{x\|z} - \phi v$ where $v$ is some arbitrary vector (later we will chose an expression for it). The growth rate becomes:
 
-$G = \int \int \left(M_{x|z}^{-1}\mu_{x|z}-\phi v\right)^T x - \frac{1}{2} \left(\left(M_{x|z}^{-1}\mu_{x|z}-\phi v\right)^T x \right)^2 p(x|z)p(z) \text{d}x \text{d}z$
+$G = \int \int \left(M\_{x\|z}^{-1}\mu\_{x\|z}-\phi v\right)^T x - \frac{1}{2} \left(\left(M\_{x\|z}^{-1}\mu\_{x\|z}-\phi v\right)^T x \right)^2 p(x\|z)p(z) \text{d}x \text{d}z$
 
 which we can work out (similar to the previous cases explored here) to:
 
-$G = \frac{1}{2}\left( \mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z}\right] - \phi^2 v^T \mathbb{E}_z\left[ M_{x|z}\right] v \right)$
+$G = \frac{1}{2}\left( \mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z}\right\] - \phi^2 v^T \mathbb{E}\_z\left\[ M\_{x\|z}\right\] v \right)$
 
-Of course, depending of $v$ many things are possible to conclude. Let us consider $v = \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]$ which is the average that we expect the optimal weights to have over time - the bias. Then
+Of course, depending of $v$ many things are possible to conclude. Let us consider $v = \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]$ which is the average that we expect the optimal weights to have over time - the bias. Then
 
-$G = \frac{1}{2}\left( \mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z}\right] - \phi^2 \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]^T \mathbb{E}_z\left[ M_{x|z}\right] \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right] \right)$
+$G = \frac{1}{2}\left( \mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z}\right\] - \phi^2 \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]^T \mathbb{E}\_z\left\[ M\_{x\|z}\right\] \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\] \right)$
 
-If we write the first term as $\mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} M_{x|z} M_{x|z}^{-1} \mu_{x|z}\right]$ it is easy to see, from Jensen inequality, that
+If we write the first term as $\mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} M\_{x\|z} M\_{x\|z}^{-1} \mu\_{x\|z}\right\]$ it is easy to see, from Jensen inequality, that
 
-$\mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z}\right] > \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]^T \mathbb{E}_z\left[ M_{x|z}\right] \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right] $
+$\mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z}\right\] > \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]^T \mathbb{E}\_z\left\[ M\_{x\|z}\right\] \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\] $
 
-since $\phi \in [0,1]$ ($\phi$ can be seen as the _strenght_ of the de-biasing) the growth rate stays positive even if we remove the bias from the weights. We can think of this as making the money from the correlation between the features as the target only. To be more clear, consider a linear regression but the target returns have a large positive bias (they are always positive but vary from less positive to more positive according to some feature); if we remove the bias then we go long and short the asset (maybe even half the time) but since our feature is correlated with the returns, then the bets to the long side will make more money than the ones to the short side lose. 
+since $\phi \in \[0,1\]$ ($\phi$ can be seen as the _strenght_ of the de-biasing) the growth rate stays positive even if we remove the bias from the weights. We can think of this as making the money from the correlation between the features as the target only. To be more clear, consider a linear regression but the target returns have a large positive bias (they are always positive but vary from less positive to more positive according to some feature); if we remove the bias then we go long and short the asset (maybe even half the time) but since our feature is correlated with the returns, then the bets to the long side will make more money than the ones to the short side lose. 
 
 #### Growth Rate Concavity
 
-Another interesting property, and analog to the fractional bet, is that reducing the bias does not reduce growth rate in a proportional way. To see this, first note that the second term (which multiplies to $-\phi^2$) in the expression for $G$ is always positive because it is a quadratic form with a covariance matrix. Then $\frac{\partial G}{\partial \phi} = -\phi T_2 < 0$ and $\frac{\partial^2 G}{\partial \phi^2} = - T_2 < 0$, from where we can conclude that growth rate always decreases when we increase the removal of the bias and this decrease is not proportional since we lose more $G$ going from $\phi+\delta$ to $\phi+2\delta$ than when we go from $\phi$ to $\phi+\delta$. Again, this is similar to a free lunch, as we can take less directional risk without penalizing growth proportionately.
+Another interesting property, and analog to the fractional bet, is that reducing the bias does not reduce growth rate in a proportional way. To see this, first note that the second term (which multiplies to $-\phi^2$) in the expression for $G$ is always positive because it is a quadratic form with a covariance matrix. Then $\frac{\partial G}{\partial \phi} = -\phi T\_2 < 0$ and $\frac{\partial^2 G}{\partial \phi^2} = - T\_2 < 0$, from where we can conclude that growth rate always decreases when we increase the removal of the bias and this decrease is not proportional since we lose more $G$ going from $\phi+\delta$ to $\phi+2\delta$ than when we go from $\phi$ to $\phi+\delta$. Again, this is similar to a free lunch, as we can take less directional risk without penalizing growth proportionately.
 
 #### Sharpe Ratio Concavity
 
-Using the weights $w = M_{x|y}^{-1}\mu_{x|z} - \phi v$, we can write an expression for the sharpe ratio (with the square root of the second non central moment):
+Using the weights $w = M\_{x\|y}^{-1}\mu\_{x\|z} - \phi v$, we can write an expression for the sharpe ratio (with the square root of the second non central moment):
 
-$SR = \frac{\mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z}\right] - \phi v^T\mathbb{E}_z\left[ \mu_{x|z}\right]}{\sqrt{\mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z}\right] -2 \phi v^T\mathbb{E}_z\left[ \mu_{x|z}\right] + \phi^2 v^T \mathbb{E}_z\left[ M_{x|z}\right] v }}$
+$SR = \frac{\mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z}\right\] - \phi v^T\mathbb{E}\_z\left\[ \mu\_{x\|z}\right\]}{\sqrt{\mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z}\right\] -2 \phi v^T\mathbb{E}\_z\left\[ \mu\_{x\|z}\right\] + \phi^2 v^T \mathbb{E}\_z\left\[ M\_{x\|z}\right\] v }}$
 
-Again, let $v = \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]$
+Again, let $v = \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]$
 
-$SR = \frac{\mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z}\right] - \phi \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]^T\mathbb{E}_z\left[ \mu_{x|z}\right]}{\sqrt{\mathbb{E}_z\left[ \mu_{x|z}^T M_{x|z}^{-1} \mu_{x|z}\right] -2 \phi \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]^T\mathbb{E}_z\left[ \mu_{x|z}\right] + \phi^2 \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]^T \mathbb{E}_z\left[ M_{x|z}\right] \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right] }} = \frac{c_1 - \phi c_2}{\sqrt{c_1 - 2 \phi c_2 + \phi^2 c_3}}$
+$SR = \frac{\mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z}\right\] - \phi \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]^T\mathbb{E}\_z\left\[ \mu\_{x\|z}\right\]}{\sqrt{\mathbb{E}\_z\left\[ \mu\_{x\|z}^T M\_{x\|z}^{-1} \mu\_{x\|z}\right\] -2 \phi \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]^T\mathbb{E}\_z\left\[ \mu\_{x\|z}\right\] + \phi^2 \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]^T \mathbb{E}\_z\left\[ M\_{x\|z}\right\] \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\] }} = \frac{c\_1 - \phi c\_2}{\sqrt{c\_1 - 2 \phi c\_2 + \phi^2 c\_3}}$
 
 How does Sharpe behave when we change $\phi$?
 
-$\frac{\partial SR}{\partial \phi} = \frac{\phi \left( c_2^2 - c_1 c_3 \right)}{\left(c_1 - 2 \phi c_2 + \phi^2 c_3 \right)^{3/2}}$
+$\frac{\partial SR}{\partial \phi} = \frac{\phi \left( c\_2^2 - c\_1 c\_3 \right)}{\left(c\_1 - 2 \phi c\_2 + \phi^2 c\_3 \right)^{3/2}}$
 
-We have that $c_1>0$, $c_3>0$, $c_3 \leq c_1$ (we verified that in the growth rate part) and $\phi \in [0,1]$. From here we can see that the derivative is negative if $c_3 > \frac{c_2^2}{c_1}$. Since $c_3$ is at most $c_1$ then we need $c_2^2<c_3^2$. Then
+We have that $c\_1>0$, $c\_3>0$, $c\_3 \leq c\_1$ (we verified that in the growth rate part) and $\phi \in \[0,1\]$. From here we can see that the derivative is negative if $c\_3 > \frac{c\_2^2}{c\_1}$. Since $c\_3$ is at most $c\_1$ then we need $c\_2^2<c\_3^2$. Then
 
-$\left(\mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]^T \mathbb{E}_z\left[ \mu_{x|z}\right] \right)^2 \leq \left( \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right]^T \mathbb{E}_z\left[ M_{x|z}\right] \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right] \right)^2$
+$\left(\mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]^T \mathbb{E}\_z\left\[ \mu\_{x\|z}\right\] \right)^2 \leq \left( \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\]^T \mathbb{E}\_z\left\[ M\_{x\|z}\right\] \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\] \right)^2$
 
 which, after some calculations, can be written as:
 
-$| \mathbb{E}_z\left[ M_{x|z}\right]^{-1}| |\mathbb{E}_z\left[ \mu_{x|z}\right] | \leq | \mathbb{E}_z\left[ M_{x|z}^{-1} \mu_{x|z}\right] |$
+$\| \mathbb{E}\_z\left\[ M\_{x\|z}\right\]^{-1}\| \|\mathbb{E}\_z\left\[ \mu\_{x\|z}\right\] \| \leq \| \mathbb{E}\_z\left\[ M\_{x\|z}^{-1} \mu\_{x\|z}\right\] \|$
 
 which is true and so, the derivative is negative. Sharpe decreases when we increase the de-bias intensity. Now for the second derivative
 
-$\frac{\partial^2 SR}{\partial \phi^2 } = \frac{\left(c_2 ^2-c_1 c_3\right)\left(c_1 + \phi\left(c_2-2 c_3 \phi \right)\right)}{\left(c_1 - 2 \phi c_2 + \phi^2 c_3 \right)^{5/2}}$
+$\frac{\partial^2 SR}{\partial \phi^2 } = \frac{\left(c\_2 ^2-c\_1 c\_3\right)\left(c\_1 + \phi\left(c\_2-2 c\_3 \phi \right)\right)}{\left(c\_1 - 2 \phi c\_2 + \phi^2 c\_3 \right)^{5/2}}$
 
-From above, $\left(c_2 ^2-c_1 c_3\right) \leq 0$. The term $\left(c_1 + \phi\left(c_2-2 c_3 \phi \right)\right)\geq 0$ because, at most (negative), $\left(c_2-2 c_3 \phi \right) = -c_1$; with $\phi \in [0,1]$ the term never goes negative.
+From above, $\left(c\_2 ^2-c\_1 c\_3\right) \leq 0$. The term $\left(c\_1 + \phi\left(c\_2-2 c\_3 \phi \right)\right)\geq 0$ because, at most (negative), $\left(c\_2-2 c\_3 \phi \right) = -c\_1$; with $\phi \in \[0,1\]$ the term never goes negative.
 
 As with the growth rate, the sharpe does not decrease proportionately when the bias in weights in reduced.
 
