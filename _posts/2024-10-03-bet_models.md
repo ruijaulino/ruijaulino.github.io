@@ -166,7 +166,7 @@ $\int \frac{\partial r}{\partial w} -\lambda\frac{\partial h}{\partial w}  \text
 
 Replacing the functions $r$ and $h$ defined above:
 
-$\int xp(x\|z) -\lambda xx^T p(x\|z)  \text{d}x = 0$
+$\int xp(x\|z) -\lambda xx^T w(z) p(x\|z)  \text{d}x = 0$
 
 Solving yields (similar to maximization of growth rate)
 
