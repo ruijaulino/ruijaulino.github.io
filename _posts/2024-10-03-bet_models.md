@@ -67,7 +67,7 @@ Here we can make the approximation $G = \mathbb{E} \left[\log \left( 1 + w(z)^T 
 
 If we are using our model for the joint to maximize compounded wealth, what is the functional form for $w(z)$ that achieves this? Making an analogy with the regression case (check notes on variations), the condition that maximizes growth rate $G = \int \int \left( w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2 \right) p(x,z) \text{d}z \text{d}x$ is given by:
 
-$\int \frac{\partial \left( w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2 \right)}{\partial w} p(x\|z) \text{d}x = 0 \rightarrow \int \left( x - xx^T w \right) p(x\|z) \text{d}x = 0$
+$\int \frac{\partial \left( w(z)^Tx - \frac{1}{2}\left(w(z)^Tx\right)^2 \right)}{\partial w} p(x\|z) \text{d}x = 0 \rightarrow \int \left( x - xx^T w(z) \right) p(x\|z) \text{d}x = 0$
 
 from where we can write:
 
