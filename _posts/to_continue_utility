@@ -1,1 +1,17 @@
+Suppose we are presented with a bet that provides an uncertain return $y$ (let's consider it a scalar) and let this _unpredictability_ be described by some distribution $p(y)$ which is known. A return means that, if some money is commited, after the even the money grows (or shrinks) to $S_1 = S_0 (1+r)$. What should we do? What is the possible courses of action we can take? We can take all our money and buy the bet (the discussion is the same for the case we can bet on the opposite side - short) but for sure, depending on the associated uncertainty we may not want to commit all our resources to it: _nature_ can choose some outcome where we lose all our money. Given that, a sensible quantity to be estimated is how much of our capital we commit to that wager and a reasonable objective is to maximize our money at $t = 1$ after the outcome is presented. Let out money be $S$; after the bet it changes as
+
+$S_1 = S_0 (1+wy)$
+
+How can we maximize this? One to make sense of this (in other words, we have to find a way to give sense to averages) is to view it in a _many universes_ prespective as if we go back in time and bet again with out initial capital $S_0$ (but in reality we will only experience one). In that interpretation, we can find the amount of capitaç that maximize the expected value of $S_1$:
+
+$w^* = \text{argmax}_w \mathbb{E}[S_0(1+wy)] = \text{argmax}_w w\mathbb{E}[y]$
+
+well this problem is simple to solve: if $\mathbb{E}[y]>0$ any $w>0$ will produce a positive value (the reverse is also true) and so we have many solution of the type $w^* = k \mathbb{E}[y], k>0$.
+
+
+This many universe interpretation provides the same problem as if we consider that we can play the bet repeatedly always starting with the same capital. After $n$ bets we have:
+
+$S_n = S_0 + S_0wy_1 + S_0wy_2 + \cdots \rightarrow S_0(1+nR)$
+
+with $R = \mathbb{E}[wy]$. To maximize $S_n$ we have the same solution as before. In practice no resource is infinite and for sure the setup of always having the same money to continue to bet is not realistic. In the many universe interpretation, where we bet only single time, imagine the case where the universe choses for us a very low fluctuation where we even have to pay because the outcome was so bad (we went into debt because $S_1<0$ and now our capital is negative; maybe this problem is not a consideration if we are playing some game but in many other situations it can happen). For sure, this realistic constraint puts some values on the proportion of money we should commit and we need is a better framework to deal with this.
 
