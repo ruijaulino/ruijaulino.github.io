@@ -38,7 +38,7 @@ which translates into
 
 $\mu_{x\|z} - C_{x\|z}w - \sum_j c_j \text{sign}(w_j - q_j) = 0$
  
-The previous condition is equivalent to find
+is equivalent to find
 
 $\text{argmin}_w \frac{1}{2} w^T C w - \mu^T w + \sum_j c_j \|w-q\| = L$
 
