@@ -59,7 +59,7 @@ With this we just need to iterate until convergence by cycling through variables
 
 ### Degenerate cases
 
-It can happen that the optimal solution we get have a negative expected growth rate and we still need to take that bet. Consider that we have a large negative allocation and now we have a small positive expectation but not enough to cover the costs of changing the position; we should reduce the short exposure at a cost but now we expect to lose a bit money just in the right proportion to minimize the effect of the transaction. 
+It can happen that the optimal solution have a negative expected growth rate and we still need to take that bet. Consider that we have a large negative allocation and now we have a small positive expectation but not enough to cover the costs of changing the position; we should reduce the short exposure at a cost but now we expect to lose a bit money just in the right proportion to minimize the effect of the transaction. 
 
 ### Numerical implementation
 
