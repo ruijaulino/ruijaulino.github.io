@@ -1,10 +1,10 @@
 # Allocation with costs
 
-
+Let us consider the optimal allocation with costs. At every bet we are penalized with a cost $c$; with that, capital after $n$ periods is:
 
 $S_n = S_0 \cdot \left(1-c(z_1) + w(z_1)^Tx_1 \right) \cdots \left( 1-c(z_n) + w(z_n)^Tx_n\right)$
 
-$c(z_i)$ is the percentage cost we pay when presented with information $z_i$ 
+$c(z_i)$ is the percentage cost we pay when presented with information $z_i$. Working the expression:
 
 $S_n = S_0 \exp \left(nG\right)$
 
@@ -14,7 +14,7 @@ $G = \frac{1}{n}\sum_i \log \left(1-c(z_i) + w(z_i)^Tx_i\right) \rightarrow \mat
 
 A logical objective is to maximize the growth rate.
 
-A common model for costs is to assume that it is proportional to the transacted value $w$: $c(z_i) = c^T \|w(z_i)\|$. Here we can make two distinct cases: the simplest one is where we make bets that are isolated in time, let's say, everyday we make a transaction during a few minutes - in this case, when we bet tomorrow we start from a initial position of zero. The other case is when we just _adjust_ the allocation given new information (every day we check what should be the optimal weight and adjust our exposure; in practice we tend to pay less). This is more complicated as the cost must be written as $c^T \|w(z_i) - w(z_{i-1})\|$. If we look at $\mathbb{E}\left[ \log \left(1-c(z) + w(z)^Tx\right) \right]$ there is not clear way to incorporate this cost function - what makes sense is to assume that, over time, we will see many times information $z_{i-1}, z_i$ and the growth rate to be maximized should be
+A common model for costs is to assume proportionality to the transacted value $w$: $c(z_i) = c^T \|w(z_i)\|$. Here we can make two distinct cases: the simplest one where we make bets that are isolated in time, let's say, everyday we make a transaction during a few minutes - in this case, when we bet tomorrow we start from a initial position of zero. The other case is when we just _adjust_ the allocation given new information (every day we check what should be the optimal weight and adjust our exposure; in practice we tend to pay less). This is more complicated as the cost must be written as $c^T \|w(z_i) - w(z_{i-1})\|$. If we look at $\mathbb{E}\left[ \log \left(1-c(z) + w(z)^Tx\right) \right]$ there is not clear way to incorporate this cost function - what makes sense is to assume that, over time, we will see many times information $z_{i-1}, z_i$ and the growth rate to be maximized should be
 
 $G = \mathbb{E}\left[ \log \left(1-c^T\|w(z) - q\| + w(z)^Tx\right) \right]$
 
@@ -30,6 +30,8 @@ Now
 
 $G = \int \left[ \int \left( c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right) p(x\|z) \text{d}x \right] p(z) \text{d}z$
 
+The optimization condition:
+
 $\frac{\partial G}{\partial w} = 0 \rightarrow \frac{\partial }{\partial w}  \int \left( c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right) p(x\|z) \text{d}x = 0$
 
 which translates into
@@ -44,7 +46,7 @@ Inspired by lasso, we can devise a coordinate descent algorithm for this (minimi
 
 First notice that $\frac{1}{2} w^T C w = \frac{1}{2} C_{ii} w_i^2 + w_i \sum_{k \neq i} C_{ik}w_k + \text{const}$ and $\mu^T w = \mu_i w_i + \text{const}$. Then, regarding $w_i$, the objective function can be written as:
 
-$L_i = \frac{1}{2} C_{ii} w_i^2 + w_i \sum_{k \neq i} C_{ik}w_k - \mu_i w_i + c_i\|w_i-q_i\| + \text{const} = \frac{1}{2} C_{ii} w_i^2 -r_i w_i + c_i\|w_i-q_i\| + \text{const}$
+$L = L_i +\text{const} = \frac{1}{2} C_{ii} w_i^2 + w_i \sum_{k \neq i} C_{ik}w_k - \mu_i w_i + c_i\|w_i-q_i\| + \text{const} = \frac{1}{2} C_{ii} w_i^2 -r_i w_i + c_i\|w_i-q_i\| + \text{const}$
 
 with $r_i = \mu_i - \sum_{k \neq i} C_{ik}w_k$.
 
