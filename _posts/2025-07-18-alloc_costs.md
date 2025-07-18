@@ -131,14 +131,7 @@ w
 In this example, for variable $x_2$, clearly it does not pay costs but since we start with a $-1$ position, the optimal decision is to reduce the allocation and not flip sides.
 
 
-```python
 
-```
-
-
-```python
-
-```
 
 ## With a term structure
 
@@ -259,7 +252,7 @@ plt.show()
 
 
     
-![png](output_11_0.png)
+![png](/images/costs_alloc/output_11_0.png)
     
 
 
@@ -284,7 +277,7 @@ plt.show()
 
 
     
-![png](output_13_0.png)
+![png](/images/costs_alloc/output_13_0.png)
     
 
 
@@ -307,8 +300,7 @@ plt.show()
 
 
     
-![png](output_15_0.png)
+![png](/images/costs_alloc/output_15_0.png)
     
-
 
 
