@@ -48,7 +48,8 @@ First notice that $\frac{1}{2} w^T C w = \frac{1}{2} C_{ii} w_i^2 + w_i \sum_{k 
 
 $L = L_i +\text{const} = \frac{1}{2} C_{ii} w_i^2 + w_i \sum_{k \neq i} C_{ik}w_k - \mu_i w_i + c_i\|w_i-q_i\| + \text{const} = \frac{1}{2} C_{ii} w_i^2 -r_i w_i + c_i\|w_i-q_i\| + \text{const}$
 
-with $r_i = \mu_i - \sum_{k \neq i} C_{ik}w_k$.
+with $r_i = \mu_i - \sum_{k \neq i} C_{ik}w_k$. Now we can maximize $G$ with respect to $w_i$.
+
 
 ### Solution to the subproblem
 
