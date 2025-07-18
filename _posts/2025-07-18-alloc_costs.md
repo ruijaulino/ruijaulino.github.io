@@ -138,7 +138,7 @@ In this example, for variable $x_2$, clearly it does not pay costs but since we 
 
 ## With a term structure
 
-The previous problem formulation has the characteristic that we optimize the decision as new information comes. There is another class of problems that we can think of which can be stated as: in the next $p$ period we will make a sequence of decisions but we already know them - for example, imagine that an asset tends to go up overnigh and is flat during trading hours (well this one is known) or there is a pattern that an asset is flat in the first days of the month then down and up on the end of the month; in the end _seasonal_ models fit on this framework. For this models we estimate the distribution for these periods and make a bet. The point is, we still have a sequence of decisions but we already know the changes in allocation that will happen in the future; some changes may be small and not worth to be done bue to costs. 
+The previous problem formulation has the characteristic that we optimize the decision as new information comes. There is another class of problems that we can think of which can be stated as: in the next $p$ periods we will make a sequence of decisions but we already know them - for example, imagine that an asset tends to go up overnigh and is flat during trading hours (well this one is known) or there is a pattern that an asset is flat in the first days of the month then down and up on the end of the month; in the end _seasonal_ models fit on this framework: on period 1 we take an action, then period 2 comes and we take another one and so on; when we are at period one we already know what we want to do in period 2 up to $p$; after period $p$ the sequence repeats back in to period 1. For this models we estimate the distribution for these periods and make a bet. The point is, we still have a sequence of decisions but we already know the changes in allocation that will happen in the future; some changes may be small and not worth to be done bue to costs but in the end, the optimal decision depends on the whole sequence of actions. 
 
 Let us focus on the case of a single asset and a term structure model (i.e, a model for returns on some periods in the future).
 
@@ -154,7 +154,7 @@ For small costs
 
 $G = \sum_j \left( \mu_j w_j - \frac{1}{2} \sigma_j^2 w_j^2 - c_j \right)$ 
 
-Now, following a cost model proportional to the transaction weight we can write $c_j = c \|w_j-w_{j-1}\|$ (when $j = 1$ we use $w_p$ to make it cyclical). Writting as a minimization problem ($L = -G$):
+Now, following a cost model proportional to the transaction weight we can write $c_j = c \|w_j-w_{j-1}\|$ (when $j = 1$ we use $w_p$ to make it cyclical); this represents that we pay a cost on the weight change. Writting as a minimization problem ($L = -G$):
 
 $L = \sum_j \left( -\mu_j w_j + \frac{1}{2} \sigma_j^2 w_j^2 + c \|w_j-w_{j-1}\| \right)$ 
 
@@ -221,7 +221,6 @@ def term_alloc(m, v, c, max_iter=100, tol=1e-6, convergence_periods = 5):
     w_hist = np.zeros((max_iter, w.size))
     w_hist[0] = w
     for n in range(1, max_iter):
-        # w_old = w.copy()
         for j in range(p):
             w[j] = tsoft(v[j], m[j], c, np.roll(w, 1)[j], np.roll(w, -1)[j])
         converged = False
@@ -265,8 +264,11 @@ As a final example, let us consider the Nasdaq ETF returns overnigh and during t
 
 
 ```python
+# Expected value overnight and during trading hours
 m = np.array([ 5.42184628e-04, -7.08220270e-06])
+# Scale overnight and during trading hours
 sigma = np.array([0.00904901, 0.01470038])
+# Compute variance
 v = sigma**2
 c = 0.0001
 w = term_alloc(m, v, c, max_iter=100, tol=1e-6)
