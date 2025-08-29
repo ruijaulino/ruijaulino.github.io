@@ -103,7 +103,7 @@ We can view this result as if we use features to determine an allocation then th
 
 Starting from the previous results and considering a single target variable with many (weakly correlated) features predicting it:
 
-$w \approx \frac{1}{\sigma^2} \left[ \sum_j \rho_{j} \frac{x_j-\mu_{x_j}}{\sigma_{x_j}} \right]$
+$w \approx \frac{1}{\sigma} \left[ \sum_j \rho_{j} \frac{x_j-\mu_{x_j}}{\sigma_{x_j}} \right]$
 
 
 This can be interpreted as a linear combination of normalized signals. For example, consider two signals one representing a trend and another the carry: if we normalize both we can just make a convex combination of them to get an optimal allocation (if we believe that the correlation they have with the target is the same). This procedure is used many times but here we can give a justification on the why and under which conditions it makes sense.
