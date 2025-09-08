@@ -22,11 +22,22 @@ google_analytics:
 
 # Everything below here can be ignored, unless you want to change the theme entirely
 theme: minima
+
+url: "https://ruijaulino.github.io"
+baseurl: ""
+
 plugins:
   - jekyll-feed
+  - jekyll-sitemap        
+  - jekyll-seo-tag        
   - jekyll-gist
   - jekyll-octicons
   - jekyll-github-metadata
+
+# Helpful for SEO & JSON-LD
+author:
+  name: "Rui Jaulino"
+  url: "https://ruijaulino.github.io/about/"
 
 titles_from_headings:
   enabled:     true
