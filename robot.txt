@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://ruijaulino.github.io/sitemap.xml
