@@ -28,8 +28,6 @@ baseurl: ""
 
 plugins:
   - jekyll-feed
-  - jekyll-sitemap        
-  - jekyll-seo-tag        
   - jekyll-gist
   - jekyll-octicons
   - jekyll-github-metadata
