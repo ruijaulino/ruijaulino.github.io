@@ -33,9 +33,7 @@ plugins:
   - jekyll-github-metadata
 
 # Helpful for SEO & JSON-LD
-author:
-  name: "Rui Jaulino"
-  url: "https://ruijaulino.github.io/about/"
+
 
 titles_from_headings:
   enabled:     true
