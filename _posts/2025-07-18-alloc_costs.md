@@ -24,21 +24,21 @@ $G \approx \mathbb{E}\left[ \log \left(1-c^T\|w(z) - q\|\right) + \frac{w(z)^Tx}
 
 which for small cost vector $c$:
 
-$G \approx \mathbb{E}\left[ c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right]$
+$G \approx \mathbb{E}\left[ -c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right]$
 
 Now
 
-$G = \int \left[ \int \left( c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right) p(x\|z) \text{d}x \right] p(z) \text{d}z$
+$G = \int \left[ \int \left( -c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right) p(x\|z) \text{d}x \right] p(z) \text{d}z$
 
 The optimization condition:
 
-$\frac{\partial G}{\partial w} = 0 \rightarrow \frac{\partial }{\partial w}  \int \left( c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right) p(x\|z) \text{d}x = 0$
+$\frac{\partial G}{\partial w} = 0 \rightarrow \frac{\partial }{\partial w}  \int \left( -c^T\|w(z) - q\| + w(z)^Tx - \frac{1}{2}(w(z)^Tx)^2 \right) p(x\|z) \text{d}x = 0$
 
 which translates into
 
 $\mu_{x\|z} - C_{x\|z}w - \sum_j c_j \text{sign}(w_j - q_j) = 0$
  
-is equivalent to find
+is equivalent to find (dropped the $x\|z$ notation for ease of reading):
 
 $\text{argmin}_w \frac{1}{2} w^T C w - \mu^T w + \sum_j c_j \|w-q\| = L$
 
@@ -83,34 +83,39 @@ def soft(m, v, c, b):
     else:
         return b
 
-def alloc(mu, C, c, q = None, max_iter=100, tol=1e-6, convergence_periods = 5):
+def alloc(mu, C, c, q=None, max_iter=200, tol=1e-6):
+    """
+    Coordinate descent using the provided soft(m, v, c, b) update.
+    """
+    mu = np.asarray(mu, dtype=float)
+    C  = np.asarray(C, dtype=float)
+
     p = mu.size
-    if q is None: q = np.zeros(p)
-    if not isinstance(c, np.ndarray): c = c*np.ones(p)
-    max_iter = max(max_iter, 2*convergence_periods)
-    # initialize    
-    w = mu / np.diag(C)
-    w_hist = np.zeros((max_iter, w.size))
-    w_hist[0] = w
-    for n in range(1, max_iter):
+    q = np.zeros(p, dtype=float) if q is None else np.asarray(q, dtype=float)
+
+    c = np.full(p, float(c)) if np.isscalar(c) else np.asarray(c, dtype=float)
+
+    d = np.diag(C)
+    if np.any(d <= 0):
+        raise ValueError("C must have strictly positive diagonal entries.")
+
+    # initialize with c=0 solution
+    w = mu / d
+
+    for _ in range(max_iter):
+        w_old = w.copy()
+
         for j in range(p):
-            # Compute residual for j-th coordinate
-            r_j = mu[j] - np.dot(C[j,:], w) + C[j,j] * w[j]
-            w[j] = soft(r_j, C[j,j], c[j], q[j])
-        converged = False
-        # it may happen that the solution is jumping
-        # from one state into another. detect this
-        # behaviour and quit
-        if n > convergence_periods:
-            for l in range(convergence_periods+1):
-                if np.linalg.norm(w - w_hist[n-l]) < tol:
-                    converged = True
-        w_hist[n] = w
-        if converged:
+            # residual for j-th coordinate (excluding j contribution)
+            r_j = mu[j] - C[j, :].dot(w) + C[j, j] * w[j]
+            w[j] = soft(r_j, C[j, j], c[j], q[j])
+
+        if np.linalg.norm(w - w_old) < tol:
             break
-    if n == max_iter - 1:
-        print('Coordinate descent did not converge...')
-    return w    
+    else:
+        print("Coordinate descent did not converge...")
+
+    return w  
 ```
 
 
@@ -182,57 +187,51 @@ The code below implements the idea. It is assumed that when the bet sequence end
 
 ```python
 def tsoft(v, m, c, a, b):
-    w = 0.
-    if a<=b:
-        if m < a*v-2*c:
-            w = (m+2*c) / v
-        elif a*v < m < b*v:
-            w = m / v
-        elif m > v*b + 2*c:
-            w = (m-2*c) / v       
-        else:
-            w = b
-            if 0.5*v-m*a+c*(b-a) <= 0.5*v-m*b+c*(b-a):
-                w = a
-    else:
-        if m < b*v-2*c:
-            w = (m+2*c) / v
-        elif b*v < m < a*v:
-            w = m / v
-        elif m > v*a + 2*c:
-            w = (m-2*c) / v
-        else:
-            w = b
-            if 0.5*v-m*a+c*(a-b) < 0.5*v-m*b+c*(a-b):
-                w = a
-    return w
+    # enforce ordering for the region logic
+    lo, hi = (a, b) if a <= b else (b, a)
 
-def term_alloc(m, v, c, max_iter=100, tol=1e-6, convergence_periods = 5):
-    '''
+    # stationary candidates in each region
+    w_left  = (m + 2*c) / v
+    w_mid   = m / v
+    w_right = (m - 2*c) / v
+
+    # region checks
+    if w_left < lo:
+        return w_left
+    if lo <= w_mid <= hi:
+        return w_mid
+    if w_right > hi:
+        return w_right
+
+    fa = 0.5*v*a*a - m*a
+    fb = 0.5*v*b*b - m*b
+    return a if fa <= fb else b
+
+def term_alloc(m, v, c, max_iter=100, tol=1e-6):
+    """
     m: vector of expected values
-    v: vector variances
+    v: vector of variances
     c: float with pct cost
-    '''
-    # initialize with c=0 solution
+    """
+    m = np.asarray(m)
+    v = np.asarray(v)
     assert m.size > 1, "we must have more than one sequential estimate"
-    max_iter = max(max_iter, 2*convergence_periods)
-    w = m / v
+
     p = m.size
-    w_hist = np.zeros((max_iter, w.size))
-    w_hist[0] = w
-    for n in range(1, max_iter):
+    w = m / v  # initialize with c=0 solution
+
+    for _ in range(max_iter):
+        w_old = w.copy()
         for j in range(p):
-            w[j] = tsoft(v[j], m[j], c, np.roll(w, 1)[j], np.roll(w, -1)[j])
-        converged = False
-        if n > convergence_periods:
-            for l in range(convergence_periods+1):
-                if np.linalg.norm(w - w_hist[n-l]) < tol:
-                    converged = True
-        w_hist[n] = w
-        if converged:
+            a = w[(j - 1) % p]
+            b = w[(j + 1) % p]
+            w[j] = tsoft(v[j], m[j], c, a, b)
+
+        if np.linalg.norm(w - w_old) < tol:
             break
-    if n == max_iter - 1:
-        print('Coordinate descent did not converge...')
+    else:
+        print("Coordinate descent did not converge...")
+
     return w
 ```
 
