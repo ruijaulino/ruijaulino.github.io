@@ -50,9 +50,9 @@ where $\rho_i$ is the correlation between signal $i$ and the target and $P$ is t
 
 This expression shows that ensemble performance depends on:
 
-- individual model quality
-- covariance structure between models
-- weight allocation
+- individual model quality, $\rho_i$
+- covariance structure between models, $\pi_{ij}$
+- weight allocation, $\beta_i$
 
 
 
