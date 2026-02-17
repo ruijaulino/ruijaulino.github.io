@@ -4,7 +4,7 @@ Ensembling models is a common strategy to improve performance. In many situation
 
 The common setup is to analyse the growth rate $G$:
 
-$G(w) = \mathbf{E}\left[ \log (1+w^Ty) \right]$
+$G(w) = \mathbf{E}\left\[ \log (1+w^Ty) \right\]$
 
 As shown previously, optimal weight is 
 
@@ -14,7 +14,7 @@ where $M$ is the second non central moment and $\mu$ is the first moment (both c
 
 Betting with $w^*$ induces a strategy $s = w^{*T}y$. Then
 
-$\mathbf{E}[s] = \mathbf{E}[s^2] = 2 G(w^*) = \mathbf{E}_x \left[ \mu_{y\|x}^T M_{y\|x}^{-1} \mu_{y\|x} \right] := g$
+$\mathbf{E}\[s\] = \mathbf{E}\[s^2\] = 2 G(w^*) = \mathbf{E}\_x \left[ \mu_{y\|x}^T M_{y\|x}^{-1} \mu_{y\|x} \right\] := g$
 
 So, as usual, studying the properties of $g$ allow us to infer about many aspects of the optimal strategy $s$. Let's make (reasonable) approximations to develop intuition.
 
@@ -22,7 +22,7 @@ So, as usual, studying the properties of $g$ allow us to infer about many aspect
 
 For unidimensional $y$ and features weakly correlated with the target, conditional variance is similar to variance. Then:
 
-$g \approx \frac{\mathbf{E}_x \left[ \mu_{y\|x}^2 \right]}{\sigma^2} = \frac{\text{Var}\left( \mathbf{E} \left[ y\|x \right] \right)}{\text{Var}(y)}$
+$g \approx \frac{\mathbf{E}\_x \left\[ \mu_{y\|x}^2 \right]}{\sigma^2} = \frac{\text{Var}\left( \mathbf{E} \left\[ y\|x \right] \right)}{\text{Var}(y)}$
 
 This quantity can be identified as the explained variance ratio (correlation ratio, $\eta^2$). For a linear model this is equal to correlation squared $\rho^2$. It represents the fraction of $y$ variance that can be explained with $x$.
 
