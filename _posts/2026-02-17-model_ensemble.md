@@ -12,9 +12,9 @@ $w^* = M_{y\|x}^{-1} \mu_{y\|x}$
 
 where $M$ is the second non central moment and $\mu$ is the first moment (both conditional on the feature value). 
 
-Betting with $w^*$ induces a strategy $s = w^{*T}y$. Then
+Betting with $w^\*$ induces a strategy $s = w^{\*T}y$. Then
 
-$\mathbf{E}\[s\] = \mathbf{E}\[s^2\] = 2 G(w^*) = \mathbf{E}\_x \left[ \mu_{y\|x}^T M_{y\|x}^{-1} \mu_{y\|x} \right\] := g$
+$\mathbf{E}\[s\] = \mathbf{E}\[s^2\] = 2 G(w^\*) = \mathbf{E}\_x \left\[ \mu_{y\|x}^{T}  M_{y\|x}^{-1} \mu\_{y\|x} \right\] := g$
 
 So, as usual, studying the properties of $g$ allow us to infer about many aspects of the optimal strategy $s$. Let's make (reasonable) approximations to develop intuition.
 
