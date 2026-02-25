@@ -4,7 +4,7 @@ Ensembling models is a common strategy to improve performance. In many situation
 
 The common setup is to analyse the growth rate $G$:
 
-$G(w) = \mathbf{E}\left\[ \log (1+w^Ty) \right\]$
+$G(w) = \mathbf{E}\left\[ \log (1+w^Ty) \right\] \approx \mathbf{E}\left\[ w^Ty - \frac{1}{2}\left( w^Ty \right)^2 \right\]$
 
 As shown previously, optimal weight is 
 
