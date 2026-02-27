@@ -146,14 +146,57 @@ which is similar to the first order solution but with a different expected value
 
 
 
+
+
 ## Heuristics
 
 Although one could use the formulas directly it is more interesting to derive heuristics in how one should think:
 
 - When allocating between correlated assets we should reduce the weight on correlated groups.
 - To make predictions we should reduce the predictions derived from correlated groups.
-- In both cases, for highly correlated groups of assets/features, the approximations show that they work better if they are colapsed into a single variable that has smaller correlation with the remaining ones (for example, create a new feature from a correlated set that has a lower correlated with the other).
 
 For sure all of these recipes are known; correcting or not adding signals for being too correlated and/or reducing positions in correlated assets may seem _ad hoc_ but can be justified.
 
+
+### Equivalent variables analogy
+
+Lets consider the first order approximations for weight and expected value:
+
+$w \approx S_y^{-1} \left\[I-\epsilon r \right]S_y^{-1} m$
+
+and
+
+$m \approx \mu_y + S_y R_{yx} \left\[ I - \epsilon \pi \right] z_x$
+
+A common feature that they have is a calculation of the type $\left(I - \epsilon h\right) v$. Consider the existence of a group $G$ such that correlations between elements in it are high and equal to $q$ (the expansion in $\epsilon$ is not valid - need more terms - but we are still using it); $r_{ij} \approx q$. For any $i \in G$ we can write the component $i$ of the above vector as
+
+$\left\[\left(I - \epsilon r\right) v \right]_i = v_i - \epsilon \left(q \sum_{j \neq i, j \in G} v_j + \sum_{k \neq i, k \notin G} r_{ik}v_k \right)$
+
+also, the terms with correlation $q$ dominate the others as this correlation is much higher:
+
+$\left\[\left(I - \epsilon r\right) v \right\]\_i \approx v_i - \epsilon \left(q \sum_{j \neq i, j \in G} v_j \right) = v_i (1+q\epsilon) - q\epsilon \sum_{j \in G} v_j$
+
+
+with small $\epsilon$, $q \rightarrow 1$ and $\bar{v_G} = \frac{1}{\|G\|}\sum_{j \in G} v_j$
+
+$\left\[\left(I - \epsilon r\right) v \right]_i \approx v_i - \epsilon \|G\|\bar{v_G}$
+
+For practical reasons, $\epsilon$ must be proportional to $\frac{1}{n}$ and so the term $\epsilon \|G\|$ is of the order of magnitude to the ratio of number of elements in $G$ to the whole set - call it $\phi$. Finally
+
+$v_i - \epsilon \|G\|\bar{v_G} \approx v_i - \phi \bar{v_G} $
+
+This analysis shows explicitly how the approximation separates two components inside a correlated group:
+
+- the common component, proportional to the group average, corresponding to the dominant eigenvector;
+- the deviation components, corresponding to eigenvectors with small eigenvalues.
+
+These deviations correspond to directions with small eigenvalues, which represent small differences between highly correlated variables. These directions are more sensitive to estimation error and are therefore often dominated by noise. This can be seen explicitly from the structure of the correlation matrix. A group of highly correlated variables produces one eigenvector proportional to the vector of ones on the group, representing their common component, and additional eigenvectors representing deviations inside the group. The operation above subtracts the projection onto this common direction and leaves only the deviations. Replacing the group by its average keeps only the common eigenvector and discards the deviation eigenvectors, which correspond to small eigenvalues.
+
+In particular, for the weight case ($s \leftarrow v, r \leftarrow h, i \in G$)
+
+$w_i \approx \frac{1}{\sigma_i }\left( s_i - \phi \bar{s_G} \right)$
+
+which is interpreted a relative value allocation around the mean of the group: here it may make sense to consider an equivalent variable (and discard the relative allocation) or not depending on the application - signals may be designed to trade in spreads.
+
+For the expected value case, ($z_x \leftarrow v, \pi \leftarrow h, i \in G$), it it not clear what a relative signal may mean and most likely is just noise - considering a equivalent variable seems the correct interpretation.
 
