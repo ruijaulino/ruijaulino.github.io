@@ -170,7 +170,7 @@ $m \approx \mu_y + S_y R_{yx} \left\[ I - \epsilon \pi \right] z_x$
 
 A common feature that they have is a calculation of the type $\left(I - \epsilon h\right) v$. Consider the existence of a group $G$ such that correlations between elements in it are high and equal to $q$ (the expansion in $\epsilon$ is not valid - need more terms - but we are still using it); $r_{ij} \approx q$. For any $i \in G$ we can write the component $i$ of the above vector as
 
-$\left\[\left(I - \epsilon r\right) v \right]_i = v_i - \epsilon \left(q \sum_{j \neq i, j \in G} v_j + \sum_{k \neq i, k \notin G} r_{ik}v_k \right)$
+$\left[\left(I - \epsilon r\right) v \right\]\_i = v\_i - \epsilon \left(q \sum\_{j \neq i, j \in G} v\_j + \sum_{k \neq i, k \notin G} r_{ik}v_k \right)$
 
 also, the terms with correlation $q$ dominate the others as this correlation is much higher:
 
