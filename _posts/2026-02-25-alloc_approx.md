@@ -2,7 +2,7 @@
 
 Estimation of parameters and numerical problems make the optimal allocation problem quite difficult to solve. For practical applications it is logical to make approximations to have more robust solutions (ignore correlations for example). The objective here is to show some approximations that can be made to produce usefull and intuitive formulas. 
 
-The setup is one where we have some features to make predictions on future returns. As discussed in other posts, when presented with new information/features $x \in \mathbb{R}^q$, the optimal allocation on returns $y \in \mathbb{R}^p$ is
+The setup is where we have some features to make predictions on future returns. As discussed in other posts, when presented with new information/features $x \in \mathbb{R}^q$, the optimal allocation on returns $y \in \mathbb{R}^p$ is
 
 $w = C_{y\|x}^{-1} \mu_{y\|x}$
 
@@ -69,6 +69,21 @@ Putting together the terms, optimal weight is approximated up to second order as
 
 $w \approx S_y^{-1} \left[ I - \epsilon_r r (I-\epsilon_r r)\right] S_y^{-1} \left[ \mu_y + S_y R_{yx} \left( I - \epsilon_\pi \pi (I-\epsilon_\pi \pi) \right) z_x \right]$
 
+
+### First order approximations
+
+Consider $\mu_y \approx 0$ (or small; most return comes from features). Up to first order (this can be seen as putting a small $\epsilon$ value as regularization):
+
+$w \approx S_y^{-1} \left[ I - \epsilon_r r \right] R_{yx} \left[ I - \epsilon_{\pi} \pi \right] z_x \approx  S_y^{-1} \left[ R_{yx} - \epsilon_{\pi}R_{yx}\pi - \epsilon_r r R_{yx} \right] z_x$
+
+For small $r$ and $\pi$ we have 
+
+$w_i \approx \frac{1}{\sigma_i} \sum_j \rho_{ij} z_{x_j}$
+
+which resembles a linear regression from each feature into the target. Also, we can see that feature $\pi$ and target $r$ correlations are corrections to this: up to first order, we can justify individual allocation to a _strategy_ without considering correlation with the others.
+
+### Target correlation effect
+
 We can study this by abstracting the expected value part writting
 
 
@@ -76,8 +91,6 @@ $w \approx S_y^{-1} \left[ I - \epsilon_r r (I-\epsilon_r r)\right] S_y^{-1} m$
 
 with $m = \mu_y + S_y R_{yx} \left( I - \epsilon_\pi \pi (I-\epsilon_\pi \pi) \right) z_x $
 
-
-### Target correlation effect
 
 The first level of complexity that we can go into after considering the zeroth order $w_i = \frac{m_i}{\sigma_i^2}$ is
 
