@@ -70,7 +70,7 @@ Putting together the terms, optimal weight is approximated up to second order as
 $w \approx S_y^{-1} \left[ I - \epsilon_r r (I-\epsilon_r r)\right] S_y^{-1} \left[ \mu_y + S_y R_{yx} \left( I - \epsilon_\pi \pi (I-\epsilon_\pi \pi) \right) z_x \right]$
 
 
-### First order approximations
+## First order approximations
 
 Consider $\mu_y \approx 0$ (or small; most return comes from features). Up to first order (this can be seen as putting a small $\epsilon$ value as regularization):
 
@@ -82,7 +82,7 @@ $w_i \approx \frac{1}{\sigma_i} \sum_j \rho_{ij} z_{x_j}$
 
 which resembles a linear regression from each feature into the target. Also, we can see that feature $\pi$ and target $r$ correlations are corrections to this: up to first order, we can justify individual allocation to a _strategy_ without considering correlation with the others.
 
-### Target correlation effect
+## Target correlation effect
 
 We can study this by abstracting the expected value part writting
 
@@ -125,7 +125,7 @@ which is similar to the first order solution but using a _sharpe ratio_ ($\sigma
 
 
 
-### Feature correlation effect
+## Feature correlation effect
 
 Now we can focus on $m = \mu_y + S_y R_{yx} \left[ I - \epsilon \pi (I-\epsilon_\pi \pi) \right] z_x $
 
