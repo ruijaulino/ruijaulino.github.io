@@ -11,7 +11,7 @@ Conditioning $y$ on $x$ yields a linear regression. In a financial context, we g
 
 If we define the optimal weight vector for a strategy and assume small feature/target correlations with zero mean, we get:
 
-$$w = C_{y\|x}^{-1} \mu_{y\|x} \approx C_{yy}^{-1} C_{yx} C_{xx}^{-1} x$$
+$$w = C_{y|x}^{-1} \mu_{y|x} \approx C_{yy}^{-1} C_{yx} C_{xx}^{-1} x$$
 
 This yields a strategy $s = w^T y$. The quantity $g = \mathbf{E}[s] = \mathbf{E}[s^2]$ is
 
