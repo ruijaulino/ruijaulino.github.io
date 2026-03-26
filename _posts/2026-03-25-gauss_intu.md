@@ -1,4 +1,4 @@
-# Intuitions from a Gaussian model
+# Heuristics from a gaussian model
 
 Consider returns $y \in \mathbb{R}^p$ and features $x \in \mathbb{R}^q$ to be joint Gaussian:
 
