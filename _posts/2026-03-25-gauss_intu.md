@@ -17,9 +17,7 @@ This yields a strategy $s = w^T y$. The quantity $g = \mathbf{E}[s] = \mathbf{E}
 
 $$g = \int \int w^T y p(x, y) \text{d}y \text{d}x = \int w^T \mu_{y|x} p(x) \text{d}x = \mathbf{E}_x \left[ x^T C_{xx}^{-1} C_{xy} C_{yy}^{-1} C_{yx} C_{xx}^{-1} x \right] = \text{tr} \left[ C_{yy}^{-1} C_{yx} C_{xx}^{-1} C_{xy}\right]$$
 
-Let $M = C_{yy}^{-1} C_{yx} C_{xx}^{-1} C_{xy}$. The trace $\text{tr}(M) = \sum_i \lambda_i$ represents the sum of the eigenvalues of $M$. We can associate $\lambda_i$ as the square of a canonical correlation: the correlation between the variables $a^Ty$ and $b^Tx$ where $a$ and $b$ are unit norm vectors such that $\rho(a^Ty, b^Tx)$ is maximized. This result generalizes the one-dimensional case (one feature, one target) where $g = \rho(x, y)^2$. It suggests that performance is essentially the cumulative "information bandwidth" captured across all independent dimensions of the feature-target relationship.
-
-
+Let $M = C_{yy}^{-1} C_{yx} C_{xx}^{-1} C_{xy}$. The trace $\text{tr}(M) = \sum_i \lambda_i$ represents the sum of the eigenvalues of $M$. We can associate $\lambda_i$ as the square of a canonical correlation: the correlation between the variables $a^Ty$ and $b^Tx$ where $a$ and $b$ are unit norm vectors such that $\rho(a^Ty, b^Tx)$ is maximized. This result generalizes the one-dimensional case (one feature, one target) where $g = \rho(x, y)^2$. 
 
 
 
