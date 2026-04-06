@@ -38,7 +38,7 @@ Again, growth rate is controlled by squared correlation.
 
 Now, let's say that we average many simple models. How does $g$ behaves?
 
-We can use the correlation as a proxy for the explained variance ratio (which is the quantity that we are interested on). With several models $h_i$ we can create a prediction for $y\|x$ by combining them with some weight scheme:
+We can use the correlation as a proxy for the explained variance ratio (which is the quantity that we are interested on). With several models (each one makes a prediction $h_i$) we can create a prediction for $y\|x$ by combining them with some weight scheme:
 
 $s = \sum_i \beta_i h_i$
 
