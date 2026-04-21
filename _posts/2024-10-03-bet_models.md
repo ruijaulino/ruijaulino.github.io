@@ -25,7 +25,7 @@ $\mathbb{E}\[L\] = I\[f(z), z, x\] = \int \int F\[f(z), z, x\] \text{d}x \text{d
 
 with $F\[f(z), z, x\] = \left( f(z) - x \right)^2 p(x,z)$ being a short and more general notation. To find extrema of $I$ in relation to some of it's variables we need to do the equivalent of finding where the derivative is zero: in this case we are trying to find the _function_ that minimizes $I$ rather than just a set of values. To make an analogy with a derivative, we can perturb $f(z)$ with some arbitrary function $\eta(z)$ like $f(z) \rightarrow f(z) + \epsilon \eta(z)$, where $\epsilon$ is some small value to make the perturbation small. Let us expand the integral near this point:
 
-$I\[f(z)+\epsilon \eta(z), z, x\] \approx \int \int \left( F\[f(z), z, x\] + \epsilon \frac{\partial F}{\partial f} \eta(z) \right) \text{d}x \text{d}z  = I\[f(z), z, x\] + \epsilon \int \left( \int \frac{\partial F}{\partial f} \text{d}x \right) \eta(z) \text{d}z$
+$I\[f(z)+\epsilon \eta(z), z, x\] = \int \int F\[f(z)+\epsilon \eta(z), z, x\] \text{d}x \text{d}z \approx \int \int \left( F\[f(z), z, x\] + \epsilon \frac{\partial F}{\partial f} \eta(z) \right) \text{d}x \text{d}z  = I\[f(z), z, x\] + \epsilon \int \left( \int \frac{\partial F}{\partial f} \text{d}x \right) \eta(z) \text{d}z$
 
 Rearranging we can write something that looks like a derivative with respect to the function:
 
