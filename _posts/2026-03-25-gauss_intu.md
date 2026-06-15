@@ -9,7 +9,7 @@ Conditioning $y$ on $x$ yields a linear regression. In a financial context, we g
 
 ## Performance is sum of squared canonical correlations
 
-If we define the optimal weight vector for a strategy and assume small feature/target correlations with zero mean, we get:
+If we define the optimal weight vector for a strategy and assume small feature/target correlations with zero mean (we can easily centralize features), we get:
 
 $$w = C_{y|x}^{-1} \mu_{y|x} \approx C_{yy}^{-1} C_{yx} C_{xx}^{-1} x$$
 
