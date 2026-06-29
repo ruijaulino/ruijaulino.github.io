@@ -41,7 +41,7 @@ $$ H_0: \quad y_t \sim N(0, C(x_t)) $$
 
 Under this mixture, expected returns become
 
-$$ \mathbb E\[y_t \mid x_t,\mathcal F_{t-1}] = \phi_{t-1}\mu(x_t) $$
+$$ \mathbb E[y_t \mid x_t,\mathcal F_{t-1}] = \phi_{t-1}\mu(x_t) $$
 
 For small returns, covariance changes due to model uncertainty are negligible, so the optimal bet is approximately
 
