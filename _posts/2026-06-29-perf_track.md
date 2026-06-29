@@ -4,7 +4,7 @@ A model may perform well in research and backtesting yet fail once deployed. Thi
 
 When performance deteriorates, we usually rely on heuristics: stop after a certain drawdown, reduce exposure after a losing streak or manually intervene. The objective here is to formalize this decision.
 
-## A Model of Signal Survival
+## Model Signal Survival
 
 Suppose we have training data $D$ from which we estimate a predictive distribution
 
@@ -50,7 +50,7 @@ $$ w_t \approx \phi_{t-1} C(x_t)^{-1}\mu(x_t) $$
 Thus exposure is simply scaled by posterior confidence. When confidence falls, exposure shrinks automatically.
 
 
-## Bayesian Evidence Accumulation
+## Evidence Accumulation
 
 Posterior odds evolve according to Bayes’ rule:
 
