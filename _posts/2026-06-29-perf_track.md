@@ -1,10 +1,10 @@
 # Tracking Performance of Optimal Strategies
 
-A model may perform well in research and backtesting yet fail once deployed. This can happen for many reasons: signal decay, structural breaks, increased competition, or simply false discovery.
+A model may perform well in research and backtesting and then fail once deployed. This can happen for many reasons: signal decay, structural breaks, increased competition or false discovery.
 
-When performance deteriorates, we usually rely on heuristics: stop after a certain drawdown, reduce exposure after a losing streak or manually intervene. The objective here is to formalize this decision.
+When performance deteriorates, we can rely on heuristics: stop after a certain drawdown or reduce exposure after a losing streak. The objective here is to formalize this decision.
 
-## Model Signal Survival
+## Model Survival
 
 Suppose we have training data $D$ from which we estimate a predictive distribution
 
@@ -17,7 +17,7 @@ After validating the model out of sample, we deploy it in production.
 Once live, however, we must allow for the possibility that the model is wrong. Consider two hypotheses:
 
 - $H_1$: the model is valid and the signal exists;
-- $H_0$: the model is invalid and expected returns are zero (this indicates that there is not bias in returns and features have zero correlation with targets).
+- $H_0$: the model is invalid and expected returns are zero (this indicates that there is no bias in returns and features have zero correlation with targets).
 
 The predictive distribution becomes a mixture:
 
@@ -77,13 +77,13 @@ as realized strategy return, and
 
 $$m_t= \mu_t^\top C_t^{-1}\mu_t $$
 
-as model-implied expected strategy return.
+as (instant) model-implied expected strategy return.
 
 Then
 
 $$ L_t  = L_0 + \sum_{i=1}^{t} s_i - \frac{1}{2} \sum_{i=1}^{t} m_i = L_0 + t \left(\bar{s} - \frac{1}{2} \mu_S \right) $$
 
-where $\bar{s}$ is the mean strategy return up to $t$ and $\mu_S$ can seen as the expected model-implied strategy return (after many steps). Everything now depends only on the scalar sequence $s_t$.
+where $\bar{s}$ is the (realized) mean strategy return up to $t$ and $\mu_S$ can seen as the expected model-implied strategy return (after many steps). Everything now depends only on the scalar sequence $s_t$.
 
 Equivalently, instead of testing
 
@@ -95,11 +95,11 @@ $$ H_0: \quad y_t \sim N(0,C_t) $$
 
 we may test the scalar strategy statistics
 
-$$ H_1: \quad s \sim N(m, m) $$
+$$ H_1: \quad s \sim N(\mu_S, \mu_S) $$
 
 against
 
-$$ H_0: \quad s \sim N(0, m) $$
+$$ H_0: \quad s \sim N(0, \mu_S) $$
 
 These two hypothesis tests generate exactly the same likelihood ratio. A high-dimensional monitoring problem collapses into a one-dimensional sequential test.
 
@@ -131,7 +131,7 @@ as realized average strategy performance and
 
 $$ \mu_S = \frac1n \sum_{i=1}^{n}m_i $$
 
-as expected strategy performance.
+as expected strategy performance (this can be estimated during training).
 
 The stopping rule becomes
 
@@ -142,4 +142,6 @@ As $n$ grows, the correction term vanishes:
 $$ \bar s < \frac12\mu_S $$
 
 In the long run, persistent performance below roughly half of expected edge becomes strong evidence that the signal is gone.
+
+Given the defined alternate hypothesis $H_0$ as a gaussian centerd at zero with the same covariance as $H_1$, in the limit o many steps, this is just a choice of the closest normal.
 
