@@ -137,7 +137,11 @@ The stopping rule becomes
 
 $$ \bar s < \frac12 \mu_S + \frac1n \log\frac{z}{1-z} $$
 
-As $n$ grows, the correction term vanishes:
+The second term is always negative and acts as a tolerance for lower $\bar s$ if we have fewer observations. For small $z$ one can approximate:
+
+$$ \bar s < \frac12 \mu_S + \frac1n \log z $$
+
+which provides a simple formula. As $n$ grows, the correction term vanishes:
 
 $$ \bar s < \frac12\mu_S $$
 
