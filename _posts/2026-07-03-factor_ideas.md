@@ -1,4 +1,4 @@
-# Some thoughts on factor models
+# Factor exposures
 
 Consider a conditional allocation rule $w(x)$, where $x$ is a feature vector and $y$ is the vector of asset returns.
 
