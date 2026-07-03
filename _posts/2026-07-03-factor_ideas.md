@@ -10,6 +10,7 @@ $$
 
 Using the second-order approximation
 
+
 $$
 \log(1+z)\approx z-\frac12 z^2
 $$
