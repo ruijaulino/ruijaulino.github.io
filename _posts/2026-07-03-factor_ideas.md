@@ -191,7 +191,7 @@ $$
 where the Lagrange multipliers are global:
 
 $$
-\lambda= \left( \int B^\top C_{y|x}^{-1}B,p(x),dx \right)^{-1} \left( \int B^\top C_{y|x}^{-1}\mu_{y|x},p(x),dx \right)
+\lambda=  E_x \left[ B^\top C_{y|x}^{-1}B \right] ^{-1} E_x \left[ B^\top C_{y|x}^{-1}\mu_{y|x} \right]
 $$
 
 Unlike instantaneous neutrality, the multiplier is constant across $x$.
@@ -240,7 +240,7 @@ $$
 where
 
 $$
-\bar{\mu} = \left( \int C_{y|x}^{-1}p(x),dx \right)^{-1} \left( \int C_{y|x}^{-1}\mu_{y|x}p(x),dx \right)
+\bar{\mu} = E_x \left[ C_{y|x}^{-1} \right]^{-1} E_x \left[ C_{y|x}^{-1}\mu_{y|x} \right]
 $$
 
 A simpler feasible alternative is naive demeaning:
