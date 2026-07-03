@@ -210,7 +210,7 @@ Therefore the strategy may still profit from:
 
 Only systematic carry from average factor exposure is removed.
 
-##### Universal static neutralization
+#### Universal static neutralization
 
 A particularly interesting special case is
 
@@ -249,7 +249,7 @@ A simpler feasible alternative is naive demeaning:
 $$w(x) \leftarrow w(x)-E\left[w(x)\right]$$
 
 
-This satisfies the constraint but is generally suboptimal because it ignores a changing covariance (if present in the model).
+This satisfies the constraint but is generally suboptimal because it ignores a changing covariance (if present in the model). The same happens we impose pointwise neutralization as it verifies the static neutralization constraint but is sub-optimal, hinting on a kind of multiperiod trading optimization.
 
 
 ### Complete neutralization
