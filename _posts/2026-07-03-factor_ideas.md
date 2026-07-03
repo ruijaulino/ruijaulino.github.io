@@ -230,7 +230,7 @@ $$
 E[B^\top w(x)] = B^\top E[w(x)]
 $$
 
-this removes average exposure to any (fixed) linear factor model - neutralizing a _specific_ factor model yields a less restrictive condition.
+this removes average exposure to any fixed linear factor model - neutralizing a _specific_ factor model yields a less restrictive condition.
 
 The optimal solution becomes
 
@@ -263,7 +263,7 @@ $$
 Using total expectation
 
 $$
-E[w(x)^\top Bf] = E_x \left[ w(x)^\top B,E[f\mid x] \right]
+E[w(x)^\top Bf] = E_x \left[ w(x)^\top B E[f\mid x] \right]
 $$
 
 Define predictable factor returns (with features $x$)
