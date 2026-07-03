@@ -247,6 +247,7 @@ A simpler feasible alternative is naive demeaning:
 
 $$w(x) \leftarrow w(x)-E\left[w(x)\right]$$
 
+
 This satisfies the constraint but is generally suboptimal because it ignores a changing covariance (if present in the model).
 
 
