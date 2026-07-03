@@ -15,6 +15,7 @@ $$
 \log(1+z)\approx z-\frac12 z^2
 $$
 
+
 we obtain
 
 $$
