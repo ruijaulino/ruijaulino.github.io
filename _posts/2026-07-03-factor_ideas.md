@@ -1,17 +1,17 @@
 # Some thoughts on factor models
 
-Consider a conditional allocation rule (w(x)), where (x) is a feature vector and (y) is the vector of asset returns.
+Consider a conditional allocation rule $w(x)$, where $x$ is a feature vector and $y$ is the vector of asset returns.
 
 We maximize expected log-growth
 
 $$
-G = E\left[\log(1+w(x)^\top y)\right].
+G = E\left[\log(1+w(x)^\top y)\right]
 $$
 
 Using the second-order approximation
 
 $$
-\log(1+z)\approx z-\frac12 z^2,
+\log(1+z)\approx z-\frac12 z^2
 $$
 
 we obtain
@@ -20,7 +20,7 @@ $$
 G \approx E\left[ w(x)^\top y - \frac12 (w(x)^\top y)^2 \right]
 $$
 
-Conditioning on (x),
+Conditioning on $x$,
 
 $$
 G =  E_x\left[ w(x)^\top \mu_{y|x} - \frac12 w(x)^\top M_{y|x} w(x) \right]
@@ -131,9 +131,9 @@ $$
 \lambda(x) = (B^\top C_{y|x}^{-1} B)^{-1} B^\top C_{y|x}^{-1}\mu_{y|x}
 $$
 
-Thus instantaneous neutrality corresponds to projecting the unconstrained Kelly portfolio onto the subspace orthogonal to the factors.
+$\lambda(x)$ is a vector of Lagrange multipliers with adequate dimension. Instantaneous neutrality corresponds to projecting the unconstrained optimal bet onto the subspace orthogonal to the factors.
 
-For example, if the only asset is the market itself (single asset, single factor), then
+For example, if the only asset is the market itself (we have some feature to predict the SP500, trade via ES futures and want to be market (SP500) neutral - this situation may be common trading few strategies/signals which will be subjected to this market risk), then
 
 $$
 B=1
@@ -188,7 +188,7 @@ $$
 w(x) = C_{y|x}^{-1} \left( \mu_{y|x} - B\lambda \right)
 $$
 
-where the Lagrange multiplier is global:
+where the Lagrange multipliers are global:
 
 $$
 \lambda= \left( \int B^\top C_{y|x}^{-1}B,p(x),dx \right)^{-1} \left( \int B^\top C_{y|x}^{-1}\mu_{y|x},p(x),dx \right)
