@@ -69,7 +69,7 @@ $$
 
 where
 
-* $B(z)$ is a factor loading matrix depending on a state variable $z$,
+* $B(z)$ is a factor loading matrix depending on a variable $z$,
 * $f$ is a vector of factor returns,
 * $\epsilon$ is residual noise.
 
