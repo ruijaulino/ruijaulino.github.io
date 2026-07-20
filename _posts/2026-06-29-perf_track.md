@@ -1,4 +1,4 @@
-# Tracking Performance of Optimal Strategies
+# Tracking performance of optimal strategies
 
 A model may perform well in research and backtesting and then fail once deployed. This can happen for many reasons: signal decay, structural breaks, increased competition or false discovery.
 
