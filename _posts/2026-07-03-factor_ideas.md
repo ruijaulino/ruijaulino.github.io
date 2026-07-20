@@ -10,7 +10,6 @@ $$
 
 Using the second-order approximation
 
-
 $$
 \log(1+z)\approx z-\frac12 z^2
 $$
@@ -64,7 +63,7 @@ $$
 Assume asset returns admit a linear factor representation
 
 $$
-y = B(z)f+\epsilon,
+y = B(z)f+\epsilon
 $$
 
 where
