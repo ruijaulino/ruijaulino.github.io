@@ -39,7 +39,7 @@ and
 
 $$ H_0: \quad y_t \sim N(0, C(x_t)) $$
 
-Under this mixture, expected returns become
+Where we assumed that $H_0$ has the same covariance structure as $H_1$; this is reasonable as covariance tends to be easier to predict than returns. Under this mixture, expected returns become
 
 $$ \mathbb E[y_t \mid x_t,\mathcal F_{t-1}] = \phi_{t-1}\mu(x_t) $$
 
