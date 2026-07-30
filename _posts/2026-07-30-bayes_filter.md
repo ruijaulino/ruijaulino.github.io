@@ -350,7 +350,7 @@ $$
 for its age, and
 
 $$
-W_s=\mathbb E\[\Sigma_s^{-1}\]
+W_s=\mathbb E[\Sigma_s^{-1}]
 $$
 
 for its estimated precision. Also, one can use the approximation $W_s \approx \mathbb E[\Sigma_s]^{-1}$ (in many cases it's a good approximation).
