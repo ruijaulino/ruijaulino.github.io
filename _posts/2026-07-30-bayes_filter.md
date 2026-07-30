@@ -69,7 +69,7 @@ $$
 which yields
 
 $$
-Q_\Sigma(\Sigma_t) \propto \exp\left(-\frac12\log\|\Sigma_t\| -\frac12 \text{tr} \left(\Sigma_t^{-1}S_t \right) + T_{q_\Sigma}(\Sigma_t) \right) $$
+Q_\Sigma(\Sigma_t) \propto \exp\left(-\frac12\log|\Sigma_t| -\frac12 \text{tr} \left(\Sigma_t^{-1}S_t \right) + T_{q_\Sigma}(\Sigma_t) \right) $$
 
 where
 
@@ -82,7 +82,7 @@ and $T_{q_\Sigma}(\Sigma_t)$ collects the contribution of the predictive distrib
 For most financial applications, the conditional expected return is typically much smaller than the realized return,
 
 $$
-\|\mu_t\| \ll \|y_t\|
+|\mu_t| \ll |y_t|
 $$
 
 so that
@@ -94,7 +94,7 @@ $$
 Consequently,
 
 $$
-Q_\Sigma(\Sigma_t) \propto \exp\left(-\frac12\log\|\Sigma_t\| -\frac12 \text{tr} \left(\Sigma_t^{-1}y_ty_t^\top \right) + T_\Sigma(\Sigma_t) \right)
+Q_\Sigma(\Sigma_t) \propto \exp\left(-\frac12\log|\Sigma_t| -\frac12 \text{tr} \left(\Sigma_t^{-1}y_ty_t^\top \right) + T_\Sigma(\Sigma_t) \right)
  $$
 
 This approximation shows that, in practice, the covariance model can often be updated almost independently of the conditional mean model using only realized returns.
@@ -159,7 +159,7 @@ where $\text{IW}(\cdot)$ is a Inverse-Wishart distribution; $q_{\mu}$ is left ge
 As before, a reasonable approximation is where we _propagate_ to the same distribution with different parameters
 
 $$
-p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx q_\mu(\mu_t\mid \theta_t^-) \text{IW}(\Sigma_{t}\|\nu_{t}^-,V_{t}^-)
+p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx q_\mu(\mu_t\mid \theta_t^-) \text{IW}(\Sigma_{t}\mid\nu_{t}^-,V_{t}^-)
 $$
 
 with
@@ -212,13 +212,13 @@ If we aknowledge that covariance changes over time (and it is observed that it i
 At $t-1$, we have
 
 $$
-p(\Sigma_{t-1}, \mu_{t-1} \mid \mathcal{F}_{t-1}) = \text{N}(\mu\|m_{t-1},P_{t-1}) q_{\Sigma}(\Sigma_{t-1}\mid\gamma_{t-1})
+p(\Sigma_{t-1}, \mu_{t-1} \mid \mathcal{F}_{t-1}) = \text{N}(\mu \mid m_{t-1},P_{t-1}) q_{\Sigma}(\Sigma_{t-1}\mid\gamma_{t-1})
 $$
 
 A reasonable model for this case is that the mean distribution are the same (after many iterations we expect them to have a distribution that just converges to the mean with decreasing variance with the number of observations) and the covariance model is evolved as before:
 
 $$
-p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\mu_{t}\|m_{t_-1},P_{t-1}) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
+p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\mu_{t} \mid m_{t_-1},P_{t-1}) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
 $$
 
 
@@ -228,7 +228,7 @@ $$
 \log Q_{\mu}(\mu_t) =  -\frac12 (\mu-m_{t-1})^\top P_{t-1}^{-1} (\mu-m_{t-1}) -\frac12 (y_t-\mu)^\top W_t (y_t-\mu) + \text{const}
 $$
 
-with $W_t = \mathbb{E}_{Q_\Sigma} \left[\Sigma_t^{-1} \right]$. Therefore,
+with $W_t = \mathbb{E}_{Q\_\Sigma} \left[\Sigma_t^{-1} \right\]$. Therefore,
 
 $$
 Q_{\mu}(\mu_t)=N(m_t,P_t)
@@ -291,18 +291,18 @@ Thus the posterior mean is a precision-weighted average of all observations.
 Assume there are no features $x$ to predict mean. At $t-1$
 
 $$
-p(\Sigma_{t-1}, \mu_{t-1}\mid \mathcal{F}_{t-1}) = \text{N}(\mu_{t-1}\|m_{t-1},P_{t-1}) q_{\Sigma}(\Sigma_{t-1}\mid\gamma_{t-1})
+p(\Sigma_{t-1}, \mu_{t-1}\mid \mathcal{F}_{t-1}) = \text{N}(\mu_{t-1} \mid m_{t-1},P_{t-1}) q_{\Sigma}(\Sigma_{t-1}\mid\gamma_{t-1})
 $$
 
 We now evolve this distribution by preserving its mean and increasing its variance.
 
 $$
-p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\mu_{t}\|m_{t}^-,P_{t}^-) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
+p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\mu_{t} \mid m_{t}^-,P_{t}^-) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
 $$
 
 with $m_t^- = m_{t-1}$ and $P_t^- = \frac{1}{\psi} P_{t-1}$ ($\psi$ is scalar in $0<\psi<1$).
 
-Let $W_t = \mathbb{E}_{Q_\Sigma} \left[\Sigma_t^{-1} \right]$. The mean update is
+Let $W_t = \mathbb{E}_{Q\_\Sigma} \left[\Sigma_t^{-1} \right\]$. The mean update is
 
 $$
 \log Q_{\mu_t}(\mu_t) = -\frac12 (y_t-\mu_t)^\top W_t (y_t-\mu_t)  -\frac12 (\mu_t-m_{t-1})^\top \psi P_{t-1}^{-1} (\mu_t-m_{t-1}) + \text{const}
@@ -350,7 +350,7 @@ $$
 for its age, and
 
 $$
-W_s=\mathbb E[\Sigma_s^{-1}]
+W_s=\mathbb E\[\Sigma_s^{-1}\]
 $$
 
 for its estimated precision. Also, one can use the approximation $W_s \approx \mathbb E[\Sigma_s]^{-1}$ (in many cases it's a good approximation).
@@ -403,13 +403,13 @@ $$
 Similar to the constant mean case, we are now interested in $\beta$ distribution after a bunch of observations. At $t-1$, we have 
 
 $$
-p(\Sigma_{t-1}, \beta_{t-1} \mid \mathcal{F}_{t-1}) = \text{N}(\beta\|b_{t-1},U_{t-1}) q_{\Sigma}(\Sigma_{t-1}\mid\gamma_{t-1})
+p(\Sigma_{t-1}, \beta_{t-1} \mid \mathcal{F}_{t-1}) = \text{N}(\beta \mid b_{t-1},U_{t-1}) q_{\Sigma}(\Sigma_{t-1}\mid\gamma_{t-1})
 $$
 
 Again, a reasonable model for this case is that the beta distribution is the same (after many iterations we expect them to have a distribution that just converges to the mean with decreasing variance with the number of observations) and the covariance model is evolved as before:
 
 $$
-p(\beta_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\beta_{t}\|b_{t-1},U_{t-1}) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
+p(\beta_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\beta_{t} \mid b_{t-1},U_{t-1}) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
 $$
 
 
@@ -435,7 +435,7 @@ $$
 Collecting quadratic terms gives
 
 $$
-Q_\beta(\beta_t) = \text{N}(\beta_t \| b_t,U_t)
+Q_\beta(\beta_t) = \text{N}(\beta_t \mid b_t,U_t)
 $$
 
 with
@@ -469,7 +469,7 @@ which is weighted least squares estimator. Of course one can use a different pri
 A simple extension is to consider
 
 $$
-p(\beta_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\beta_{t}\|b_{t}^-,U_{t}^-) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
+p(\beta_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx \text{N}(\beta_{t} \mid b_{t}^-,U_{t}^-) q_{\Sigma}(\Sigma_{t}\mid\gamma_{t}^-)
 $$
 
 with
