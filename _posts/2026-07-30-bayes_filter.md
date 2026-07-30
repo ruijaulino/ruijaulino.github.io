@@ -151,7 +151,7 @@ This colapses in simple gaussian estimation (with prior or not). Under the previ
 Assume there are no features $z$ to predict covariance. At $t-1$, we have
 
 $$
-p(\Sigma_{t-1}, \mu_{t-1}\mid \mathcal{F}_{t-1}) = q_{\mu}(\mu_{t-1}\mid\theta_{t-1}) \text{IW}(\Sigma_{t-1}\|\nu_{t-1},V_{t-1})
+p(\Sigma_{t-1}, \mu_{t-1}\mid \mathcal{F}_{t-1}) = q_{\mu}(\mu_{t-1}\mid\theta_{t-1}) \text{IW}(\Sigma_{t-1} \mid \nu_{t-1},V_{t-1})
 $$
 
 where $\text{IW}(\cdot)$ is a Inverse-Wishart distribution; $q_{\mu}$ is left generic.
