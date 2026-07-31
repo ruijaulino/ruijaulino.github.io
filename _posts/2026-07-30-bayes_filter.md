@@ -40,7 +40,7 @@ $$
 p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) = \iint p(\mu_t,\Sigma_t\mid\mu_{t-1},\Sigma_{t-1}) p(\mu_{t-1},\Sigma_{t-1}\mid\mathcal{F}_{t-1}) d\mu_{t-1},d\Sigma_{t-1}
 $$
 
-Assume that the filtering distributions at step $t-1$ can be approximated as
+This is a open problem that can be as complicated as we want but we can make some reasonable modelling assumptions to make it more trackable. Assume that the filtering distributions at step $t-1$ can be approximated as
 
 $$
 p(\mu_{t-1},\Sigma_{t-1}\mid\mathcal{F}_{t-1}) = q_{\mu}(\mu_{t-1}\mid\theta_{t-1}) q_{\Sigma}(\Sigma_{t-1}\mid\gamma_{t-1})
@@ -52,7 +52,7 @@ $$
 p(\mu_t,\Sigma_t\mid\mathcal{F}_{t-1}) \approx q_\mu(\mu_t\mid \theta_t^-) q_\Sigma(\Sigma_t\mid \gamma_t^-)
 $$
 
-where $\theta_t^-$ and $\gamma_t^-$ denote the parameters of the predictive distributions before observing $y_t$.
+where $\theta_t^-$ and $\gamma_t^-$ denote the parameters of the predictive distributions before observing $y_t$. In some models with closed form expression (a Kalman filter for example), something similar happens.
 
 After observing $y_t$, we compute the posterior using a mean-field variational approximation:
 
@@ -60,7 +60,7 @@ $$
 p(\mu_t,\Sigma_t \mid \mathcal{F}_t) \approx Q_\mu(\mu_t) Q_\Sigma(\Sigma_t)
 $$
 
-The coordinate update for the covariance distribution is
+Where $Q_\mu, Q_\Sigma$ may be different from $q_\mu, q_\Sigma$, depending on modelling choices. The coordinate update for the covariance distribution is
 
 $$
 \log Q_\Sigma(\Sigma_t) = \mathbb{E}_{Q_\mu} \left[ \log p(y_t \mid \mu_t,\Sigma_t) \right] + \log q_\Sigma(\Sigma_t) + \text{const}
@@ -79,7 +79,7 @@ $$
 
 and $T_{q_\Sigma}(\Sigma_t)$ collects the contribution of the predictive distribution $q_\Sigma$.
 
-For most financial applications, the conditional expected return is typically much smaller than the realized return,
+A important simplification is that, for most financial applications, the conditional expected return is typically much smaller than the realized return,
 
 $$
 |\mu_t| \ll |y_t|
@@ -126,7 +126,7 @@ Which for many cases can be approximated with a normal (with moment matching for
 
 ## Applications
 
-Let's cover interesting cases of the formalism.
+Let's cover interesting cases.
 
 ### Static parameters
 
