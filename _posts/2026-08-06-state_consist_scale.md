@@ -84,7 +84,7 @@ $$
 For the optimal strategy, corresponding to a constant scaling $\phi(z)=c$,
 
 $$
-SR_*^2=E[q].
+SR_*^2=E[q]
 $$
 
 Therefore
