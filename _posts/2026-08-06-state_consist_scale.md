@@ -14,7 +14,7 @@ $$
 s=w(z)^\top x
 $$
 
-Using the second non-central moment, define the second-moment Sharpe as
+Using the second non-central moment, sharpe ratio is
 
 $$
 SR=\frac{E[s]}{\sqrt{E[s^2]}}
@@ -40,7 +40,7 @@ $$
 \tilde w(z)=\phi(z)M(z)^{-1}\mu(z)
 $$
 
-This includes clipping, confidence scaling, nonlinear transformations, or simply limiting positions when the model produces large weights.
+This includes clipping, nonlinear transformations to limit positions when the model produces large weights, etc.
 
 Define
 
@@ -98,7 +98,7 @@ $$
 
 for all states with $q(z)>0$.
 
-Thus, although the optimal strategy is invariant to a **global** scaling constant, its scale is not arbitrary state by state. The optimization determines not only the portfolio direction at each state, but also the relative exposure across states.
+Thus, although the optimal strategy is invariant to a global scaling constant, its scale is not arbitrary state by state. The optimization determines not only the portfolio for each state, but also the relative exposure across states.
 
 Multiplying all state allocations by the same constant preserves the solution,
 
@@ -114,7 +114,7 @@ $$
 
 generally does not.
 
-This gives a simple interpretation: **the relative leverage assigned to different future states is itself part of the optimal strategy.** Post-processing operations such as clipping, nonlinear transformations, or confidence-based scaling destroy this state-consistent scaling and reduce population Sharpe.
+This gives a simple interpretation: the relative leverage assigned to different future states is itself part of the optimal strategy. Post-processing operations such as clipping or nonlinear transformations destroy this state-consistent scaling and reduce sharpe.
 
 
 
@@ -165,7 +165,7 @@ and there is no loss. The more the relative scaling changes across important sta
 
 This does not imply that state-dependent transformations should never be used. Leverage constraints, transaction costs, estimation uncertainty, or model misspecification can justify them, but they then correspond to a different optimization problem rather than an improvement of the original optimum.
 
-For example, a practical approach is to use the training data to estimate the range over which the optimal weights vary and use this to choose an appropriate global scaling constant. Extreme positions can then be clipped when necessary. If clipping affects only a small part of the $q$-weighted distribution, the departure from optimality may be small, and the expression above provides a direct way to quantify it.
+For example, a practical approach is to use the training data to estimate the range over which the optimal weights vary and use this to choose an appropriate global scaling constant. Extreme positions can then be clipped when necessary. If clipping affects only a small part of the $q$-weighted distribution (i.e, if only a small part of the performance is comming from there), the departure from optimality may be small, and the expression above provides a direct way to quantify it.
 
 
 
