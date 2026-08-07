@@ -6,6 +6,8 @@ $$
 p(x|z)
 $$
 
+
+
 where $x$ are the future returns and $z$ represents the available information.
 
 For a feature-dependent optimal allocation $w(z)$, define the strategy return
