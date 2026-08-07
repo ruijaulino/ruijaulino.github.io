@@ -34,15 +34,15 @@ $$
 \mu(z)=E[x|z] \qquad M(z)=E[xx^\top|z]
 $$
 
-and $c$ is a constant.
+and $c$ is a constant (the growth optimal portfolio has $c = 1$).
 
-The interesting question is what happens if, after estimating the model, we decide to scale the portfolio differently according to the feature value,
+An interesting question is what happens if, after estimating the model, we decide to scale the portfolio differently according to the feature value,
 
 $$
 \tilde w(z)=\phi(z)M(z)^{-1}\mu(z)
 $$
 
-This includes clipping, confidence scaling, nonlinear transformations, etc - this may happen, for example, because the weights are too large and leverage is exceeded.
+This includes clipping, confidence scaling, nonlinear transformations, etc - this may happen, for example, because the weights are too large and leverage is exceeded; a trivial example is to bet the full capital with the sign of the predictions.
 
 Define
 
@@ -80,13 +80,21 @@ $$
 SR(\phi)^2 \le E[q]
 $$
 
-Equality holds if and only if
+
+For the optimal strategy, corresponding to a constant scaling $\phi(z)=c$,
 
 $$
-\phi(z)=c
+SR_*^2=E[q].
 $$
 
-for some constant $c$.
+Therefore
+
+$$
+SR(\phi)^2\leq SR_*^2
+$$
+
+with equality if $\phi(z)=c$ for all states with $q(z)>0$.
+
 
 Among all strategies obtained by rescaling the optimal conditional portfolio, the maximum Sharpe ratio is obtained only by multiplying every _state_ by the same constant. Any feature-dependent scaling decreases Sharpe.
 
