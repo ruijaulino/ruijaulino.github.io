@@ -1,4 +1,4 @@
-## Notes on combining models
+# Notes on combining models
 
 Consider a set of returns $y$ for which we have several models, each based on a different information set $x_i$. Model $i$ defines a conditional distribution $y \sim p_i(y \mid x_i)$. Optimal allocation to each one is
 
@@ -31,7 +31,7 @@ $$
 Final allocation is a linear combination of the optimal allocations implied by the individual models, with coefficients determined by their joint expected performance and second moments. Importantly, the final allocation is invariant to the arbitrary scaling $k_i$ chosen for each individual strategy (the $k_i$ are retained because individual strategies are developed and evaluated at realistic scales. At the strategy-allocation level, the same scaling must therefore be accounted for; it cancels exactly from the final unconstrained allocation)
 
 
-### Another view
+## Another view
 
 Ideally, all information would be incorporated simultaneously into a single model $y\mid X$, where $X=(x_1, \cdots, x_m)$. In this case $w^* = \frac{1}{k} M_{y\mid X}^{-1} \mu_{y \mid X}$. This may be difficult, too much estimation errors and/or simply not practical. Instead, each model transforms its information $x_i$ into a decision
 
@@ -73,4 +73,27 @@ $$
 q = \sum_i  \frac{\left[M_s^{-1} \mu_s\right]_i k_i}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
 $$
 
-This is the same allocation obtained by treating the individual model decisions as strategies and optimizing between them: mixing weights or mixing strategies should produce the same result.
+This is the same allocation obtained by treating the individual model decisions as strategies and optimizing between them: mixing weights or mixing strategies should produce the same result. 
+
+## Observations
+
+We can see that
+
+$$ 
+[M_s]_{ii}=[\mu_s]_i
+$$
+
+since for each individual optimal strategy its expected return equals its second non-central moment (as it should be if there was only one strategy). This makes $M_s^{-1}\mu_s$ easier to interpret. If the individual strategies are orthogonal
+
+$$ M_s=\text{diag}(\mu_s) $$
+
+then
+
+$$ M_s^{-1}\mu_s=\mathbf 1 $$
+
+So, in the absence of overlap, the optimal combined allocation is simply the sum of the allocations implied by each model. Each model has already determined its own optimal allocation, so no additional weighting is needed.
+
+The off-diagonal elements of $M_s$ capture overlap between strategies. Therefore, $M_s^{-1}\mu_s$ can be interpreted mainly as an adjustment for this overlap: coefficients are one when strategies are orthogonal and change as their exposures become related.
+
+
+
