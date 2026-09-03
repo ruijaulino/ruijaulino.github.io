@@ -93,7 +93,8 @@ $$ M_s^{-1}\mu_s=\mathbf 1 $$
 
 So, in the absence of overlap, the optimal combined allocation is simply the sum of the allocations implied by each model. Each model has already determined its own optimal allocation, so no additional weighting is needed.
 
-The off-diagonal elements of $M_s$ capture overlap between strategies. Therefore, $M_s^{-1}\mu_s$ can be interpreted mainly as an adjustment for this overlap: coefficients are one when strategies are orthogonal and change as their exposures become related.
+The coefficients $M_s^{-1}\mu_s$ can be interpreted primarily as redundancy adjustments between individually optimal decisions: each model has already determined how much to bet from its own information, while the combination step adjusts those bets only to account for their overlap.
+
 
 
 
