@@ -16,13 +16,13 @@ $$
 E[s_i s_j] = \frac{1}{k_i k_j} E \left[ \mu_{y \mid x_i}^T M_{y \mid x_i}^{-1} y y^T M_{y \mid x_j}^{-1} \mu_{y \mid x_j} \right] = \frac{1}{k_i k_j} \left[ M_s \right]_{ij}
 $$
 
-Define the diagonal matrix $V$ with $V_{ii} = \frac{1}{k_i}$. The set of strategies $s$ has expected value $V\mu_s$ and second non central moment $V M_s V$. Maximum growth allocation between them is
+Define the diagonal matrix $V$ with $V_{ii} = \frac{1}{k_i}$. Rewritting, strategies $s$ has expected value vector $V\mu_s$ and second non central moment $V M_s V$. Maximum growth allocation between them is
 
 $$
 \phi = V^{-1} M_s^{-1} \mu_s
 $$
 
-which, transalated down to returns, means allocating with
+which, propagated down to returns, means allocating with
 
 $$
 w = \sum_i  \frac{\phi_i}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i} = \sum_i  \frac{\left[M_s^{-1} \mu_s\right]_i k_i}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
@@ -73,4 +73,4 @@ $$
 q = \sum_i  \frac{\left[M_s^{-1} \mu_s\right]_i k_i}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
 $$
 
-This is the same allocation obtained by treating the individual model decisions as strategies and optimizing between them.
+This is the same allocation obtained by treating the individual model decisions as strategies and optimizing between them: mixing weights or mixing strategies should produce the same result.
