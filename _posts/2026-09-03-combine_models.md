@@ -1,6 +1,6 @@
 ## Notes on combining models
 
-Consider a set of returns $y$ for which we have several models, each based on a different information set $x_i$. Model $i$ defines a conditional distribution $y \sim p_i(y|x_i)$. Optimal allocation to each one is
+Consider a set of returns $y$ for which we have several models, each based on a different information set $x_i$. Model $i$ defines a conditional distribution $y \sim p_i(y \mid x_i)$. Optimal allocation to each one is
 
 $$
 w_i = \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
@@ -33,7 +33,7 @@ Final allocation is a linear combination of the optimal allocations implied by t
 
 ### Another view
 
-Ideally, all information would be incorporated simultaneously into a single model $y\mid X$, where $X=(x_1, \cdots, x_m)$. In this case $w^* = \frac{1}{k} M_{y\mid X}^{-1} \mu_{y|X}$. This may be difficult, too much estimation errors and/or simply not practical. Instead, each model transforms its information $x_i$ into a decision
+Ideally, all information would be incorporated simultaneously into a single model $y\mid X$, where $X=(x_1, \cdots, x_m)$. In this case $w^* = \frac{1}{k} M_{y\mid X}^{-1} \mu_{y \mid X}$. This may be difficult, too much estimation errors and/or simply not practical. Instead, each model transforms its information $x_i$ into a decision
 
 $$
 w_i = \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
