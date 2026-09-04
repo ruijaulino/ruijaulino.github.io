@@ -28,7 +28,7 @@ $$
 w = \sum_i  \frac{\phi_i}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i} = \sum_i  \frac{\left[M_s^{-1} \mu_s\right]_i k_i}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
 $$
 
-Final allocation is a linear combination of the optimal allocations implied by the individual models, with coefficients determined by their joint expected performance and second moments. Importantly, the final allocation is invariant to the arbitrary scaling $k_i$ chosen for each individual strategy (the $k_i$ are retained because individual strategies are developed and evaluated at realistic scales. At the strategy-allocation level, the same scaling must therefore be accounted for; it cancels exactly from the final unconstrained allocation)
+Final allocation is a linear combination of the optimal allocations implied by the individual models, with coefficients determined by their joint expected performance and second moments. Importantly, the final allocation is invariant to the arbitrary scaling $k_i$ chosen for each individual strategy (the $k_i$ are retained because individual strategies are developed and evaluated at realistic scales. At the strategy-allocation level, the same scaling must be accounted for; it cancels in the the final allocation)
 
 
 ## Another view
@@ -83,17 +83,13 @@ $$
 [M_s]_{ii}=[\mu_s]_i
 $$
 
-since for each individual optimal strategy its expected return equals its second non-central moment (as it should be if there was only one strategy). This makes $M_s^{-1}\mu_s$ easier to interpret. If the individual strategies are orthogonal
-
-$$ M_s=\text{diag}(\mu_s) $$
-
-then
+since for each individual optimal strategy it's expected return equals the second non-central moment (as it should be if there was only one strategy). This makes $M_s^{-1}\mu_s$ easier to interpret. If $M_s$ is diagonal
 
 $$ M_s^{-1}\mu_s=\mathbf 1 $$
 
 So, in the absence of overlap, the optimal combined allocation is simply the sum of the allocations implied by each model. Each model has already determined its own optimal allocation, so no additional weighting is needed.
 
-The coefficients $M_s^{-1}\mu_s$ can be interpreted primarily as redundancy adjustments between individually optimal decisions: each model has already determined how much to bet from its own information, while the combination step adjusts those bets only to account for their overlap.
+The coefficients $M_s^{-1}\mu_s$ can be interpreted as redundancy adjustments between individually optimal decisions: each model has already determined how much to bet from it's own information, while the combination step adjusts those bets only to account for their overlap.
 
 
 
