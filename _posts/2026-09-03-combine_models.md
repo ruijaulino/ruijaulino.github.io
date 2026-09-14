@@ -110,7 +110,7 @@ $$
 w = \sum_i \frac{k_i}{k} w_i
 $$
 
-with $k = \sum_j = k_j$. This is just multiplication by a constant, should not impact shape and relative importance of models/strategies should be preserved.
+with $k = \sum_j = k_j$. This is just multiplication by a constant, should not impact sharpe and relative importance of models/strategies should be preserved.
 
 Now, it can happen that there are few models that dominate the computation of $k$; a fix here is to clip the $k_i$ to a quantile.
 
