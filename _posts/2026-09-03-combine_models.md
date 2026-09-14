@@ -75,7 +75,7 @@ $$
 
 This is the same allocation obtained by treating the individual model decisions as strategies and optimizing between them: mixing weights or mixing strategies should produce the same result. 
 
-## Observations
+### Observations
 
 We can see that
 
@@ -90,6 +90,45 @@ $$ M_s^{-1}\mu_s=\mathbf 1 $$
 So, in the absence of overlap, the optimal combined allocation is simply the sum of the allocations implied by each model. Each model has already determined its own optimal allocation, so no additional weighting is needed.
 
 The coefficients $M_s^{-1}\mu_s$ can be interpreted as redundancy adjustments between individually optimal decisions: each model has already determined how much to bet from it's own information, while the combination step adjusts those bets only to account for their overlap.
+
+
+## In practice
+
+Practical use of models always present more challenges than simply following the _theory_. 
+
+#### Computation of $k_i$
+
+The objective of using a weight scaling $k_i$ is to make weights fall into a usable leverage value (provided that value does not make growth negative - which is not expected to happen with small returns). During model estimation one can compute some statistic of weight variation (standard deviation or a quantile) and use it to scale to unit leverage. Under diagonal $M_s$, the final allocation is
+
+$$
+w = \sum_i k_i \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i} = \sum_i k_i w_i
+$$
+
+to correct the scale in the overall $w$ we can use
+
+$$
+w = \sum_i \frac{k_i}{k} w_i
+$$
+
+with $k = \sum_j = k_j$. This is just multiplication by a constant, should not impact shape and relative importance of models/strategies should be preserved.
+
+Now, it can happen that there are few models that dominate the computation of $k$; a fix here is to clip the $k_i$ to a quantile.
+
+
+#### Computation of $\left[M_s^{-1} \mu_s\right]_i$
+
+As discussed this quantity should be 1 (under diagonal $M_s$ which probably is the most practical case as data may not be synchronous and/or have different histories; recall that this is the performance of the _unormalized_ strategy). Since some models may work better than others (some may even not work) perhaps it can make sense to use this to account for that.
+
+One can use a inner cycle of cross validation to check whether the model performance is positive or negative and use that to clip $\left[M_s^{-1} \mu_s\right]_i$ to zero or one.
+
+
+#### Uncomparable models
+
+The is another problem: if the models under consideration do not output proper measures of mean and covariance (think for example on the case where one invests proportional to inverse-volatily; what is the expected value and variance? probably we cannot mix this predictions with a model for those quantities). In general it can make more sense to use the second framework with $q = \sum_i u_i w_i$: assuming diagonal $M_s$, we can just compute $\left( \frac{\mu_s}{\sigma_s^2} \right)_i$ from a inner cross validation cycle (and this statistics are computed with the normalized weights!), clip for positive expected values and normalize. Even further, one can assume equal strategy sharpes (for the positive ones) and just go inverse strategy volatility.
+
+
+
+
 
 
 
