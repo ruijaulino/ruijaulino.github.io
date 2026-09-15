@@ -130,7 +130,7 @@ $$
 u =  \frac{\mu_s}{\sigma_s^2} k \propto \frac{E[y^T M^{-1} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]} \sqrt{E[\mu^T M^{-2} \mu]}
 $$
 
-where we assumed that a proper value for $k$ is related to the scale of the weights $\sigma_w = \sqrt{E[w^w]} = \sqrt{E[\mu^T M^{-2} \mu]}$. Furthermore, assuming the model captures well the second moment, write as
+where we assumed that a proper value for $k$ is related to the scale of the weights $\sigma_w = \sqrt{E[w^T w]} = \sqrt{E[\mu^T M^{-2} \mu]}$. Furthermore, assuming the model captures well the second moment, write as
 
 $$
 u \propto \frac{E[y^T M^{-1} \mu]}{\sqrt{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} = \text{SR}_s \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} \approx  \text{SR}_s \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} \mu]}}
