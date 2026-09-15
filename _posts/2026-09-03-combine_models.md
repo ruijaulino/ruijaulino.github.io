@@ -136,14 +136,14 @@ $$
 u \propto \frac{E[y^T M^{-1} \mu]}{\sqrt{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} = \text{SR}_s \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} \approx  \text{SR}_s \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} \mu]}}
 $$
 
-The last term can be identified as a measure of strategy scale. This yields the approximation
+The last term can be identified as a measure of strategy scale (easy to see at one dimension). This yields the approximation
 
 $$
 u \propto \text{SR}_s \frac{1}{\sigma_s}
 $$
 
 
-we can just compute $\left( \frac{\mu_s}{\sigma_s^2} \right)_i$ from a inner cross validation cycle (and this statistics are computed with the normalized weights!), clip for positive expected values and normalize. Even further, one can assume equal strategy sharpes (for the positive ones) and just go inverse strategy volatility.
+So, we can just compute $\left( \frac{\mu_s}{\sigma_s^2} \right)_i$ from a inner cross validation cycle (and this statistics are computed with the normalized weights!), clip for positive expected values and normalize. Even further, one can assume equal strategy sharpes (for the positive ones) and just go inverse strategy volatility.
 
 
 
