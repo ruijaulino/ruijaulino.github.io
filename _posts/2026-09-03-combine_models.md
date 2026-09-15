@@ -3,10 +3,10 @@
 Consider a set of returns $y$ for which we have several models, each based on a different information set $x_i$. Model $i$ defines a conditional distribution $y \sim p_i(y \mid x_i)$. Optimal allocation to each one is
 
 $$
-w_i = \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
+\hat{w_i} = \frac{1}{k_i} w_i = \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
 $$
 
-where $k_i$ is just a scaling constant, $M$ is the second non central moment and $\mu$ is the first moment. This induces a strategy $s_i = w_i^T y$ with properties
+where $k_i$ is just a scaling constant, $M$ is the second non central moment and $\mu$ is the first moment. This induces a strategy $s_i = \hat{w_i}^T y$ with properties
 
 $$
 E[s_i] = \frac{1}{k_i} E \left[ y^T M_{y \mid x_i}^{-1} \mu_{y \mid x_i} \right] =  \frac{1}{k_i} \left[\mu_{s}\right]_i
@@ -36,23 +36,23 @@ Final allocation is a linear combination of the optimal allocations implied by t
 Ideally, all information would be incorporated simultaneously into a single model $y\mid X$, where $X=(x_1, \cdots, x_m)$. In this case $w^* = \frac{1}{k} M_{y\mid X}^{-1} \mu_{y \mid X}$. This may be difficult, too much estimation errors and/or simply not practical. Instead, each model transforms its information $x_i$ into a decision
 
 $$
-w_i = \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
+\hat{w_i} = \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i}
 $$
 
 Rather than attempting to estimate $w^*$ directly, restrict the combined decision to the linear span of these partial-information decisions:
 
 $$
-q = \sum_i u_i w_i
+q = \sum_i u_i \hat{w_i}
 $$
 
 This induces a strategy $z = q^T y$ with properties
 
 $$
-E[z] = \sum_i u_i E[w_i^T y] = \sum_i u_i E[s_i] = u^T V \mu_s
+E[z] = \sum_i u_i E[\hat{w_i}^T y] = \sum_i u_i E[s_i] = u^T V \mu_s
 $$
 
 $$
-E[z^2] = \sum_i u_i u_j E[w_i^T y y^T w_j] = \sum_i u_i u_j E[s_i s_j] = u^T V M_s V u
+E[z^2] = \sum_i u_i u_j E[\hat{w_i}^T y y^T \hat{w_j}] = \sum_i u_i u_j E[s_i s_j] = u^T V M_s V u
 $$
 
 where the last equalities used the previous definitions. This strategy has growth rate
@@ -101,13 +101,13 @@ Practical use of models always present more challenges than simply following the
 The objective of using a weight scaling $k_i$ is to make weights fall into a usable leverage value (provided that value does not make growth negative - which is not expected to happen with small returns). During model estimation one can compute some statistic of weight variation (standard deviation or a quantile) and use it to scale to unit leverage. Under diagonal $M_s$, the final allocation is
 
 $$
-w = \sum_i k_i \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i} = \sum_i k_i w_i
+\hat{w} = \sum_i k_i \frac{1}{k_i} M_{y \mid x_i}^{-1} \mu_{y \mid x_i} = \sum_i k_i \hat{w_i}
 $$
 
 to correct the scale in the overall $w$ we can use
 
 $$
-w = \sum_i \frac{k_i}{k} w_i
+\hat{w} = \sum_i \frac{k_i}{k} \hat{w_i}
 $$
 
 with $k = \sum_j = k_j$. This is just multiplication by a constant, should not impact sharpe and relative importance of models/strategies should be preserved.
@@ -124,7 +124,26 @@ One can use a inner cycle of cross validation to check whether the model perform
 
 #### Uncomparable models
 
-The is another problem: if the models under consideration do not output proper measures of mean and covariance (think for example on the case where one invests proportional to inverse-volatily; what is the expected value and variance? probably we cannot mix this predictions with a model for those quantities). In general it can make more sense to use the second framework with $q = \sum_i u_i w_i$: assuming diagonal $M_s$, we can just compute $\left( \frac{\mu_s}{\sigma_s^2} \right)_i$ from a inner cross validation cycle (and this statistics are computed with the normalized weights!), clip for positive expected values and normalize. Even further, one can assume equal strategy sharpes (for the positive ones) and just go inverse strategy volatility.
+The is another problem: if the models under consideration do not output proper measures of mean and covariance (think for example on the case where one invests proportional to inverse-volatily; what is the expected value and variance? probably we cannot mix this predictions with a model for those quantities). In general it can make more sense to use the second framework with $q = \sum_i u_i \hat{w_i}$: assuming diagonal $M_s$ (note the subscripts were dropped for ease of notation):
+
+$$
+u =  \frac{\mu_s}{\sigma_s^2} k \propto \frac{E[y^T M^{-1} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]} \sqrt{E[\mu^T M^{-2} \mu]}
+$$
+
+where we assumed that a proper value for $k$ is related to the scale of the weights $\sigma_w = \sqrt{E[w^w]} = \sqrt{E[\mu^T M^{-2} \mu]}$. Furthermore, assuming the model captures well the second moment, write as
+
+$$
+u \propto \frac{E[y^T M^{-1} \mu]}{\sqrt{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} = \text{SR}_s \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} y y^T M^{-1} \mu]}} \approx  \text{SR}_s \sqrt{\frac{E[\mu^T M^{-2} \mu]}{E[\mu^T M^{-1} \mu]}}
+$$
+
+The last term can be identified as a measure of strategy scale. This yields the approximation
+
+$$
+u \propto \text{SR}_s \frac{1}{\sigma_s}
+$$
+
+
+we can just compute $\left( \frac{\mu_s}{\sigma_s^2} \right)_i$ from a inner cross validation cycle (and this statistics are computed with the normalized weights!), clip for positive expected values and normalize. Even further, one can assume equal strategy sharpes (for the positive ones) and just go inverse strategy volatility.
 
 
 
