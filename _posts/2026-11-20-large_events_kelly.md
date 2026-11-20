@@ -35,7 +35,7 @@ This produces a lower bound on growth with a closed-form maximizing allocation.
 Assume
 
 $$
-x\ge-L\quad\text{almost surely},\qquad L>0
+x\ge-L,\qquad L>0
 $$
 
 To ensure positive wealth under this bound, exposure has to be restricted to
@@ -52,7 +52,7 @@ $$
 \mu=\mathbb E[x],\qquad m_2=\mathbb E[x^2]=\sigma^2+\mu^2
 $$
 
-and assume $0<m_2<\infty$. We focus on $\mu>0$. 
+and assume $0<m_2<\infty$ and $\mu>0$. 
 
 The bound $L$ concerns the underlying investment's loss; the associated portfolio loss is at most $wL$. This value $L$ can be estimated from data as the largest loss or a multiple of it to be more conservative.
 
@@ -106,74 +106,42 @@ $$
 
 The parabola is tangent to the logarithm at zero and passes through it at $x=-L$. Ordinary quadratic Kelly matches the curvature at zero; this construction calibrates the curvature to the worst-loss point.
 
-## Why it is a lower bound
-
-Matching those points alone does not prove that the parabola lies below the logarithm. To see why it does, write the logarithm as linear return minus its exact correction:
-
-$$
-\log(1+wx)=wx-x^2c_w(x),
-\qquad
-c_w(x)=w^2\int_0^1\frac{t}{1+twx}\,dt.
-$$
-
-This identity follows by integrating the slope difference between $y$ and $\log(1+y)$, then substituting $y=wx$.
-
-The coefficient $c_w(x)$ decreases as $x$ increases: every denominator inside the integral gets larger. Therefore, on $x\ge-L$,
-
-$$
-c_w(x)\le c_w(-L)
-=\frac{-\log(1-wL)-wL}{L^2}.
-$$
-
-Our parabola uses this largest correction coefficient for every return. Consequently,
-
-$$
-\boxed{
-\log(1+wx)-q_w(x)
-=x^2[c_w(-L)-c_w(x)]\ge0.
-}
-$$
-
-It keeps the same linear contribution and subtracts a larger penalty, so it understates growth.
-
 ## Optimize the approximation
 
 Taking expectations gives
 
 $$
-\widetilde G(w):=\mathbb E[q_w(x)]
-=\mu w+\frac{m_2}{L^2}\left[\log(1-wL)+wL\right]
-\le G(w).
+\widetilde G(w):=\mathbb E[q_w(x)] =\mu w+\frac{m_2}{L^2}\left[\log(1-wL)+wL\right] 
 $$
 
 We now maximize this lower bound. Its derivative is
 
 $$
-\widetilde G'(w)=\mu-\frac{m_2w}{1-wL}.
+\widetilde G'(w)=\mu-\frac{m_2w}{1-wL}
 $$
 
 Setting it to zero yields
 
 $$
-\mu(1-wL)=m_2w,
+\mu(1-wL)=m_2w
 $$
 
 and therefore
 
 $$
-\boxed{w_D=\frac{\mu}{m_2+\mu L}.}
+\boxed{w_D=\frac{\mu}{m_2+\mu L}}
 $$
 
 Since
 
 $$
-\widetilde G''(w)=-\frac{m_2}{(1-wL)^2}<0,
+\widetilde G''(w)=-\frac{m_2}{(1-wL)^2}<0
 $$
 
-this is the unique maximum of the surrogate. Using $w_Q=\mu/m_2$, we can write it as
+this is the unique maximum. Using $w_Q=\mu/m_2$, we can write it as
 
 $$
-\boxed{w_D=\frac{w_Q}{1+Lw_Q}.}
+\boxed{w_D=\frac{w_Q}{1+Lw_Q}}
 $$
 
 The reduction depends on $Lw_Q$: the worst permitted portfolio loss under quadratic Kelly sizing. A larger value produces a stronger reduction. Using $\mu/\sigma^2$ in place of $w_Q$ additionally neglects $\mu^2$ and is not the exact formula derived here.
@@ -181,37 +149,12 @@ The reduction depends on $Lw_Q$: the worst permitted portfolio loss under quadra
 The result optimizes the lower bound, not necessarily the original $G$. It also gives an explicit growth certificate. With $r=\mu L/m_2$,
 
 $$
-G(w_D)\ge\widetilde G(w_D)
-=\frac{m_2}{L^2}[r-\log(1+r)]>0.
+G(w_D)\ge\widetilde G(w_D)=\frac{m_2}{L^2}[r-\log(1+r)]>0
 $$
 
 This does not establish how close the allocation is to optimal. Nor is it a complete model of fat tails: distributions with the same $\mu$, $m_2$, and $L$ receive the same allocation.
 
-## Implementation
-
-For empirical observations, use the raw second moment rather than the variance:
-
-```python
-import numpy as np
-
-
-def conservative_allocation(x, L):
-    x = np.asarray(x, dtype=float)
-    if x.ndim != 1 or x.size == 0 or not np.isfinite(x).all():
-        raise ValueError("Provide a nonempty, finite array of returns.")
-    if not np.isfinite(L) or L <= 0 or np.any(x < -L):
-        raise ValueError("L must be positive and cover all observed losses.")
-
-    mu = x.mean()
-    if mu <= 0:
-        return 0.0
-    m2 = np.mean(x**2)
-    return mu / (m2 + mu * L)
-```
-
-The sample-based calculation does not itself account for estimation error in the mean or unseen future losses.
-
-## The case of a possible total loss
+### The case of a possible total loss
 
 Holding $\mu$ and $m_2$ fixed,
 
