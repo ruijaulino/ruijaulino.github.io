@@ -129,7 +129,7 @@ $$
 and therefore
 
 $$
-\boxed{w_D=\frac{\mu}{m_2+\mu L}}
+w_D=\frac{\mu}{m_2+\mu L}
 $$
 
 Since
@@ -141,7 +141,7 @@ $$
 this is the unique maximum. Using $w_Q=\mu/m_2$, we can write it as
 
 $$
-\boxed{w_D=\frac{w_Q}{1+Lw_Q}}
+w_D=\frac{w_Q}{1+Lw_Q}
 $$
 
 The reduction depends on $Lw_Q$: the worst permitted portfolio loss under quadratic Kelly sizing. A larger value produces a stronger reduction. Using $\mu/\sigma^2$ in place of $w_Q$ additionally neglects $\mu^2$ and is not the exact formula derived here.
@@ -159,11 +159,7 @@ This does not establish how close the allocation is to optimal. Nor is it a comp
 Holding $\mu$ and $m_2$ fixed,
 
 $$
-\boxed{
-\lim_{L\to1^-}w_D
-=\frac{\mu}{m_2+\mu}
-=\frac{w_Q}{1+w_Q}.
-}
+\lim_{L\to1^-}w_D=\frac{\mu}{m_2+\mu}=\frac{w_Q}{1+w_Q}
 $$
 
 At $L=1$, the assumption $x\ge-1$ means the underlying asset cannot lose more than 100% in one period. We can apply the derivation directly at $L=1$; a distribution whose losses approach $-1$ need not satisfy a tighter bound $L<1$.
