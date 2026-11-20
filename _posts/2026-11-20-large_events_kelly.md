@@ -56,7 +56,7 @@ and assume $0<m_2<\infty$ and $\mu>0$.
 
 The bound $L$ concerns the underlying investment's loss; the associated portfolio loss is at most $wL$. This value $L$ can be estimated from data as the largest loss or a multiple of it to be more conservative.
 
-## Fit
+## Define the approximation
 
 For a fixed exposure $w$, define
 
@@ -105,6 +105,9 @@ q_w(x)=wx+\frac{x^2}{L^2}\left[\log(1-wL)+wL\right]
 $$
 
 The parabola is tangent to the logarithm at zero and passes through it at $x=-L$. Ordinary quadratic Kelly matches the curvature at zero; this construction calibrates the curvature to the worst-loss point.
+
+
+![png](/images/large_events_kelly/approx.png)
 
 ## Optimize the approximation
 
