@@ -22,13 +22,7 @@ where $\mu=\mathbb E[x]$ and $m_2=\mathbb E[x^2]$ is the second noncentral momen
 Its limitation is that large values of $wx$, especially losses near $-1$, are poorly represented by a quadratic expansion around zero. In practice, we can use a fraction of this optimal bet to account for this and other uncertainties , but it leaves us to choose the fraction.
 
 One thing we can notice from the previous construction is that it is a second order polynomial approximation to the logarithm and we just happen to make it match near $x=0$. We can use the same idea of using a parabola to approximate $\log(1+wx)$ but we force it to different constraints.
-Instead of matching the logarithm's curvature at zero, we fit a parabola that:
-
-1. Has the correct value at zero return.
-2. Has the correct slope at zero return.
-3. Has the correct value at the worst return.
-
-This produces a lower bound on growth with a closed-form maximizing allocation.
+Instead of matching the logarithm's curvature at zero, we fit a parabola that matches value and slope for near zero returns and has the correct value at the worst return.
 
 ## Specify the loss bound
 
@@ -106,6 +100,7 @@ $$
 
 The parabola is tangent to the logarithm at zero and passes through it at $x=-L$. Ordinary quadratic Kelly matches the curvature at zero; this construction calibrates the curvature to the worst-loss point.
 
+The next figure illustrates the idea and compares with the alternatives.
 
 ![png](/images/large_events_kelly/approx.png)
 
