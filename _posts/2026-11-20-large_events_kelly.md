@@ -144,7 +144,7 @@ $$
 
 The reduction depends on $Lw_Q$: the worst permitted portfolio loss under quadratic Kelly sizing. A larger value produces a stronger reduction. Using $\mu/\sigma^2$ in place of $w_Q$ additionally neglects $\mu^2$ and is not the exact formula derived here.
 
-The result optimizes the lower bound, not necessarily the original $G$. It also gives an explicit growth certificate. With $r=\mu L/m_2$,
+The result optimizes the lower bound, not necessarily the original $G$ but keeps growth positive. With $r=\mu L/m_2$,
 
 $$
 G(w_D)\ge\widetilde G(w_D)=\frac{m_2}{L^2}[r-\log(1+r)]>0
@@ -157,12 +157,10 @@ This does not establish how close the allocation is to optimal. Nor is it a comp
 Holding $\mu$ and $m_2$ fixed,
 
 $$
-\lim_{L\to1^-}w_D=\frac{\mu}{m_2+\mu}=\frac{w_Q}{1+w_Q}
+\lim_{L\to1}w_D=\frac{\mu}{m_2+\mu}=\frac{w_Q}{1+w_Q}
 $$
 
-At $L=1$, the assumption $x\ge-1$ means the underlying asset cannot lose more than 100% in one period. We can apply the derivation directly at $L=1$; a distribution whose losses approach $-1$ need not satisfy a tighter bound $L<1$.
-
-The allocation remains below one, leaving
+At $L=1$, the assumption $x\ge-1$ means the underlying asset cannot lose more than 100% in one period. The allocation remains below one, leaving
 
 $$
 1-w_D=\frac1{1+w_Q}
@@ -170,4 +168,4 @@ $$
 
 of wealth in cash. For example, $\mu=0.01$ and $\sigma=0.05$ give $w_Q\approx3.846$ and $w_D\approx0.794$, provided those moments come from a return model satisfying $x\ge-1$.
 
-This provides a concrete alternative to selecting a Kelly fraction arbitrarily: fit the approximation to a specified downside endpoint, then let that endpoint determine the reduction in exposure.
+This provides a concrete alternative to selecting a Kelly fraction arbitrarily: fit the approximation to a specified downside endpoint, then let that endpoint determine the reduction in exposure. 
