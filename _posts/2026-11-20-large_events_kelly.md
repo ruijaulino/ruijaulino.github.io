@@ -130,19 +130,13 @@ $$
 w_D=\frac{\mu}{m_2+\mu L}
 $$
 
-Since
-
-$$
-\widetilde G''(w)=-\frac{m_2}{(1-wL)^2}<0
-$$
-
-this is the unique maximum. Using $w_Q=\mu/m_2$, we can write it as
+Using $w_Q=\mu/m_2$, we can write it as
 
 $$
 w_D=\frac{w_Q}{1+Lw_Q}
 $$
 
-The reduction depends on $Lw_Q$: the worst permitted portfolio loss under quadratic Kelly sizing. A larger value produces a stronger reduction. Using $\mu/\sigma^2$ in place of $w_Q$ additionally neglects $\mu^2$ and is not the exact formula derived here.
+The reduction depends on $Lw_Q$ which is the worst permitted portfolio loss under quadratic Kelly sizing. A larger value produces a stronger reduction. Using $\mu/\sigma^2$ in place of $w_Q$ additionally neglects $\mu^2$ and is not the exact formula derived here.
 
 The result optimizes the lower bound, not necessarily the original $G$ but keeps growth positive. With $r=\mu L/m_2$,
 
@@ -150,7 +144,7 @@ $$
 G(w_D)\ge\widetilde G(w_D)=\frac{m_2}{L^2}[r-\log(1+r)]>0
 $$
 
-This does not establish how close the allocation is to optimal. Nor is it a complete model of fat tails: distributions with the same $\mu$, $m_2$, and $L$ receive the same allocation.
+This does not establish how close the allocation is to optimal nor is it a complete model of fat tails: it is just a way to change the curvature of the approximation to account for a large loss.
 
 ### The case of a possible total loss
 
