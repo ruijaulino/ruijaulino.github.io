@@ -22,7 +22,7 @@ where $\mu=\mathbb E[x]$ and $m_2=\mathbb E[x^2]$ is the second noncentral momen
 Its limitation is that large values of $wx$, especially losses near $-1$, are poorly represented by a quadratic expansion around zero. In practice, we can use a fraction of this optimal bet to account for this and other uncertainties , but it leaves us to choose the fraction.
 
 One thing we can notice from the previous construction is that it is a second order polynomial approximation to the logarithm and we just happen to make it match near $x=0$. We can use the same idea of using a parabola to approximate $\log(1+wx)$ but we force it to different constraints.
-Instead of matching the logarithm's curvature at zero, we fit a parabola that matches value and slope for near zero returns and has the correct value at the worst return.
+Instead of matching the logarithm's up to second order at zero, we can fit a more _curved_ parabola that passes through a worst case loss - this can be done an aditional constraint that can be taken as having the same slope near zero.
 
 ## Specify the loss bound
 
@@ -46,7 +46,7 @@ $$
 \mu=\mathbb E[x],\qquad m_2=\mathbb E[x^2]=\sigma^2+\mu^2
 $$
 
-and assume $0<m_2<\infty$ and $\mu>0$. 
+and assume $0<m_2<\infty$ and $\mu>0$ without loss of generality. 
 
 The bound $L$ concerns the underlying investment's loss; the associated portfolio loss is at most $wL$. This value $L$ can be estimated from data as the largest loss or a multiple of it to be more conservative.
 
@@ -98,7 +98,7 @@ $$
 q_w(x)=wx+\frac{x^2}{L^2}\left[\log(1-wL)+wL\right]
 $$
 
-The parabola is tangent to the logarithm at zero and passes through it at $x=-L$. Ordinary quadratic Kelly matches the curvature at zero; this construction calibrates the curvature to the worst-loss point.
+The parabola is tangent to the logarithm at zero and passes through it at $x=-L$. Ordinary quadratic Kelly matches the curvature at zero; this construction calibrates the curvature to the worst-loss point making it more concave (which gives a higher penalty on fluctuations).
 
 The next figure illustrates the idea and compares with the alternatives.
 
