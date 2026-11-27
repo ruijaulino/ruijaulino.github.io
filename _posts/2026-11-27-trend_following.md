@@ -58,7 +58,10 @@ $$
 For the mean, keeping only terms that depend on $\mu_t$ gives
 
 $$
-\log Q_\mu(\mu_t)=-\frac{(\mu_t-m_t^-)^2}{2q_t^-} -\frac12\mathbb{E}_{Q_v} \left\[ v_t^{-1} \right]
+\log Q_\mu(\mu_t)
+= -\frac{(\mu_t-m_t^-)^2}{2q_t^-}
+-\frac{1}{2}\mathbb{E}_{Q_v}\left[v_t^{-1}\right]
+(x_t-\mu_t)^2+C
 $$
 
 This is quadratic in $\mu_t$, so $Q_\mu=N(m_t,q_t)$, with
