@@ -93,7 +93,7 @@ Since $\lambda_t=a_t/b_t$, the two updates remain coupled. Nevertheless, we have
 
 ### Decoupling
 
-We can exploit the fact that the predictable component is typically small compared with the scale of unpredictable fluctuationso in financial returns. If both $\|m_t\|$ and $\sqrt{q_t}$ are small relative to typical return volatility, the correction to the squared return, $-2x_tm_t+m_t^2+q_t$, is usually small on the variance scale. We can therefore approximate
+We can exploit the fact that the predictable component is typically small compared with the scale of unpredictable fluctuations in financial returns. If both $\|m_t\|$ and $\sqrt{q_t}$ are small relative to typical return volatility, the correction to the squared return, $-2x_tm_t+m_t^2+q_t$, is usually small on the variance scale. We can therefore approximate
 
 $$
 \mathbb E_{Q_\mu}[(x_t-\mu_t)^2]\approx x_t^2
@@ -105,7 +105,7 @@ $$
 a_t=a_t^-+\frac12,\qquad b_t\approx b_t^-+\frac12x_t^2
 $$
 
-We can now estimate the variance first and use it to estimate the mean. This is a one-way dependence, rather than a claim that the latent quantities are statistically independent.
+We can now estimate the variance first and use it to estimate the mean. 
 
 ## Predictive distribution
 
@@ -137,13 +137,13 @@ $$
 
 Here $A\in[0,1]$ is the persistence of the expected parameter. 
 
-For a real-valued location parameter, such as a conditional expected return, variance is a natural measure of uncertainty. It is invariant under translation. For a positive scale parameter, such as return variance, uncertainty relative to its expected level is more natural.
+For a real-valued location parameter, such as a conditional expected return, its variance is a natural measure of uncertainty (invariant under translation). For a positive scale parameter, such as return variance, uncertainty relative to its expected level is more natural.
 
 ### Variance
 
-The expectation of an inverse-gamma distribution is $h=b/(a-1)$, and its squared coefficient of variation is $1/(a-2)$ when $a>2$. Thus $a$ is a convenient quantity to be discounted; discounting it at rate $\phi$ increases relative uncertainty, irrespective of how the expected level changes. 
+The expectation of an inverse-gamma distribution is $h=b/(a-1)$, and its squared coefficient of variation is $1/(a-2)$ when $a>2$ (this measures expected value squared divided by variance and can represent uncertainty around the mean). Thus $a$ is a convenient quantity to be discounted; discounting it at rate $\phi$ increases relative uncertainty, irrespective of how the expected level changes. 
 
-We can consider then the following transformation to possess the correct properties:
+We can consider the following transformation that possess the correct properties:
 
 $$
 \begin{aligned}
@@ -205,7 +205,7 @@ With $\rho<1$, the model can attenuate the forecast even while retaining a finit
 
 ## Time scales
 
-The mean and variance models have a similar structure as they both resemble exponential weighted estimated. Under constant observation precision for the mean (as a simplification), both one-step forecasts can be written as
+The mean and variance models have a similar structure as they both resemble exponential weighted estimates. Under constant observation precision for the mean (as a simplification), both one-step forecasts can be written as
 
 $$
 \widehat\theta_{t+1}=\bar\theta+c\left(\,\mathrm{EWMA}_d(y_t)-\bar\theta\right),\qquad \mathrm{EWMA}_d(y_t)=(1-d)\sum_{i=0}^\infty d^iy_{t-i},
@@ -242,7 +242,7 @@ The forecast is $\bar\mu+\rho z_t/J_t$. Thus the constant-precision half-life an
 
 ## Posterior predictive with the model
 
-At the fixed point of the variance shape recursion, $a_t^-=a_\infty-1/2$ and $b_t^-=(a_t^--1)g_t$. Substituting these into the predictive distribution obtained earlier yields
+At the fixed point of the variance shape recursion, $a_t^-=a_\infty-1/2$ and $b_t^-=(a_t^- -1)g_t$. Substituting these into the predictive distribution obtained earlier yields
 
 $$
 x_t\mid x_{1:t-1},\Theta\approx t_\nu\left(m_t^-,\sqrt{\frac{\phi}{2-\phi}g_t}\right),\qquad \nu=\frac{2-\phi}{1-\phi}
