@@ -58,7 +58,7 @@ $$
 For the mean, keeping only terms that depend on $\mu_t$ gives
 
 $$
-\log Q_\mu(\mu_t)=-\frac{(\mu_t-m_t^-)^2}{2q_t^-}-\frac12\mathbb E_{Q_v}\left\[v_t^{-1}\right\](x_t-\mu_t)^2+C
+\log Q_\mu(\mu_t)=-\frac{(\mu_t-m_t^-)^2}{2q_t^-}-\frac12\mathbb{E}_{Q_v}\left\[v_t^{-1}\right\](x_t-\mu_t)^2+C
 $$
 
 This is quadratic in $\mu_t$, so $Q_\mu=N(m_t,q_t)$, with
@@ -90,7 +90,7 @@ Since $\lambda_t=a_t/b_t$, the two updates remain coupled. Nevertheless, we have
 
 ### Decoupling
 
-We can exploit the fact that the predictable component is typically small compared with the scale of unpredictable fluctuationso in financial returns. If both $|m_t|$ and $\sqrt{q_t}$ are small relative to typical return volatility, the correction to the squared return, $-2x_tm_t+m_t^2+q_t$, is usually small on the variance scale. We can therefore approximate
+We can exploit the fact that the predictable component is typically small compared with the scale of unpredictable fluctuationso in financial returns. If both $\|m_t\|$ and $\sqrt{q_t}$ are small relative to typical return volatility, the correction to the squared return, $-2x_tm_t+m_t^2+q_t$, is usually small on the variance scale. We can therefore approximate
 
 $$
 \mathbb E_{Q_\mu}[(x_t-\mu_t)^2]\approx x_t^2
